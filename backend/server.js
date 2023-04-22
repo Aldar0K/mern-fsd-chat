@@ -23,6 +23,10 @@ app.get("/api/chat/:id", (req, res) => {
   const requestedChatId = req.params.id;
 
   const chat = chats.find((chat) => chat.id === requestedChatId);
+  if (!chat) {
+    res.status(404);
+    res.send({ status: 404, message: "No such chat found" });
+  }
   res.send(chat);
 });
 
