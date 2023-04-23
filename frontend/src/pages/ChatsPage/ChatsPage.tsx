@@ -18,7 +18,7 @@ const ChatsPage: FC = () => {
   }, []);
 
   return (
-    <div className={styles.container}>
+    <div className={`container ${styles.container}`}>
       <h1>ChatsPage</h1>
       {!!chats?.length && chats.map(chat => <p key={chat.id}>{chat.chatName}</p>)}
     </div>

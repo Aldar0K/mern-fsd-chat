@@ -6,7 +6,9 @@ import { AppRouter } from 'components';
 const App: FC = () => {
   return (
     <div className='wrapper'>
-      <AppRouter />
+      <main className='main'>
+        <AppRouter />
+      </main>
     </div>
   );
 };
