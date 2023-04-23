@@ -24,8 +24,10 @@
   "license": "ISC",
   "homepage": "https://github.com/Aldar0K/mern-fsd-chat#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "mongoose": "^7.0.4",
     "nodemon": "^2.0.22"
   }
 }
