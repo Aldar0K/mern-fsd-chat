@@ -1,7 +1,14 @@
-import 'assets/styles/main.scss';
+import { FC } from 'react';
 
-function App() {
-  return <h1>Chat App</h1>;
-}
+import 'assets/styles/main.scss';
+import { AppRouter } from 'components';
+
+const App: FC = () => {
+  return (
+    <div className='wrapper'>
+      <AppRouter />
+    </div>
+  );
+};
 
 export default App;
