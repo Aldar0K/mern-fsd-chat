@@ -15,8 +15,8 @@ const SignupForm: FC = () => {
 
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
-  const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [image, setImage] = useState<File | null>(null);
 
   const [isLoading, setLoading] = useState<boolean>(false);
@@ -52,11 +52,11 @@ const SignupForm: FC = () => {
 
   return (
     <VStack spacing='5px'>
-      <FormControl id='first-name' isRequired>
+      <FormControl id='register-name' isRequired>
         <FormLabel>Name</FormLabel>
         <Input placeholder='Enter Your Name' onChange={e => setName(e.target.value)} />
       </FormControl>
-      <FormControl id='email' isRequired>
+      <FormControl id='register-email' isRequired>
         <FormLabel>Email Address</FormLabel>
         <Input
           type='email'
@@ -64,7 +64,7 @@ const SignupForm: FC = () => {
           onChange={e => setEmail(e.target.value)}
         />
       </FormControl>
-      <FormControl id='password' isRequired>
+      <FormControl id='register-password' isRequired>
         <FormLabel>Password</FormLabel>
         <InputGroup size='md'>
           <Input
@@ -79,7 +79,7 @@ const SignupForm: FC = () => {
           </InputRightElement>
         </InputGroup>
       </FormControl>
-      <FormControl id='confirm-password' isRequired>
+      <FormControl id='register-confirm-password' isRequired>
         <FormLabel>Confirm Password</FormLabel>
         <InputGroup size='md'>
           <Input
@@ -94,7 +94,7 @@ const SignupForm: FC = () => {
           </InputRightElement>
         </InputGroup>
       </FormControl>
-      <FormControl id='image'>
+      <FormControl id='register-image'>
         <FormLabel>Upload your Picture</FormLabel>
         <Input
           type='file'
