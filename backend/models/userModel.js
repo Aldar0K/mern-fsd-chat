@@ -1,12 +1,12 @@
-import { compare, genSalt, hash } from "bcryptjs";
+import bcryptjs from "bcryptjs";
 import { Schema, model } from "mongoose";
 
 const userSchema = Schema(
   {
     name: { type: "String", required: true },
-    email: { type: "String", unique: true, required: true },
+    email: { type: "String", unique: true, required: true, unique: true },
     password: { type: "String", required: true },
-    pic: {
+    image: {
       type: "String",
       required: true,
       default:
@@ -22,7 +22,7 @@ const userSchema = Schema(
 );
 
 userSchema.methods.matchPassword = async function (enteredPassword) {
-  return await compare(enteredPassword, this.password);
+  return await bcryptjs.compare(enteredPassword, this.password);
 };
 
 userSchema.pre("save", async function (next) {
@@ -30,8 +30,8 @@ userSchema.pre("save", async function (next) {
     next();
   }
 
-  const salt = await genSalt(10);
-  this.password = await hash(this.password, salt);
+  const salt = await bcryptjs.genSalt(10);
+  this.password = await bcryptjs.hash(this.password, salt);
 });
 
 const User = model("User", userSchema);

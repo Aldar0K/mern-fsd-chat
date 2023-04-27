@@ -4,7 +4,7 @@ import express from "express";
 colors;
 
 import connectDB from "./config/db.js";
-import { chats } from "./data/data.js";
+import userRoutes from "./routes/userRoutes.js";
 
 dotenv.config();
 connectDB();
@@ -13,26 +13,13 @@ const port = process.env.PORT || 7070;
 
 const app = express();
 
+app.use(express.json());
+
 // check if the server is working.
 app.get("/", (req, res) => {
   res.send("api is running just fine");
 });
 
-// get all chats.
-app.get("/api/chat", (req, res) => {
-  res.send(chats);
-});
-
-// get a single chat.
-app.get("/api/chat/:id", (req, res) => {
-  const requestedChatId = req.params.id;
-
-  const chat = chats.find((chat) => chat.id === requestedChatId);
-  if (!chat) {
-    res.status(404);
-    res.send({ status: 404, message: "No such chat found" });
-  }
-  res.send(chat);
-});
+app.use("/api/user", userRoutes);
 
 app.listen(port, console.log(`Server started on port: ${port}`.yellow.bold));
