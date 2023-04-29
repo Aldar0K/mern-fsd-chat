@@ -10,18 +10,18 @@ import {
 } from '@chakra-ui/react';
 import { FC, useState } from 'react';
 
+import { useAuth, useToggle } from 'hooks';
+
 const LoginForm: FC = () => {
   const toast = useToast();
+  const { login, isLoading } = useAuth();
 
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
-  const [isLoading, setLoading] = useState<boolean>(false);
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-  const toggleShowPassword = () => setShowPassword(prev => !prev);
+  const [showPassword, toggleShowPassword] = useToggle(false);
 
   const submitHandler = async () => {
-    setLoading(true);
     if (!email || !password) {
       toast({
         title: 'Please Fill all the Feilds',
@@ -30,11 +30,10 @@ const LoginForm: FC = () => {
         isClosable: true,
         position: 'bottom'
       });
-      setLoading(false);
       return;
     }
-    console.log(email, password);
-    setLoading(false);
+
+    login(email, password);
   };
 
   return (

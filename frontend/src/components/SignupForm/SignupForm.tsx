@@ -8,11 +8,14 @@ import {
   VStack,
   useToast
 } from '@chakra-ui/react';
-import { useToggle } from 'hooks';
+import axios from 'axios';
 import { FC, useState } from 'react';
+
+import { useAuth, useToggle } from 'hooks';
 
 const SignupForm: FC = () => {
   const toast = useToast();
+  const { register, isLoading: authLoading } = useAuth();
 
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
@@ -26,29 +29,16 @@ const SignupForm: FC = () => {
   const postDetails = async (file: File) => {
     toggleLoading();
 
-    if (!file) {
-      toast({
-        title: 'Please select an image!',
-        status: 'warning',
-        duration: 5000,
-        isClosable: true,
-        position: 'bottom'
-      });
-      toggleLoading();
-      return;
-    }
-
     const formData = new FormData();
     formData.append('file', file);
     formData.append('upload_preset', 'mern-fsd-chat');
     formData.append('cloud_name', 'drlfgiw60');
 
     try {
-      const response = await fetch('https://api.cloudinary.com/v1_1/drlfgiw60/image/upload', {
-        method: 'post',
-        body: formData
-      });
-      const data = await response.json();
+      const { data } = await axios.post(
+        'https://api.cloudinary.com/v1_1/drlfgiw60/image/upload',
+        formData
+      );
       setImageUrl(data.url.toString());
     } catch (error) {
       console.log(error);
@@ -59,9 +49,10 @@ const SignupForm: FC = () => {
 
   const submitHandler = async () => {
     toggleLoading();
+
     if (!name || !email || !password || !confirmPassword) {
       toast({
-        title: 'Please Fill all the Feilds',
+        title: 'Please fill all the fields',
         status: 'warning',
         duration: 5000,
         isClosable: true,
@@ -72,15 +63,18 @@ const SignupForm: FC = () => {
     }
     if (password !== confirmPassword) {
       toast({
-        title: 'Passwords Do Not Match',
+        title: 'Passwords do not match',
         status: 'warning',
         duration: 5000,
         isClosable: true,
         position: 'bottom'
       });
+      toggleLoading();
       return;
     }
-    console.log(name, email, password, imageUrl);
+
+    register(name, email, password, imageUrl);
+
     toggleLoading();
   };
 
@@ -142,7 +136,7 @@ const SignupForm: FC = () => {
         width='100%'
         style={{ marginTop: 15 }}
         onClick={submitHandler}
-        isLoading={isLoading}
+        isLoading={isLoading || authLoading}
       >
         Sign Up
       </Button>

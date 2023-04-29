@@ -1,7 +1,8 @@
 import { FC } from 'react';
 
 import 'assets/styles/main.scss';
-import { AppRouter } from 'components';
+
+import AppRouter from 'AppRouter';
 
 const App: FC = () => {
   return (

@@ -1,12 +1,9 @@
 import { FC } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
-import { ChatPage, ChatsPage, HomePage } from 'pages';
+import { ROUTES } from 'consts';
 
-export enum ROUTES {
-  HOME = '/',
-  CHATS = '/chats'
-}
+import { ChatPage, ChatsPage, HomePage } from 'pages';
 
 const AppRouter: FC = () => {
   const isLogin = true;
