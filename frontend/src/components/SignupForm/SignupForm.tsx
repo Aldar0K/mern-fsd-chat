@@ -8,6 +8,7 @@ import {
   VStack,
   useToast
 } from '@chakra-ui/react';
+import { useToggle } from 'hooks';
 import { FC, useState } from 'react';
 
 const SignupForm: FC = () => {
@@ -17,14 +18,47 @@ const SignupForm: FC = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
-  const [image, setImage] = useState<File | null>(null);
+  const [imageUrl, setImageUrl] = useState<string>('');
 
-  const [isLoading, setLoading] = useState<boolean>(false);
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-  const toggleShowPassword = () => setShowPassword(prev => !prev);
+  const [isLoading, toggleLoading] = useToggle(false);
+  const [showPassword, toggleShowPassword] = useToggle(false);
+
+  const postDetails = async (file: File) => {
+    toggleLoading();
+
+    if (!file) {
+      toast({
+        title: 'Please select an image!',
+        status: 'warning',
+        duration: 5000,
+        isClosable: true,
+        position: 'bottom'
+      });
+      toggleLoading();
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', 'mern-fsd-chat');
+    formData.append('cloud_name', 'drlfgiw60');
+
+    try {
+      const response = await fetch('https://api.cloudinary.com/v1_1/drlfgiw60/image/upload', {
+        method: 'post',
+        body: formData
+      });
+      const data = await response.json();
+      setImageUrl(data.url.toString());
+    } catch (error) {
+      console.log(error);
+    }
+
+    toggleLoading();
+  };
 
   const submitHandler = async () => {
-    setLoading(true);
+    toggleLoading();
     if (!name || !email || !password || !confirmPassword) {
       toast({
         title: 'Please Fill all the Feilds',
@@ -33,7 +67,7 @@ const SignupForm: FC = () => {
         isClosable: true,
         position: 'bottom'
       });
-      setLoading(false);
+      toggleLoading();
       return;
     }
     if (password !== confirmPassword) {
@@ -46,8 +80,8 @@ const SignupForm: FC = () => {
       });
       return;
     }
-    console.log(name, email, password, image);
-    setLoading(false);
+    console.log(name, email, password, imageUrl);
+    toggleLoading();
   };
 
   return (
@@ -99,8 +133,8 @@ const SignupForm: FC = () => {
         <Input
           type='file'
           p={1.5}
-          accept='image/*'
-          onChange={e => e.target.files && setImage(e.target.files[0])}
+          accept='image/png,image/jpg,image/jpeg'
+          onChange={e => e.target.files && postDetails(e.target.files[0])}
         />
       </FormControl>
       <Button
