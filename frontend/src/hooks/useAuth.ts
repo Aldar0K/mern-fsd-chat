@@ -3,14 +3,10 @@ import axios, { AxiosRequestConfig } from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 // import { useAuthStore } from 'store';
-// import { useNavigate } from 'react-router-dom';
-
 import { ROUTES } from 'consts';
 import { handleError } from 'helpers';
 import { useToggle } from './useToggle';
 // import { apiAuth } from 'api';
-// import { ROUTES } from 'consts';
-// import { handleError, notifySuc } from 'helpers';
 
 export interface UserData {
   _id: string;
@@ -23,6 +19,7 @@ export interface UserData {
 export const useAuth = () => {
   const toast = useToast();
   const navigate = useNavigate();
+  // TODO store auth state in the store.
   // const setLogin = useAuthStore(state => state.setLogin);
   const [isLoading, toggleLoading] = useToggle(false);
 
@@ -90,6 +87,7 @@ export const useAuth = () => {
     toggleLoading();
   };
 
+  // TODO add logout logic.
   // const logout = () => {
   //   localStorage.removeItem('token');
   //   localStorage.removeItem('refreshToken');
