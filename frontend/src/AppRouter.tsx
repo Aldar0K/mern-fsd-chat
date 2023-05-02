@@ -2,11 +2,12 @@ import { FC } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
 import { ROUTES } from 'consts';
+import { useAuthStore } from 'store';
 
 import { ChatPage, ChatsPage, HomePage } from 'pages';
 
 const AppRouter: FC = () => {
-  const isLogin = true;
+  const isLogin = useAuthStore(state => state.isLogin);
 
   return (
     <>

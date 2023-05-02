@@ -2,9 +2,9 @@ import { useToast } from '@chakra-ui/react';
 import axios, { AxiosRequestConfig } from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-// import { useAuthStore } from 'store';
 import { ROUTES } from 'consts';
 import { handleError } from 'helpers';
+import { useAuthStore } from 'store';
 import { useToggle } from './useToggle';
 // import { apiAuth } from 'api';
 
@@ -19,8 +19,7 @@ export interface UserData {
 export const useAuth = () => {
   const toast = useToast();
   const navigate = useNavigate();
-  // TODO store auth state in the store.
-  // const setLogin = useAuthStore(state => state.setLogin);
+  const setLogin = useAuthStore(state => state.setLogin);
   const [isLoading, toggleLoading] = useToggle(false);
 
   const login = async (email: string, password: string) => {
@@ -34,7 +33,6 @@ export const useAuth = () => {
       };
 
       const response = await axios.post<UserData>('/api/user/login', { email, password }, config);
-      const data = response.data;
 
       toast({
         title: 'Login successful',
@@ -44,7 +42,8 @@ export const useAuth = () => {
         position: 'bottom'
       });
 
-      _saveCredentials(data);
+      _saveCredentials(response.data);
+      setLogin(true);
       navigate(ROUTES.CHATS);
     } catch (error) {
       handleError(error);
@@ -68,7 +67,6 @@ export const useAuth = () => {
         { name, email, password, imageUrl },
         config
       );
-      const data = response.data;
 
       toast({
         title: 'Registration successful',
@@ -78,7 +76,8 @@ export const useAuth = () => {
         position: 'bottom'
       });
 
-      _saveCredentials(data);
+      _saveCredentials(response.data);
+      setLogin(true);
       navigate(ROUTES.CHATS);
     } catch (error) {
       handleError(error);
@@ -87,17 +86,19 @@ export const useAuth = () => {
     toggleLoading();
   };
 
-  // TODO add logout logic.
-  // const logout = () => {
-  //   localStorage.removeItem('token');
-  //   localStorage.removeItem('refreshToken');
-  //   setLogin(false);
-  //   navigate(ROUTES.START);
-  // };
+  const logout = () => {
+    _clearCredentials();
+    setLogin(false);
+    navigate(ROUTES.HOME);
+  };
 
   const _saveCredentials = (data: UserData) => {
     localStorage.setItem('userData', JSON.stringify(data));
   };
 
-  return { login, register, isLoading };
+  const _clearCredentials = () => {
+    localStorage.removeItem('userData');
+  };
+
+  return { login, register, logout, isLoading };
 };
