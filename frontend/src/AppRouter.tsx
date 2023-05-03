@@ -2,16 +2,16 @@ import { FC } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
 import { ROUTES } from 'consts';
-import { useAuthStore } from 'store';
+import { useUserStore } from 'store';
 
 import { ChatPage, ChatsPage, HomePage } from 'pages';
 
 const AppRouter: FC = () => {
-  const isLogin = useAuthStore(state => state.isLogin);
+  const user = useUserStore(state => state.user);
 
   return (
     <>
-      {isLogin ? (
+      {user ? (
         <Routes>
           <Route index path={ROUTES.HOME} Component={HomePage} />
           <Route path={ROUTES.CHATS} Component={ChatsPage} />

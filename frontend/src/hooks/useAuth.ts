@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { ROUTES } from 'consts';
 import { handleError } from 'helpers';
-import { useAuthStore } from 'store';
+import { useUserStore } from 'store';
 import { useToggle } from './useToggle';
 // import { apiAuth } from 'api';
 
@@ -19,7 +19,7 @@ export interface UserData {
 export const useAuth = () => {
   const toast = useToast();
   const navigate = useNavigate();
-  const setLogin = useAuthStore(state => state.setLogin);
+  const setUser = useUserStore(state => state.setUser);
   const [isLoading, toggleLoading] = useToggle(false);
 
   const login = async (email: string, password: string) => {
@@ -43,7 +43,7 @@ export const useAuth = () => {
       });
 
       _saveCredentials(response.data);
-      setLogin(true);
+      setUser(response.data);
       navigate(ROUTES.CHATS);
     } catch (error) {
       handleError(error);
@@ -77,7 +77,7 @@ export const useAuth = () => {
       });
 
       _saveCredentials(response.data);
-      setLogin(true);
+      setUser(response.data);
       navigate(ROUTES.CHATS);
     } catch (error) {
       handleError(error);
@@ -88,7 +88,7 @@ export const useAuth = () => {
 
   const logout = () => {
     _clearCredentials();
-    setLogin(false);
+    setUser(null);
     navigate(ROUTES.HOME);
   };
 
