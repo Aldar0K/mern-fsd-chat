@@ -3,7 +3,7 @@ import { FC } from 'react';
 import { useUserStore } from 'store';
 import styles from './Header.module.scss';
 
-import { SideDrawer } from 'components';
+import { HeaderAuth } from './variants';
 
 const Header: FC = () => {
   const user = useUserStore(state => state.user);
@@ -11,13 +11,7 @@ const Header: FC = () => {
   return (
     <header className={styles.header}>
       <div className={`container ${styles.container}`}>
-        {user ? (
-          <>
-            <SideDrawer />
-          </>
-        ) : (
-          <h2>HeaderDefault</h2>
-        )}
+        {user ? <HeaderAuth /> : <h2>HeaderDefault</h2>}
       </div>
     </header>
   );

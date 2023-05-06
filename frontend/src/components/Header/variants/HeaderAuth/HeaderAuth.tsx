@@ -18,7 +18,7 @@ import { useUserStore } from 'store';
 
 import { ProfileModal } from 'components';
 
-const SideDrawer: FC = () => {
+const HeaderAuth: FC = () => {
   const user = useUserStore(state => state.user);
   const { logout } = useAuth();
   const [search, setSearch] = useState<string>('');
@@ -75,4 +75,4 @@ const SideDrawer: FC = () => {
   );
 };
 
-export default SideDrawer;
+export default HeaderAuth;
