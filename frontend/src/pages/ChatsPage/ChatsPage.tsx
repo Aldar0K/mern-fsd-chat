@@ -1,26 +1,26 @@
-import axios from 'axios';
-import { FC, useEffect, useState } from 'react';
+import { Box } from '@chakra-ui/react';
+import { FC } from 'react';
 
-import { Chat } from 'models';
+import { useUserStore } from 'store';
 import styles from './ChatsPage.module.scss';
 
+import { Header } from 'components';
+import { ChatBox, ChatList } from './components';
+
 const ChatsPage: FC = () => {
-  const [chats, setChats] = useState<Chat[]>();
-
-  const getChats = async () => {
-    const response = await axios.get<Chat[]>('/api/chat');
-    const chats = response.data;
-    if (chats) setChats(chats);
-  };
-
-  useEffect(() => {
-    getChats();
-  }, []);
+  const user = useUserStore(state => state.user);
 
   return (
-    <div className={`container ${styles.container}`}>
-      <h1>ChatsPage</h1>
-      {!!chats?.length && chats.map(chat => <p key={chat.id}>{chat.chatName}</p>)}
+    <div className='wrapper'>
+      <Header />
+
+      <div className={`container ${styles.container}`}>
+        <h1>ChatsPage</h1>
+        <Box>
+          {user && <ChatList />}
+          {user && <ChatBox />}
+        </Box>
+      </div>
     </div>
   );
 };

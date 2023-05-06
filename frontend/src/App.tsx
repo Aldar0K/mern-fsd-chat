@@ -5,13 +5,7 @@ import 'assets/styles/main.scss';
 import AppRouter from 'AppRouter';
 
 const App: FC = () => {
-  return (
-    <div className='wrapper'>
-      <main className='main'>
-        <AppRouter />
-      </main>
-    </div>
-  );
+  return <AppRouter />;
 };
 
 export default App;

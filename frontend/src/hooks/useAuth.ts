@@ -4,17 +4,10 @@ import { useNavigate } from 'react-router-dom';
 
 import { ROUTES } from 'consts';
 import { handleError } from 'helpers';
+import { User } from 'models';
 import { useUserStore } from 'store';
 import { useToggle } from './useToggle';
 // import { apiAuth } from 'api';
-
-export interface UserData {
-  _id: string;
-  token: string;
-  email: string;
-  name: string;
-  image: string;
-}
 
 export const useAuth = () => {
   const toast = useToast();
@@ -32,7 +25,7 @@ export const useAuth = () => {
         }
       };
 
-      const response = await axios.post<UserData>('/api/user/login', { email, password }, config);
+      const response = await axios.post<User>('/api/user/login', { email, password }, config);
 
       toast({
         title: 'Login successful',
@@ -62,7 +55,7 @@ export const useAuth = () => {
         }
       };
 
-      const response = await axios.post<UserData>(
+      const response = await axios.post<User>(
         '/api/user',
         { name, email, password, imageUrl },
         config
@@ -92,7 +85,7 @@ export const useAuth = () => {
     navigate(ROUTES.HOME);
   };
 
-  const _saveCredentials = (data: UserData) => {
+  const _saveCredentials = (data: User) => {
     localStorage.setItem('userData', JSON.stringify(data));
   };
 
