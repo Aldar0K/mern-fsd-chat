@@ -13,10 +13,9 @@ const AppRouter: FC = () => {
     <>
       {user ? (
         <Routes>
-          <Route index path={ROUTES.HOME} Component={HomePage} />
-          <Route path={ROUTES.CHATS} Component={ChatsPage} />
-          <Route path={`${ROUTES.CHATS}/:chatId`} Component={ChatPage} />
-          <Route path='*' Component={HomePage} />
+          <Route index path={ROUTES.CHATS} Component={ChatsPage} />
+          <Route path={ROUTES.CHAT} Component={ChatPage} />
+          <Route path='*' Component={ChatsPage} />
         </Routes>
       ) : (
         <Routes>

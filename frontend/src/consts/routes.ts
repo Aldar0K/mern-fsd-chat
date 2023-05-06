@@ -1,4 +1,5 @@
 export enum ROUTES {
   HOME = '/',
-  CHATS = '/chats'
+  CHATS = '/chats',
+  CHAT = '/chats/:chatId'
 }
