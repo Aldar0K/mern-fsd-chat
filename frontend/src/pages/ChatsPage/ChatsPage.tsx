@@ -14,13 +14,14 @@ const ChatsPage: FC = () => {
     <div className='wrapper'>
       <Header />
 
-      <div className={`container ${styles.container}`}>
-        <h1>ChatsPage</h1>
-        <Box>
-          {user && <ChatList />}
-          {user && <ChatBox />}
-        </Box>
-      </div>
+      <main className='main'>
+        <div className={`container ${styles.container}`}>
+          <Box display='flex' w='100%' h='91.5vh' p='10px'>
+            {user && <ChatList />}
+            {user && <ChatBox />}
+          </Box>
+        </div>
+      </main>
     </div>
   );
 };
