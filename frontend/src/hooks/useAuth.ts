@@ -1,42 +1,27 @@
-import { useToast } from '@chakra-ui/react';
-import axios, { AxiosRequestConfig } from 'axios';
 import { useNavigate } from 'react-router-dom';
 
+import { apiAuth } from 'api';
 import { ROUTES } from 'consts';
 import { handleError } from 'helpers';
+import { useNotify, useToggle } from 'hooks';
 import { User } from 'models';
 import { useUserStore } from 'store';
-import { useToggle } from './useToggle';
-// import { apiAuth } from 'api';
 
 export const useAuth = () => {
-  const toast = useToast();
   const navigate = useNavigate();
   const setUser = useUserStore(state => state.setUser);
+  const notify = useNotify();
   const [isLoading, toggleLoading] = useToggle(false);
 
   const login = async (email: string, password: string) => {
     toggleLoading();
 
     try {
-      const config: AxiosRequestConfig = {
-        headers: {
-          'Content-type': 'application/json'
-        }
-      };
+      const user = await apiAuth.login(email, password);
 
-      const response = await axios.post<User>('/api/user/login', { email, password }, config);
-
-      toast({
-        title: 'Login successful',
-        status: 'success',
-        duration: 5000,
-        isClosable: true,
-        position: 'bottom'
-      });
-
-      _saveCredentials(response.data);
-      setUser(response.data);
+      notify({ text: 'Login successful', type: 'success' });
+      _saveCredentials(user);
+      setUser(user);
       navigate(ROUTES.CHATS);
     } catch (error) {
       handleError(error);
@@ -49,28 +34,11 @@ export const useAuth = () => {
     toggleLoading();
 
     try {
-      const config: AxiosRequestConfig = {
-        headers: {
-          'Content-type': 'application/json'
-        }
-      };
+      const user = await apiAuth.register(name, email, password, imageUrl);
 
-      const response = await axios.post<User>(
-        '/api/user',
-        { name, email, password, imageUrl },
-        config
-      );
-
-      toast({
-        title: 'Registration successful',
-        status: 'success',
-        duration: 5000,
-        isClosable: true,
-        position: 'bottom'
-      });
-
-      _saveCredentials(response.data);
-      setUser(response.data);
+      notify({ text: 'Registration successful', type: 'success' });
+      _saveCredentials(user);
+      setUser(user);
       navigate(ROUTES.CHATS);
     } catch (error) {
       handleError(error);

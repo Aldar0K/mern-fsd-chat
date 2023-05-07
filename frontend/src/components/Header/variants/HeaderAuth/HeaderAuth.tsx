@@ -1,3 +1,4 @@
+import { useDisclosure } from '@chakra-ui/hooks';
 import { BellIcon, ChevronDownIcon, SearchIcon } from '@chakra-ui/icons';
 import {
   Avatar,
@@ -11,20 +12,18 @@ import {
   Text,
   Tooltip
 } from '@chakra-ui/react';
-import { FC, useState } from 'react';
+import { FC } from 'react';
 
 import { useAuth, useToggle } from 'hooks';
 import { useUserStore } from 'store';
 
-import { ProfileModal } from 'components';
+import { HeaderDrawer, ProfileModal } from 'components';
 
 const HeaderAuth: FC = () => {
   const user = useUserStore(state => state.user);
   const { logout } = useAuth();
-  const [search, setSearch] = useState<string>('');
-  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [loading, toggleLoading] = useToggle(false);
-  const [chatLoading, toggleChatLoading] = useToggle(false);
 
   return (
     <>
@@ -38,7 +37,7 @@ const HeaderAuth: FC = () => {
         borderWidth='5px'
       >
         <Tooltip label='Search users in the chats' hasArrow placeContent='bottom-end'>
-          <Button variant='ghost'>
+          <Button variant='ghost' onClick={onOpen}>
             <SearchIcon />
             <Text display={{ base: 'none', md: 'flex' }} px={4}>
               Search users
@@ -71,6 +70,8 @@ const HeaderAuth: FC = () => {
           </Menu>
         </div>
       </Box>
+
+      <HeaderDrawer placement='left' onClose={onClose} isOpen={isOpen} />
     </>
   );
 };
