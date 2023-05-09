@@ -20,6 +20,7 @@ export const useChat = () => {
   const notify = useNotify();
   const [isLoading, toggleLoading] = useToggle(false);
 
+  // TODO use react-query for fetching chats?
   const getChats = async () => {
     toggleLoading();
 

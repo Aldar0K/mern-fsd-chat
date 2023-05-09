@@ -33,7 +33,7 @@ const ChatsLoader = () => {
 };
 
 // TODO rename to SearchUserDrawer?
-const HeaderDrawer: FC<Omit<DrawerProps, 'children'>> = ({ ...props }) => {
+const HeaderDrawer: FC<Omit<DrawerProps, 'children'>> = ({ onClose, ...props }) => {
   const notify = useNotify();
   // TODO add useDebounce hook?
   const [searchValue, setSearchValue] = useState<string>('');
@@ -63,7 +63,7 @@ const HeaderDrawer: FC<Omit<DrawerProps, 'children'>> = ({ ...props }) => {
   };
 
   return (
-    <Drawer {...props}>
+    <Drawer onClose={onClose} {...props}>
       <DrawerOverlay />
       <DrawerContent>
         <DrawerHeader borderBottomWidth='1px'>Search users</DrawerHeader>
@@ -83,7 +83,7 @@ const HeaderDrawer: FC<Omit<DrawerProps, 'children'>> = ({ ...props }) => {
           ) : (
             <Stack>
               {searchResults.map(user => (
-                <UserCard key={user._id} user={user} />
+                <UserCard key={user._id} user={user} onClose={onClose} />
               ))}
             </Stack>
           )}

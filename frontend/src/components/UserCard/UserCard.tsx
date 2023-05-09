@@ -6,13 +6,15 @@ import { User } from 'models';
 
 interface UserCardProps {
   user: User;
+  onClose: () => void;
 }
 
-const UserCard: FC<UserCardProps> = ({ user }) => {
+const UserCard: FC<UserCardProps> = ({ user, onClose }) => {
   const { accessChat, isLoading } = useChat();
 
-  const handleClick = () => {
-    accessChat(user._id);
+  const handleClick = async () => {
+    await accessChat(user._id);
+    onClose();
   };
 
   return (
