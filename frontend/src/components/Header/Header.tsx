@@ -3,6 +3,7 @@ import { FC } from 'react';
 import { useUserStore } from 'store';
 import styles from './Header.module.scss';
 
+// TODO add HeaderDefault variant for unauthorized users?
 import { HeaderAuth } from './variants';
 
 const Header: FC = () => {

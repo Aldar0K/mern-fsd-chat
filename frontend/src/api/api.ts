@@ -4,10 +4,13 @@ import axios from 'axios';
 // import { serverString } from 'appConfig';
 const serverString = '/api';
 
+const userData = localStorage.getItem('userData');
+const token = userData ? JSON.parse(userData).token : '';
+
 export const instance = axios.create({
   baseURL: serverString,
   headers: {
     'Content-type': 'application/json',
-    Authorization: `Bearer ${localStorage.getItem('token')}`
+    Authorization: `Bearer ${token}`
   }
 });

@@ -40,7 +40,7 @@ export const useNotify = () => {
       status: 'error',
       duration: 5000,
       isClosable: true,
-      position: 'top-right'
+      position: 'top-left'
     });
 
   const _toastWarning = (text: string) =>
@@ -49,7 +49,7 @@ export const useNotify = () => {
       status: 'warning',
       duration: 5000,
       isClosable: true,
-      position: 'bottom'
+      position: 'top-left'
     });
 
   const _toastInfo = (text: string) =>
@@ -58,7 +58,7 @@ export const useNotify = () => {
       status: 'info',
       duration: 5000,
       isClosable: true,
-      position: 'bottom'
+      position: 'top-right'
     });
 
   const _toastLoading = (text: string) =>
@@ -67,7 +67,7 @@ export const useNotify = () => {
       status: 'loading',
       duration: 5000,
       isClosable: true,
-      position: 'bottom'
+      position: 'top-right'
     });
 
   return notify;

@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 
-import { apiAuth } from 'api';
+import { apiUser } from 'api';
 import { ROUTES } from 'consts';
 import { handleError } from 'helpers';
 import { useNotify, useToggle } from 'hooks';
@@ -17,8 +17,7 @@ export const useAuth = () => {
     toggleLoading();
 
     try {
-      const user = await apiAuth.login(email, password);
-
+      const user = await apiUser.login(email, password);
       notify({ text: 'Login successful', type: 'success' });
       _saveCredentials(user);
       setUser(user);
@@ -34,8 +33,7 @@ export const useAuth = () => {
     toggleLoading();
 
     try {
-      const user = await apiAuth.register(name, email, password, imageUrl);
-
+      const user = await apiUser.register(name, email, password, imageUrl);
       notify({ text: 'Registration successful', type: 'success' });
       _saveCredentials(user);
       setUser(user);
