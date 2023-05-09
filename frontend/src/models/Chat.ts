@@ -1,7 +1,7 @@
 import { User } from 'models';
 
 export interface Chat {
-  id: string;
+  _id: string;
   chatName: string;
   isGroupChat: boolean;
   users: User[];

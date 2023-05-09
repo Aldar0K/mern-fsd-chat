@@ -76,3 +76,16 @@ h4 {
 .hidden {
   display: none;
 }
+
+::-webkit-scrollbar {
+  height: 12px;
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-light-light-gray);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-light-gray);
+}

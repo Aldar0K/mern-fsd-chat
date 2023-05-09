@@ -45,7 +45,7 @@ export const useChat = () => {
       setChat(chat);
       // navigate(ROUTES.CHATS);
 
-      if (!chats.find(({ id }) => id === chat.id)) {
+      if (!chats.find(({ _id }) => _id === chat._id)) {
         setChats([...chats, chat]);
       }
     } catch (error) {
