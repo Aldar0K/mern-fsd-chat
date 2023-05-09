@@ -1,7 +1,7 @@
-import { Avatar, Box, Text } from '@chakra-ui/react';
+import { Avatar, Box, Spinner, Text } from '@chakra-ui/react';
 import { FC } from 'react';
 
-import { useChat } from 'hooks/useChat';
+import { useChat } from 'hooks';
 import { User } from 'models';
 
 interface UserCardProps {
@@ -12,7 +12,6 @@ const UserCard: FC<UserCardProps> = ({ user }) => {
   const { accessChat, isLoading } = useChat();
 
   const handleClick = () => {
-    console.log('show or create a chat');
     accessChat(user._id);
   };
 
@@ -35,14 +34,15 @@ const UserCard: FC<UserCardProps> = ({ user }) => {
         color: 'white'
       }}
     >
-      <Avatar mr={2} size='sm' cursor='pointer' name={user.name} src={user.image} />
-      <Box>
+      <Avatar mr='2' size='sm' cursor='pointer' name={user.name} src={user.image} />
+      <Box mr='auto'>
         <Text>{user.name}</Text>
         <Text fontSize='xs'>
           <b>Email : </b>
           {user.email}
         </Text>
       </Box>
+      {isLoading && <Spinner display='flex' />}
     </Box>
   );
 };
