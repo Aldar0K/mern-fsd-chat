@@ -40,6 +40,7 @@ const HeaderDrawer: FC<Omit<DrawerProps, 'children'>> = ({ ...props }) => {
   const [searchResults, setSearchResults] = useState<User[]>([]);
   const [isLoading, toggleLoading] = useToggle(false);
 
+  // TODO add form for enter register.
   const handleSearch = async () => {
     console.log('search users!', searchValue);
 

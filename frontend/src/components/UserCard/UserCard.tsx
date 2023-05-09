@@ -1,6 +1,7 @@
 import { Avatar, Box, Text } from '@chakra-ui/react';
 import { FC } from 'react';
 
+import { useChat } from 'hooks/useChat';
 import { User } from 'models';
 
 interface UserCardProps {
@@ -8,7 +9,12 @@ interface UserCardProps {
 }
 
 const UserCard: FC<UserCardProps> = ({ user }) => {
-  const handleClick = () => console.log('click');
+  const { accessChat, isLoading } = useChat();
+
+  const handleClick = () => {
+    console.log('show or create a chat');
+    accessChat(user._id);
+  };
 
   return (
     <Box
@@ -23,6 +29,7 @@ const UserCard: FC<UserCardProps> = ({ user }) => {
       color='black'
       cursor='pointer'
       transition='all .2s ease'
+      userSelect='none'
       _hover={{
         background: '#38B2AC',
         color: 'white'

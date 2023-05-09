@@ -4,6 +4,7 @@ import axios from 'axios';
 // import { serverString } from 'appConfig';
 const serverString = '/api';
 
+// TODO need to update token on each user authorization.
 const userData = localStorage.getItem('userData');
 const token = userData ? JSON.parse(userData).token : '';
 
