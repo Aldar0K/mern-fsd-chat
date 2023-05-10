@@ -53,10 +53,12 @@ export const useAuth = () => {
 
   const _saveCredentials = (data: User) => {
     localStorage.setItem('userData', JSON.stringify(data));
+    localStorage.setItem('token', data.token);
   };
 
   const _clearCredentials = () => {
     localStorage.removeItem('userData');
+    localStorage.removeItem('token');
   };
 
   return { login, register, logout, isLoading };
