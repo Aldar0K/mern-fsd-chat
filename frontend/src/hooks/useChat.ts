@@ -2,8 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { shallow } from 'zustand/shallow';
 
 import { apiChat } from 'api';
-import { handleError } from 'helpers';
-import { useNotify, useToggle } from 'hooks';
+import { useHandleError, useNotify, useToggle } from 'hooks';
 import { ChatState, useChatStore } from 'store';
 
 const selector = (state: ChatState) => ({
@@ -16,6 +15,7 @@ const selector = (state: ChatState) => ({
 // TODO separate useChats hook.
 export const useChat = () => {
   const navigate = useNavigate();
+  const handleError = useHandleError();
   const { chat, setChat, chats, setChats } = useChatStore(selector, shallow);
   const notify = useNotify();
   const [isLoading, toggleLoading] = useToggle(false);

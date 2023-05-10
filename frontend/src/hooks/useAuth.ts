@@ -2,13 +2,13 @@ import { useNavigate } from 'react-router-dom';
 
 import { apiUser } from 'api';
 import { ROUTES } from 'consts';
-import { handleError } from 'helpers';
-import { useNotify, useToggle } from 'hooks';
+import { useHandleError, useNotify, useToggle } from 'hooks';
 import { User } from 'models';
 import { useUserStore } from 'store';
 
 export const useAuth = () => {
   const navigate = useNavigate();
+  const handleError = useHandleError();
   const setUser = useUserStore(state => state.setUser);
   const notify = useNotify();
   const [isLoading, toggleLoading] = useToggle(false);

@@ -14,8 +14,7 @@ import {
 import { FC, useState } from 'react';
 
 import { apiUser } from 'api';
-import { handleError } from 'helpers';
-import { useNotify, useToggle } from 'hooks';
+import { useHandleError, useNotify, useToggle } from 'hooks';
 import { User } from 'models';
 
 import { UserCard } from 'components';
@@ -35,6 +34,7 @@ const ChatsLoader = () => {
 // TODO rename to SearchUserDrawer?
 const HeaderDrawer: FC<Omit<DrawerProps, 'children'>> = ({ onClose, ...props }) => {
   const notify = useNotify();
+  const handleError = useHandleError();
   // TODO add useDebounce hook?
   const [searchValue, setSearchValue] = useState<string>('');
   const [searchResults, setSearchResults] = useState<User[]>([]);
