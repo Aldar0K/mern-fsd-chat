@@ -1,3 +1,4 @@
+import { AddIcon } from '@chakra-ui/icons';
 import { Box, Button, Stack, Text } from '@chakra-ui/react';
 import { FC, useEffect } from 'react';
 import { shallow } from 'zustand/shallow';
@@ -7,7 +8,7 @@ import { User } from 'models';
 import { ChatState, useChatStore, useUserStore } from 'store';
 import { getSender } from 'utils';
 
-import { AddIcon } from '@chakra-ui/icons';
+import { AddGroupModal } from 'components';
 
 const selector = (state: ChatState) => ({
   chat: state.chat,
@@ -57,15 +58,15 @@ const ChatList: FC = () => {
         fontSize={{ base: '28px', md: '30px' }}
       >
         Chats
-        {/* <AddGroupChatModal> */}
-        <Button
-          display='flex'
-          fontSize={{ base: '17px', md: '10px', lg: '17px' }}
-          rightIcon={<AddIcon />}
-        >
-          New Group Chat
-        </Button>
-        {/* </AddGroupChatModal> */}
+        <AddGroupModal>
+          <Button
+            display='flex'
+            fontSize={{ base: '17px', md: '10px', lg: '17px' }}
+            rightIcon={<AddIcon />}
+          >
+            New Group Chat
+          </Button>
+        </AddGroupModal>
       </Box>
 
       <Box
