@@ -10,10 +10,8 @@ export const useHandleError = () => {
     if (axios.isAxiosError(error) && error.response) {
       const errorMessage = error.response.data.message;
       notify({ text: errorMessage, type: 'error' });
-      console.log(errorMessage);
     } else {
       notify({ text: ERROR_MESSAGES.DEFAULT, type: 'error' });
-      console.log('Something went wrong');
     }
   };
 

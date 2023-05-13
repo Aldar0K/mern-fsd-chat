@@ -12,18 +12,17 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  useDisclosure,
-  useToast
+  useDisclosure
 } from '@chakra-ui/react';
 import { FC, useState } from 'react';
 import { shallow } from 'zustand/shallow';
 
+import { apiUser } from 'api';
+import { useHandleError, useNotify, useToggle } from 'hooks';
 import { User } from 'models';
 import { ChatState, useChatStore, useUserStore } from 'store';
 
-import { apiUser } from 'api';
 import { UserBadgeItem, UserListItem } from 'components';
-import { useHandleError, useNotify, useToggle } from 'hooks';
 
 const selector = (state: ChatState) => ({
   chat: state.chat,
@@ -39,7 +38,6 @@ interface AddGroupModalProps {
 const AddGroupModal: FC<AddGroupModalProps> = ({ children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { chat, setChat, chats, setChats } = useChatStore(selector, shallow);
-  const toast = useToast();
   const notify = useNotify();
   const { user } = useUserStore();
   const handleError = useHandleError();
@@ -61,6 +59,8 @@ const AddGroupModal: FC<AddGroupModalProps> = ({ children }) => {
   const removeUser = (userToRemove: User) => {
     setSelectedUsers(selectedUsers.filter(user => user._id !== userToRemove._id));
   };
+
+  // TODO add useDebounce hook for search value.
 
   // TODO implement react-hook-form.
   // TODO add form for enter register.
