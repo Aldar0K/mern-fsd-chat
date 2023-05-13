@@ -1,5 +1,5 @@
 import { instance } from 'api';
-import { useAuth } from './useAuth';
+import { useAuth } from '../useAuth';
 
 export const useIntercept = () => {
   const { logout } = useAuth();

@@ -3,7 +3,7 @@ import { Box, Button, Stack, Text } from '@chakra-ui/react';
 import { FC, useEffect } from 'react';
 import { shallow } from 'zustand/shallow';
 
-import { useChat, useNotify } from 'hooks';
+import { useChats } from 'hooks';
 import { User } from 'models';
 import { ChatState, useChatStore, useUserStore } from 'store';
 import { getSender } from 'utils';
@@ -26,16 +26,11 @@ const ChatList: FC = () => {
     setChats
   } = useChatStore(selector, shallow);
   const user = useUserStore(state => state.user) as User;
-  const { getChats, isLoading } = useChat();
-  const notify = useNotify();
 
+  const { data: chatsData, isLoading: chatsLoading } = useChats();
   useEffect(() => {
-    getChats();
-  }, []);
-
-  useEffect(() => {
-    console.log(chats);
-  }, [chats]);
+    if (chatsData) setChats(chatsData);
+  }, [chatsData]);
 
   return (
     <Box

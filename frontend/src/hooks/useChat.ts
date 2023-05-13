@@ -12,29 +12,13 @@ const selector = (state: ChatState) => ({
   setChats: state.setChats
 });
 
-// TODO separate useChats hook.
+// TODO separate useChats hook?
 export const useChat = () => {
   const navigate = useNavigate();
   const handleError = useHandleError();
   const { chat, setChat, chats, setChats } = useChatStore(selector, shallow);
   const notify = useNotify();
   const [isLoading, toggleLoading] = useToggle(false);
-
-  // TODO use react-query for fetching chats?
-  const getChats = async () => {
-    toggleLoading();
-
-    try {
-      const chats = await apiChat.getChats();
-      notify({ text: 'Chats received', type: 'success' });
-      setChats(chats);
-      // navigate(ROUTES.CHATS);
-    } catch (error) {
-      handleError(error);
-    }
-
-    toggleLoading();
-  };
 
   const accessChat = async (userId: string) => {
     toggleLoading();
@@ -55,5 +39,5 @@ export const useChat = () => {
     toggleLoading();
   };
 
-  return { getChats, accessChat, isLoading };
+  return { accessChat, isLoading };
 };
