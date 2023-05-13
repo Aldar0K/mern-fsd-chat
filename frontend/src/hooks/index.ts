@@ -5,4 +5,4 @@ export * from './common/useNotify';
 export * from './common/useToggle';
 export * from './queries/useChats';
 export * from './useAuth';
-export * from './useChat';
+export * from './useAccessChat';
