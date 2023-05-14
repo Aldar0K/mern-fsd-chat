@@ -11,20 +11,14 @@ import { getSender } from 'utils';
 import { AddGroupModal } from 'components';
 
 const selector = (state: ChatState) => ({
-  chat: state.chat,
-  setChat: state.setChat,
+  selectedChat: state.selectedChat,
+  setSelectedChat: state.setSelectedChat,
   chats: state.chats,
   setChats: state.setChats
 });
 
 const ChatList: FC = () => {
-  // TODO switch chat to selectedChat in the chat-store.
-  const {
-    chat: selectedChat,
-    setChat: setSelectedChat,
-    chats,
-    setChats
-  } = useChatStore(selector, shallow);
+  const { selectedChat, setSelectedChat, chats, setChats } = useChatStore(selector, shallow);
   const user = useUserStore(state => state.user) as User;
 
   const { data: chatsData, isLoading: chatsLoading } = useChats();

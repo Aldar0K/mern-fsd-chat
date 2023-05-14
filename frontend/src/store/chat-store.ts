@@ -3,16 +3,16 @@ import { create } from 'zustand';
 import { Chat } from 'models';
 
 export type ChatState = {
-  chat: Chat | null;
-  setChat: (chat: Chat | null) => void;
+  selectedChat: Chat | null;
+  setSelectedChat: (chat: Chat | null) => void;
   chats: Chat[];
   setChats: (chats: Chat[]) => void;
 };
 
 export const useChatStore = create<ChatState>(set => ({
-  chat: null,
-  setChat: (chat: Chat | null) => {
-    set({ chat });
+  selectedChat: null,
+  setSelectedChat: (selectedChat: Chat | null) => {
+    set({ selectedChat });
   },
   chats: [],
   setChats: (chats: Chat[]) => {

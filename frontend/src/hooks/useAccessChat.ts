@@ -7,7 +7,7 @@ import { useHandleError, useNotify } from 'hooks';
 import { ChatState, useChatStore } from 'store';
 
 const selector = (state: ChatState) => ({
-  setChat: state.setChat,
+  setSelectedChat: state.setSelectedChat,
   chats: state.chats,
   setChats: state.setChats
 });
@@ -15,14 +15,14 @@ const selector = (state: ChatState) => ({
 export const useAccessChat = () => {
   const navigate = useNavigate();
   const handleError = useHandleError();
-  const { setChat, chats, setChats } = useChatStore(selector, shallow);
+  const { setSelectedChat, chats, setChats } = useChatStore(selector, shallow);
   const notify = useNotify();
 
   const accessChat = async (userId: string) => {
     try {
       const chat = await apiChat.accessChat(userId);
       notify({ text: 'Chat received', type: 'success' });
-      setChat(chat);
+      setSelectedChat(chat);
       navigate(ROUTES.CHATS);
 
       if (!chats.find(({ _id }) => _id === chat._id)) {
