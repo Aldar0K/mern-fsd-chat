@@ -18,8 +18,8 @@ const selector = (state: ChatState) => ({
 });
 
 const ChatList: FC = () => {
-  const { selectedChat, setSelectedChat, chats, setChats } = useChatStore(selector, shallow);
   const user = useUserStore(state => state.user) as User;
+  const { selectedChat, setSelectedChat, chats, setChats } = useChatStore(selector, shallow);
 
   const { data: chatsData, isLoading: chatsLoading } = useChats();
   useEffect(() => {
@@ -68,27 +68,32 @@ const ChatList: FC = () => {
         borderRadius='lg'
         overflowY='hidden'
       >
-        {chats ? (
-          // <Stack overflowY='scroll'>
-          <Stack overflowY='auto'>
-            {chats.map(chat => (
-              <Box
-                key={chat._id}
-                px='2'
-                py='2'
-                borderRadius='lg'
-                bg={selectedChat === chat ? '#38B2AC' : '#E8E8E8'}
-                color={selectedChat === chat ? 'white' : 'black'}
-                cursor='pointer'
-                onClick={() => setSelectedChat(chat)}
-              >
-                <Text>{chat.isGroupChat ? chat.chatName : getSender(user, chat.users)}</Text>
-              </Box>
-            ))}
-          </Stack>
+        {chatsLoading ? (
+          // <ChatsLoading />
+          <h2>ChatsLoading</h2>
         ) : (
-          // <ChatLoading />
-          <h2>ChatLoading</h2>
+          <>
+            {chats ? (
+              <Stack overflowY='auto'>
+                {chats.map(chat => (
+                  <Box
+                    key={chat._id}
+                    px='2'
+                    py='2'
+                    borderRadius='lg'
+                    bg={selectedChat === chat ? '#38B2AC' : '#E8E8E8'}
+                    color={selectedChat === chat ? 'white' : 'black'}
+                    cursor='pointer'
+                    onClick={() => setSelectedChat(chat)}
+                  >
+                    <Text>{chat.isGroupChat ? chat.chatName : getSender(user, chat.users)}</Text>
+                  </Box>
+                ))}
+              </Stack>
+            ) : (
+              <h2>No chats</h2>
+            )}
+          </>
         )}
       </Box>
     </Box>
