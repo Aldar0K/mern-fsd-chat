@@ -18,15 +18,13 @@ import { FC, useEffect, useState } from 'react';
 import { shallow } from 'zustand/shallow';
 
 import { apiUser } from 'api';
-import { useDebounce, useHandleError, useNotify, useToggle } from 'hooks';
+import { useCreateGroup, useDebounce, useHandleError, useNotify, useToggle } from 'hooks';
 import { User } from 'models';
-import { ChatState, useChatStore, useUserStore } from 'store';
+import { ChatState, useChatStore } from 'store';
 
 import { UserBadgeItem, UserListItem } from 'components';
 
 const selector = (state: ChatState) => ({
-  chat: state.chat,
-  setChat: state.setChat,
   chats: state.chats,
   setChats: state.setChats
 });
@@ -36,14 +34,13 @@ interface AddGroupModalProps {
 }
 
 const AddGroupModal: FC<AddGroupModalProps> = ({ children }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const { chat, setChat, chats, setChats } = useChatStore(selector, shallow);
+  const { chats, setChats } = useChatStore(selector, shallow);
   const notify = useNotify();
-  const { user } = useUserStore();
   const handleError = useHandleError();
+  const { mutateAsync: createGroupMutate, isLoading: createGroupLoading } = useCreateGroup();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [groupChatName, setGroupChatName] = useState<string>('');
   const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
-  const [search, setSearch] = useState<string>('');
   const [searchResults, setSearchResults] = useState<User[]>([]);
   const [isLoading, toggleLoading] = useToggle(false);
 
@@ -88,8 +85,17 @@ const AddGroupModal: FC<AddGroupModalProps> = ({ children }) => {
   };
 
   const handleSubmit = async () => {
-    console.log(groupChatName, selectedUsers);
-    // TODO add api method for creating group chat.
+    if (!groupChatName || !selectedUsers) {
+      notify({ text: 'Please fill all the feilds', type: 'error' });
+      return;
+    }
+
+    const newGroup = await createGroupMutate({
+      name: groupChatName,
+      users: JSON.stringify(selectedUsers.map(user => user._id))
+    });
+    setChats([newGroup, ...chats]);
+    onClose();
   };
 
   return (
@@ -153,7 +159,7 @@ const AddGroupModal: FC<AddGroupModalProps> = ({ children }) => {
             )}
           </ModalBody>
           <ModalFooter>
-            <Button onClick={handleSubmit} colorScheme='blue'>
+            <Button colorScheme='blue' onClick={handleSubmit} isLoading={createGroupLoading}>
               Create Chat
             </Button>
           </ModalFooter>
