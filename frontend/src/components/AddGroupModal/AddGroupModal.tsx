@@ -85,7 +85,7 @@ const AddGroupModal: FC<AddGroupModalProps> = ({ children }) => {
   };
 
   const handleSubmit = async () => {
-    if (!groupChatName || !selectedUsers) {
+    if (!groupChatName || !selectedUsers.length) {
       notify({ text: 'Please fill all the feilds', type: 'error' });
       return;
     }
@@ -128,7 +128,7 @@ const AddGroupModal: FC<AddGroupModalProps> = ({ children }) => {
             </FormControl>
             <FormControl>
               <Input
-                mb={1}
+                mb={3}
                 placeholder='Start entering the user name...'
                 onChange={e => setValue(e.target.value)}
               />
