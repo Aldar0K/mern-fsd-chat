@@ -4,6 +4,7 @@ export * from './HeaderDrawer';
 export * from './LoginForm';
 export * from './ProfileModal';
 export * from './SignupForm';
+export * from './UpdateGroupModal';
 export * from './UserBadgeItem';
 export * from './UserCard';
 export * from './UserListItem';

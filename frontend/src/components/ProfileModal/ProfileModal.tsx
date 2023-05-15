@@ -18,7 +18,7 @@ import { FC } from 'react';
 
 interface ProfileModalProps {
   user: User;
-  children: JSX.Element;
+  children?: JSX.Element;
 }
 
 const ProfileModal: FC<ProfileModalProps> = ({ user, children }) => {
