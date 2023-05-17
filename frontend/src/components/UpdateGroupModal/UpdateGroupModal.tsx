@@ -19,7 +19,7 @@ import { FC, useEffect, useState } from 'react';
 import { shallow } from 'zustand/shallow';
 
 import { apiUser } from 'api';
-import { useDebounce, useHandleError, useNotify, useToggle } from 'hooks';
+import { useAddUser, useDebounce, useHandleError, useNotify, useToggle } from 'hooks';
 import { User } from 'models';
 import { ChatState, useChatStore, useUserStore } from 'store';
 
@@ -42,6 +42,7 @@ const UpdateGroupModal: FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [searchLoading, toggleSearchLoading] = useToggle(false);
   const { mutateAsync: renameChatMutate, isLoading: renameChatLoading } = useRenameChat();
+  const { mutateAsync: addUserMutate, isLoading: addUserLoading } = useAddUser();
 
   const [value, setValue] = useState<string>('');
   const [searchValue, setSearchValue] = useState<string>('');
@@ -79,20 +80,26 @@ const UpdateGroupModal: FC = () => {
       return;
     }
 
-    const updateChat = await renameChatMutate({
+    const updatedChat = await renameChatMutate({
       chatId: selectedChat._id,
       chatName: groupChatName
     });
-    setSelectedChat(updateChat);
+    setSelectedChat(updatedChat);
   };
 
   const handleAddUser = async (userToAdd: User) => {
-    if (selectedChat) {
-      if (selectedChat.users.find(user => user._id === userToAdd._id)) {
-        notify({ text: 'The user is already in the group!', type: 'error' });
-        return;
-      }
+    if (!selectedChat || !user) return;
+    if (selectedChat.users.find(user => user._id === userToAdd._id)) {
+      notify({ text: 'User already in the group', type: 'error' });
+      return;
     }
+    if (selectedChat.groupAdmin?._id !== user._id) {
+      notify({ text: 'Only administrators can add someone to the group', type: 'error' });
+      return;
+    }
+
+    const updatedChat = await addUserMutate({ chatId: selectedChat._id, userId: userToAdd._id });
+    setSelectedChat(updatedChat);
   };
 
   const handleRemoveUser = async (userToRemove: User) => {
@@ -154,7 +161,7 @@ const UpdateGroupModal: FC = () => {
                   />
                 </FormControl>
 
-                {searchLoading ? (
+                {searchLoading || addUserLoading ? (
                   <Spinner size='md' />
                 ) : (
                   searchResults

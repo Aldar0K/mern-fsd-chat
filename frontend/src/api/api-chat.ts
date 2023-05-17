@@ -11,6 +11,11 @@ export interface RenameChatDto {
   chatName: string;
 }
 
+export interface AddUserDto {
+  chatId: string;
+  userId: string;
+}
+
 export const apiChat = {
   getChats: async () => {
     const response = await instance.get<Chat[]>('/chat');
@@ -26,6 +31,10 @@ export const apiChat = {
   },
   renameChat: async (renameChatDto: RenameChatDto) => {
     const response = await instance.put<Chat>('/chat/rename', renameChatDto);
+    return response.data;
+  },
+  addUser: async (addUserDto: AddUserDto) => {
+    const response = await instance.put<Chat>('/chat/groupadd', addUserDto);
     return response.data;
   }
 };
