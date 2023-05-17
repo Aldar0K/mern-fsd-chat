@@ -12,6 +12,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Spinner,
   useDisclosure
 } from '@chakra-ui/react';
 import { FC, useEffect, useState } from 'react';
@@ -135,20 +136,14 @@ const AddGroupModal: FC<AddGroupModalProps> = ({ children }) => {
             </FormControl>
             <Box display='flex' w='100%' flexWrap='wrap'>
               {selectedUsers.map(user => (
-                <UserBadgeItem
-                  key={user._id}
-                  user={user}
-                  adminId={''}
-                  handleClick={() => removeUser(user)}
-                />
+                <UserBadgeItem key={user._id} user={user} handleClick={() => removeUser(user)} />
               ))}
             </Box>
             {isLoading ? (
-              // <ChatLoading />
-              <div>Loading...</div>
+              <Spinner size='md' />
             ) : (
               searchResults
-                ?.slice(0, 4)
+                .slice(0, 4)
                 .map(user => (
                   <UserListItem
                     key={user._id}

@@ -3,9 +3,10 @@ import { Box, IconButton, Text } from '@chakra-ui/react';
 import { FC } from 'react';
 import { shallow } from 'zustand/shallow';
 
-import { ProfileModal } from 'components';
 import { ChatState, useChatStore, useUserStore } from 'store';
 import { getSender, getSenderFull } from 'utils';
+
+import { ProfileModal, UpdateGroupModal } from 'components';
 
 const selector = (state: ChatState) => ({
   selectedChat: state.selectedChat,
@@ -47,11 +48,7 @@ const ChatBox: FC = () => {
             {selectedChat.isGroupChat ? (
               <>
                 {selectedChat.chatName.toUpperCase()}
-                {/* <UpdateGroupModal
-                  fetchMessages={fetchMessages}
-                  fetchAgain={fetchAgain}
-                  setFetchAgain={setFetchAgain}
-                /> */}
+                <UpdateGroupModal />
               </>
             ) : (
               <>

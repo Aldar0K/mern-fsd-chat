@@ -6,6 +6,11 @@ export interface CreateGroupDto {
   users: string;
 }
 
+export interface RenameChatDto {
+  chatId: string;
+  chatName: string;
+}
+
 export const apiChat = {
   getChats: async () => {
     const response = await instance.get<Chat[]>('/chat');
@@ -17,6 +22,10 @@ export const apiChat = {
   },
   createGroup: async (createGroupDto: CreateGroupDto) => {
     const response = await instance.post<Chat>('/chat/group', createGroupDto);
+    return response.data;
+  },
+  renameChat: async (renameChatDto: RenameChatDto) => {
+    const response = await instance.put<Chat>('/chat/rename', renameChatDto);
     return response.data;
   }
 };

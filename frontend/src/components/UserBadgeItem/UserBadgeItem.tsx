@@ -6,11 +6,11 @@ import { User } from 'models';
 
 interface UserBadgeItemProps {
   user: User;
-  adminId: string;
+  isAdmin?: boolean;
   handleClick: () => void;
 }
 
-const UserBadgeItem: FC<UserBadgeItemProps> = ({ user, adminId, handleClick }) => {
+const UserBadgeItem: FC<UserBadgeItemProps> = ({ user, isAdmin, handleClick }) => {
   return (
     <Badge
       m={1}
@@ -25,7 +25,7 @@ const UserBadgeItem: FC<UserBadgeItemProps> = ({ user, adminId, handleClick }) =
       onClick={handleClick}
     >
       {user.name}
-      {adminId === user._id && <span> (Admin)</span>}
+      {isAdmin && <span> (Admin)</span>}
       <CloseIcon pl={1} />
     </Badge>
   );
