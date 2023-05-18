@@ -1,33 +1,19 @@
-import { useNavigate } from 'react-router-dom';
-import { shallow } from 'zustand/shallow';
-
 import { apiChat } from 'api';
-import { ROUTES } from 'consts';
-import { useHandleError, useNotify } from 'hooks';
-import { ChatState, useChatStore } from 'store';
-
-const selector = (state: ChatState) => ({
-  setSelectedChat: state.setSelectedChat,
-  chats: state.chats,
-  setChats: state.setChats
-});
+import { useHandleError, useInvalidate, useNotify } from 'hooks';
+import { useChatStore } from 'store';
 
 export const useAccessChat = () => {
-  const navigate = useNavigate();
   const handleError = useHandleError();
-  const { setSelectedChat, chats, setChats } = useChatStore(selector, shallow);
+  const setSelectedChat = useChatStore(state => state.setSelectedChat);
   const notify = useNotify();
+  const invalidate = useInvalidate();
 
   const accessChat = async (userId: string) => {
     try {
       const chat = await apiChat.accessChat(userId);
       notify({ text: 'Chat received', type: 'success' });
       setSelectedChat(chat);
-      navigate(ROUTES.CHATS);
-
-      if (!chats.find(({ _id }) => _id === chat._id)) {
-        setChats([...chats, chat]);
-      }
+      invalidate('/chat');
     } catch (error) {
       handleError(error);
     }
