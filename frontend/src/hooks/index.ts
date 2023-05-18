@@ -6,6 +6,8 @@ export * from './common/useNotify';
 export * from './common/useToggle';
 export * from './mutations/useAddUser';
 export * from './mutations/useCreateGroup';
+export * from './mutations/useRemoveUser';
+export * from './mutations/useRenameChat';
 export * from './queries/useChats';
 export * from './useAccessChat';
 export * from './useAuth';

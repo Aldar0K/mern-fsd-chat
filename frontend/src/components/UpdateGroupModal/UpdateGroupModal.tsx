@@ -19,12 +19,19 @@ import { FC, useEffect, useState } from 'react';
 import { shallow } from 'zustand/shallow';
 
 import { apiUser } from 'api';
-import { useAddUser, useDebounce, useHandleError, useNotify, useToggle } from 'hooks';
+import {
+  useAddUser,
+  useDebounce,
+  useHandleError,
+  useNotify,
+  useRemoveUser,
+  useRenameChat,
+  useToggle
+} from 'hooks';
 import { User } from 'models';
 import { ChatState, useChatStore, useUserStore } from 'store';
 
 import { UserBadgeItem, UserListItem } from 'components';
-import { useRenameChat } from 'hooks/mutations/useRenameChat';
 
 const selector = (state: ChatState) => ({
   selectedChat: state.selectedChat,
@@ -37,12 +44,12 @@ const UpdateGroupModal: FC = () => {
   const user = useUserStore(state => state.user);
   const { selectedChat, setSelectedChat } = useChatStore(selector, shallow);
   const [groupChatName, setGroupChatName] = useState<string>('');
-  const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
   const [searchResults, setSearchResults] = useState<User[]>([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [searchLoading, toggleSearchLoading] = useToggle(false);
   const { mutateAsync: renameChatMutate, isLoading: renameChatLoading } = useRenameChat();
   const { mutateAsync: addUserMutate, isLoading: addUserLoading } = useAddUser();
+  const { mutateAsync: removeUserMutate, isLoading: removeUserLoading } = useRemoveUser();
 
   const [value, setValue] = useState<string>('');
   const [searchValue, setSearchValue] = useState<string>('');
@@ -103,7 +110,17 @@ const UpdateGroupModal: FC = () => {
   };
 
   const handleRemoveUser = async (userToRemove: User) => {
-    // if (selectedChat) {}
+    if (!selectedChat || !user) return;
+    if (selectedChat.groupAdmin?._id !== user._id) {
+      notify({ text: 'Only administrators can remove someone from the group', type: 'error' });
+      return;
+    }
+
+    const updatedChat = await removeUserMutate({
+      chatId: selectedChat._id,
+      userId: userToRemove._id
+    });
+    userToRemove._id === user._id ? setSelectedChat(null) : setSelectedChat(updatedChat);
   };
 
   return (
@@ -161,7 +178,7 @@ const UpdateGroupModal: FC = () => {
                   />
                 </FormControl>
 
-                {searchLoading || addUserLoading ? (
+                {searchLoading || addUserLoading || removeUserLoading ? (
                   <Spinner size='md' />
                 ) : (
                   searchResults
