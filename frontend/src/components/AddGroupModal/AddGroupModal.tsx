@@ -27,7 +27,8 @@ import { UserBadgeItem, UserListItem } from 'components';
 
 const selector = (state: ChatState) => ({
   chats: state.chats,
-  setChats: state.setChats
+  setChats: state.setChats,
+  setSelectedChat: state.setSelectedChat
 });
 
 interface AddGroupModalProps {
@@ -35,7 +36,7 @@ interface AddGroupModalProps {
 }
 
 const AddGroupModal: FC<AddGroupModalProps> = ({ children }) => {
-  const { chats, setChats } = useChatStore(selector, shallow);
+  const { chats, setChats, setSelectedChat } = useChatStore(selector, shallow);
   const notify = useNotify();
   const handleError = useHandleError();
   const { mutateAsync: createGroupMutate, isLoading: createGroupLoading } = useCreateGroup();
@@ -96,6 +97,7 @@ const AddGroupModal: FC<AddGroupModalProps> = ({ children }) => {
       users: JSON.stringify(selectedUsers.map(user => user._id))
     });
     setChats([newGroup, ...chats]);
+    setSelectedChat(newGroup);
     onClose();
   };
 

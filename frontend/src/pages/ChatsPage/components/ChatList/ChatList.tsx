@@ -1,6 +1,6 @@
 import { AddIcon } from '@chakra-ui/icons';
-import { Box, Button, Stack, Text } from '@chakra-ui/react';
-import { FC, useEffect } from 'react';
+import { Box, Button, Spinner, Stack, Text } from '@chakra-ui/react';
+import { FC } from 'react';
 import { shallow } from 'zustand/shallow';
 
 import { useChats } from 'hooks';
@@ -12,19 +12,13 @@ import { AddGroupModal } from 'components';
 
 const selector = (state: ChatState) => ({
   selectedChat: state.selectedChat,
-  setSelectedChat: state.setSelectedChat,
-  chats: state.chats,
-  setChats: state.setChats
+  setSelectedChat: state.setSelectedChat
 });
 
 const ChatList: FC = () => {
   const user = useUserStore(state => state.user) as User;
-  const { selectedChat, setSelectedChat, chats, setChats } = useChatStore(selector, shallow);
-
-  const { data: chatsData, isLoading: chatsLoading } = useChats();
-  useEffect(() => {
-    if (chatsData) setChats(chatsData);
-  }, [chatsData]);
+  const { selectedChat, setSelectedChat } = useChatStore(selector, shallow);
+  const { data: chats, isLoading: chatsLoading } = useChats();
 
   return (
     <Box
@@ -69,8 +63,7 @@ const ChatList: FC = () => {
         overflowY='hidden'
       >
         {chatsLoading ? (
-          // <ChatsLoading />
-          <h2>ChatsLoading</h2>
+          <Spinner size='md' />
         ) : (
           <>
             {chats ? (
