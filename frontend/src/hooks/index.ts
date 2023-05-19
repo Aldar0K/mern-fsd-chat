@@ -9,5 +9,6 @@ export * from './mutations/useCreateGroup';
 export * from './mutations/useRemoveUser';
 export * from './mutations/useRenameChat';
 export * from './queries/useChats';
+export * from './queries/useSearchUserQuery';
 export * from './useAccessChat';
 export * from './useAuth';

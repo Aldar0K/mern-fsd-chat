@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Drawer,
   DrawerBody,
   DrawerContent,
@@ -11,11 +10,9 @@ import {
   Skeleton,
   Stack
 } from '@chakra-ui/react';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 
-import { apiUser } from 'api';
-import { useHandleError, useNotify, useToggle } from 'hooks';
-import { User } from 'models';
+import { useDebounce, useSearchUserQuery } from 'hooks';
 
 import { UserCard } from 'components';
 
@@ -27,40 +24,24 @@ const ChatsLoader = () => {
       <Skeleton height='45px' />
       <Skeleton height='45px' />
       <Skeleton height='45px' />
+      <Skeleton height='45px' />
+      <Skeleton height='45px' />
+      <Skeleton height='45px' />
+      <Skeleton height='45px' />
     </Stack>
   );
 };
 
 // TODO rename to SearchUserDrawer?
 const HeaderDrawer: FC<Omit<DrawerProps, 'children'>> = ({ onClose, ...props }) => {
-  const notify = useNotify();
-  const handleError = useHandleError();
-  // TODO add useDebounce hook?
+  const [value, setValue] = useState<string>('');
   const [searchValue, setSearchValue] = useState<string>('');
-  const [searchResults, setSearchResults] = useState<User[]>([]);
-  const [isLoading, toggleLoading] = useToggle(false);
+  const { data: searchResults, isLoading: searchLoading } = useSearchUserQuery(searchValue);
 
-  // TODO add form for enter register.
-  const handleSearch = async () => {
-    console.log('search users!', searchValue);
-
-    if (!searchValue) {
-      notify({ text: 'Please enter a value in the search field', type: 'warning' });
-    }
-
-    try {
-      toggleLoading();
-
-      const results = await apiUser.searchUser(searchValue);
-      console.log(results);
-      setSearchResults(results);
-
-      toggleLoading();
-    } catch (error) {
-      handleError(error);
-      // notify({ text: 'Failed to load the search results', type: 'error' });
-    }
-  };
+  const debouncedSearchValue = useDebounce<string>(value, 500);
+  useEffect(() => {
+    if (value.length) setSearchValue(value);
+  }, [debouncedSearchValue]);
 
   return (
     <Drawer onClose={onClose} {...props}>
@@ -71,20 +52,19 @@ const HeaderDrawer: FC<Omit<DrawerProps, 'children'>> = ({ onClose, ...props }) 
           <Box display='flex' mb='2'>
             <Input
               placeholder='Search user by name or email'
-              mr='2'
-              value={searchValue}
-              onChange={e => setSearchValue(e.target.value)}
+              value={value}
+              onChange={e => setValue(e.target.value)}
             />
-            <Button onClick={handleSearch}>Search</Button>
           </Box>
 
-          {isLoading ? (
+          {searchLoading ? (
             <ChatsLoader />
           ) : (
             <Stack>
-              {searchResults.map(user => (
-                <UserCard key={user._id} user={user} onClose={onClose} />
-              ))}
+              {!!searchResults?.length &&
+                searchResults.map(user => (
+                  <UserCard key={user._id} user={user} onClose={onClose} />
+                ))}
             </Stack>
           )}
         </DrawerBody>
