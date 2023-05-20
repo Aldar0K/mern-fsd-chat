@@ -9,20 +9,14 @@ import {
   Input,
   Stack
 } from '@chakra-ui/react';
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
 
-import { useDebounce, useSearchUserQuery } from 'hooks';
+import { useSearchUsers } from 'hooks';
 
 import { ChatsLoader, UserCard } from 'components';
 
 const SearchUserDrawer: FC<Omit<DrawerProps, 'children'>> = ({ onClose, ...props }) => {
-  const [value, setValue] = useState<string>('');
-  const [searchValue, setSearchValue] = useState<string>('');
-  const { data: searchResults, isLoading: searchLoading } = useSearchUserQuery(searchValue);
-  const debouncedSearchValue = useDebounce<string>(value, 500);
-  useEffect(() => {
-    if (value.length) setSearchValue(value);
-  }, [debouncedSearchValue]);
+  const [value, setValue, searchResults, searchLoading] = useSearchUsers();
 
   return (
     <Drawer onClose={onClose} {...props}>

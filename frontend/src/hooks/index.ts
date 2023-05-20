@@ -4,6 +4,7 @@ export * from './common/useIntercept';
 export * from './common/useInvalidate';
 export * from './common/useNotify';
 export * from './common/useToggle';
+export * from './custom/useSearchUsers';
 export * from './mutations/useAddUser';
 export * from './mutations/useCreateGroup';
 export * from './mutations/useRemoveUser';
