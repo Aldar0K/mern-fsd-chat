@@ -12,7 +12,6 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Spinner,
   Stack,
   useDisclosure
 } from '@chakra-ui/react';
@@ -30,7 +29,7 @@ import {
 import { User } from 'models';
 import { ChatState, useChatStore, useUserStore } from 'store';
 
-import { UserBadgeItem, UserListItem } from 'components';
+import { ChatsLoader, UserBadgeItem, UserListItem } from 'components';
 
 const selector = (state: ChatState) => ({
   selectedChat: state.selectedChat,
@@ -158,7 +157,7 @@ const UpdateGroupModal: FC = () => {
                 </FormControl>
 
                 {searchLoading || addUserLoading || removeUserLoading ? (
-                  <Spinner size='md' />
+                  <ChatsLoader amount={4} />
                 ) : (
                   <Stack>
                     {!!searchResults?.length &&

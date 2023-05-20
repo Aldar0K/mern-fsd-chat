@@ -1,4 +1,5 @@
 export * from './AddGroupModal';
+export * from './ChatsLoader';
 export * from './Header';
 export * from './HeaderDrawer';
 export * from './LoginForm';

@@ -7,30 +7,13 @@ import {
   DrawerOverlay,
   DrawerProps,
   Input,
-  Skeleton,
   Stack
 } from '@chakra-ui/react';
 import { FC, useEffect, useState } from 'react';
 
 import { useDebounce, useSearchUserQuery } from 'hooks';
 
-import { UserCard } from 'components';
-
-// TODO move to separate component.
-const ChatsLoader = () => {
-  return (
-    <Stack>
-      <Skeleton height='45px' />
-      <Skeleton height='45px' />
-      <Skeleton height='45px' />
-      <Skeleton height='45px' />
-      <Skeleton height='45px' />
-      <Skeleton height='45px' />
-      <Skeleton height='45px' />
-      <Skeleton height='45px' />
-    </Stack>
-  );
-};
+import { ChatsLoader, UserCard } from 'components';
 
 // TODO rename to SearchUserDrawer?
 const HeaderDrawer: FC<Omit<DrawerProps, 'children'>> = ({ onClose, ...props }) => {
@@ -57,7 +40,7 @@ const HeaderDrawer: FC<Omit<DrawerProps, 'children'>> = ({ onClose, ...props }) 
           </Box>
 
           {searchLoading ? (
-            <ChatsLoader />
+            <ChatsLoader amount={10} />
           ) : (
             <Stack>
               {!!searchResults?.length &&
