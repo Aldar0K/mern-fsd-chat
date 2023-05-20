@@ -23,6 +23,7 @@ const SearchUserDrawer: FC<Omit<DrawerProps, 'children'>> = ({ onClose, ...props
       <DrawerOverlay />
       <DrawerContent>
         <DrawerHeader borderBottomWidth='1px'>Search users</DrawerHeader>
+
         <DrawerBody>
           <Box display='flex' mb='2'>
             <Input

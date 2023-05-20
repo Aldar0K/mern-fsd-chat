@@ -13,13 +13,13 @@ import {
   ModalHeader,
   ModalOverlay,
   Spinner,
+  Stack,
   useDisclosure
 } from '@chakra-ui/react';
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import { shallow } from 'zustand/shallow';
 
-import { apiUser } from 'api';
-import { useCreateGroup, useDebounce, useHandleError, useNotify, useToggle } from 'hooks';
+import { useCreateGroup, useNotify, useSearchUsers } from 'hooks';
 import { User } from 'models';
 import { ChatState, useChatStore } from 'store';
 
@@ -38,13 +38,11 @@ interface AddGroupModalProps {
 const AddGroupModal: FC<AddGroupModalProps> = ({ children }) => {
   const { chats, setChats, setSelectedChat } = useChatStore(selector, shallow);
   const notify = useNotify();
-  const handleError = useHandleError();
   const { mutateAsync: createGroupMutate, isLoading: createGroupLoading } = useCreateGroup();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [groupChatName, setGroupChatName] = useState<string>('');
   const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
-  const [searchResults, setSearchResults] = useState<User[]>([]);
-  const [isLoading, toggleLoading] = useToggle(false);
+  const [value, setValue, searchResults, searchLoading] = useSearchUsers();
 
   const handleAddUser = (userToAdd: User) => {
     if (selectedUsers.includes(userToAdd)) {
@@ -57,33 +55,6 @@ const AddGroupModal: FC<AddGroupModalProps> = ({ children }) => {
 
   const removeUser = (userToRemove: User) => {
     setSelectedUsers(selectedUsers.filter(user => user._id !== userToRemove._id));
-  };
-
-  const [value, setValue] = useState<string>('');
-  const [searchValue, setSearchValue] = useState<string>('');
-
-  const debouncedSearchValue = useDebounce<string>(value, 500);
-  useEffect(() => {
-    setSearchValue(value);
-  }, [debouncedSearchValue]);
-
-  useEffect(() => {
-    if (searchValue) {
-      handleSearch(searchValue);
-    }
-  }, [searchValue]);
-
-  // TODO implement react-hook-form.
-  // TODO add form for enter key register.
-  const handleSearch = async (searchValue: string) => {
-    try {
-      toggleLoading();
-      const results = await apiUser.searchUser(searchValue);
-      setSearchResults(results);
-      toggleLoading();
-    } catch (error) {
-      handleError(error);
-    }
   };
 
   const handleSubmit = async () => {
@@ -120,12 +91,15 @@ const AddGroupModal: FC<AddGroupModalProps> = ({ children }) => {
           <ModalHeader display='flex' justifyContent='center' fontSize='35px'>
             Create Group Chat
           </ModalHeader>
+
           <ModalCloseButton />
-          <ModalBody display='flex' flexDir='column' alignItems='center'>
+
+          <ModalBody>
             <FormControl>
               <Input
                 mb={3}
                 placeholder='Chat Name'
+                value={groupChatName}
                 onChange={e => setGroupChatName(e.target.value)}
               />
             </FormControl>
@@ -133,6 +107,7 @@ const AddGroupModal: FC<AddGroupModalProps> = ({ children }) => {
               <Input
                 mb={3}
                 placeholder='Start entering the user name...'
+                value={value}
                 onChange={e => setValue(e.target.value)}
               />
             </FormControl>
@@ -141,20 +116,24 @@ const AddGroupModal: FC<AddGroupModalProps> = ({ children }) => {
                 <UserBadgeItem key={user._id} user={user} handleClick={() => removeUser(user)} />
               ))}
             </Box>
-            {isLoading ? (
+            {searchLoading ? (
               <Spinner size='md' />
             ) : (
-              searchResults
-                .slice(0, 4)
-                .map(user => (
-                  <UserListItem
-                    key={user._id}
-                    user={user}
-                    handleClick={() => handleAddUser(user)}
-                  />
-                ))
+              <Stack>
+                {!!searchResults?.length &&
+                  searchResults
+                    .slice(0, 4)
+                    .map(user => (
+                      <UserListItem
+                        key={user._id}
+                        user={user}
+                        handleClick={() => handleAddUser(user)}
+                      />
+                    ))}
+              </Stack>
             )}
           </ModalBody>
+
           <ModalFooter>
             <Button colorScheme='blue' onClick={handleSubmit} isLoading={createGroupLoading}>
               Create Chat

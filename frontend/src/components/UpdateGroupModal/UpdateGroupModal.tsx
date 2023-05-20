@@ -15,17 +15,10 @@ import {
   Stack,
   useDisclosure
 } from '@chakra-ui/react';
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import { shallow } from 'zustand/shallow';
 
-import {
-  useAddUser,
-  useDebounce,
-  useNotify,
-  useRemoveUser,
-  useRenameChat,
-  useSearchUserQuery
-} from 'hooks';
+import { useAddUser, useNotify, useRemoveUser, useRenameChat, useSearchUsers } from 'hooks';
 import { User } from 'models';
 import { ChatState, useChatStore, useUserStore } from 'store';
 
@@ -45,14 +38,7 @@ const UpdateGroupModal: FC = () => {
   const { mutateAsync: renameChatMutate, isLoading: renameChatLoading } = useRenameChat();
   const { mutateAsync: addUserMutate, isLoading: addUserLoading } = useAddUser();
   const { mutateAsync: removeUserMutate, isLoading: removeUserLoading } = useRemoveUser();
-
-  const [value, setValue] = useState<string>('');
-  const [searchValue, setSearchValue] = useState<string>('');
-  const { data: searchResults, isLoading: searchLoading } = useSearchUserQuery(searchValue);
-  const debouncedSearchValue = useDebounce<string>(value, 500);
-  useEffect(() => {
-    if (value.length) setSearchValue(value);
-  }, [debouncedSearchValue]);
+  const [value, setValue, searchResults, searchLoading] = useSearchUsers();
 
   const handleRename = async () => {
     if (!selectedChat) return;
@@ -120,6 +106,7 @@ const UpdateGroupModal: FC = () => {
               </ModalHeader>
 
               <ModalCloseButton />
+
               <ModalBody>
                 <Box w='100%' display='flex' flexWrap='wrap' pb={3}>
                   {selectedChat.users.map(user => (
@@ -152,6 +139,7 @@ const UpdateGroupModal: FC = () => {
                   <Input
                     mb={3}
                     placeholder='Add user to group...'
+                    value={value}
                     onChange={e => setValue(e.target.value)}
                   />
                 </FormControl>
@@ -173,6 +161,7 @@ const UpdateGroupModal: FC = () => {
                   </Stack>
                 )}
               </ModalBody>
+
               <ModalFooter>
                 <Button onClick={() => handleRemoveUser(user)} colorScheme='red'>
                   Leave Group
