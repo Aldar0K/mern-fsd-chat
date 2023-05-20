@@ -14,16 +14,15 @@ import {
 } from '@chakra-ui/react';
 import { FC } from 'react';
 
-import { useAuth, useToggle } from 'hooks';
+import { useAuth } from 'hooks';
 import { useUserStore } from 'store';
 
-import { HeaderDrawer, ProfileModal } from 'components';
+import { ProfileModal, SearchUserDrawer } from 'components';
 
 const HeaderAuth: FC = () => {
   const user = useUserStore(state => state.user);
   const { logout } = useAuth();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [loading, toggleLoading] = useToggle(false);
 
   return (
     <>
@@ -71,7 +70,7 @@ const HeaderAuth: FC = () => {
         </div>
       </Box>
 
-      <HeaderDrawer placement='left' onClose={onClose} isOpen={isOpen} />
+      <SearchUserDrawer placement='left' onClose={onClose} isOpen={isOpen} />
     </>
   );
 };

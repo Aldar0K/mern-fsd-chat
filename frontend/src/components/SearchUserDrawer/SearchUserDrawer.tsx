@@ -15,8 +15,7 @@ import { useDebounce, useSearchUserQuery } from 'hooks';
 
 import { ChatsLoader, UserCard } from 'components';
 
-// TODO rename to SearchUserDrawer?
-const HeaderDrawer: FC<Omit<DrawerProps, 'children'>> = ({ onClose, ...props }) => {
+const SearchUserDrawer: FC<Omit<DrawerProps, 'children'>> = ({ onClose, ...props }) => {
   const [value, setValue] = useState<string>('');
   const [searchValue, setSearchValue] = useState<string>('');
   const { data: searchResults, isLoading: searchLoading } = useSearchUserQuery(searchValue);
@@ -55,4 +54,4 @@ const HeaderDrawer: FC<Omit<DrawerProps, 'children'>> = ({ onClose, ...props }) 
   );
 };
 
-export default HeaderDrawer;
+export default SearchUserDrawer;
