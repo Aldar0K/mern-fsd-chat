@@ -37,7 +37,6 @@ const HeaderDrawer: FC<Omit<DrawerProps, 'children'>> = ({ onClose, ...props }) 
   const [value, setValue] = useState<string>('');
   const [searchValue, setSearchValue] = useState<string>('');
   const { data: searchResults, isLoading: searchLoading } = useSearchUserQuery(searchValue);
-
   const debouncedSearchValue = useDebounce<string>(value, 500);
   useEffect(() => {
     if (value.length) setSearchValue(value);

@@ -12,21 +12,20 @@ interface UserListItemProps {
 const UserListItem: FC<UserListItemProps> = ({ user, handleClick }) => {
   return (
     <Box
-      onClick={handleClick}
+      display='flex'
+      w='100%'
+      px={3}
+      py={2}
       cursor='pointer'
       bg='#E8E8E8'
       _hover={{
         background: '#38B2AC',
         color: 'white'
       }}
-      w='100%'
-      display='flex'
       alignItems='center'
       color='black'
-      px={3}
-      py={2}
-      mb={2}
       borderRadius='lg'
+      onClick={handleClick}
     >
       <Avatar mr={2} size='sm' cursor='pointer' name={user?.name} src={user?.image} />
       <Box>

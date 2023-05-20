@@ -13,20 +13,19 @@ import {
   ModalHeader,
   ModalOverlay,
   Spinner,
+  Stack,
   useDisclosure
 } from '@chakra-ui/react';
 import { FC, useEffect, useState } from 'react';
 import { shallow } from 'zustand/shallow';
 
-import { apiUser } from 'api';
 import {
   useAddUser,
   useDebounce,
-  useHandleError,
   useNotify,
   useRemoveUser,
   useRenameChat,
-  useToggle
+  useSearchUserQuery
 } from 'hooks';
 import { User } from 'models';
 import { ChatState, useChatStore, useUserStore } from 'store';
@@ -40,41 +39,21 @@ const selector = (state: ChatState) => ({
 
 const UpdateGroupModal: FC = () => {
   const notify = useNotify();
-  const handleError = useHandleError();
   const user = useUserStore(state => state.user);
   const { selectedChat, setSelectedChat } = useChatStore(selector, shallow);
   const [groupChatName, setGroupChatName] = useState<string>('');
-  const [searchResults, setSearchResults] = useState<User[]>([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [searchLoading, toggleSearchLoading] = useToggle(false);
   const { mutateAsync: renameChatMutate, isLoading: renameChatLoading } = useRenameChat();
   const { mutateAsync: addUserMutate, isLoading: addUserLoading } = useAddUser();
   const { mutateAsync: removeUserMutate, isLoading: removeUserLoading } = useRemoveUser();
 
   const [value, setValue] = useState<string>('');
   const [searchValue, setSearchValue] = useState<string>('');
-
+  const { data: searchResults, isLoading: searchLoading } = useSearchUserQuery(searchValue);
   const debouncedSearchValue = useDebounce<string>(value, 500);
   useEffect(() => {
-    setSearchValue(value);
+    if (value.length) setSearchValue(value);
   }, [debouncedSearchValue]);
-
-  useEffect(() => {
-    if (searchValue) {
-      handleSearch(searchValue);
-    }
-  }, [searchValue]);
-
-  const handleSearch = async (searchValue: string) => {
-    try {
-      toggleSearchLoading();
-      const results = await apiUser.searchUser(searchValue);
-      setSearchResults(results);
-      toggleSearchLoading();
-    } catch (error) {
-      handleError(error);
-    }
-  };
 
   const handleRename = async () => {
     if (!selectedChat) return;
@@ -142,7 +121,7 @@ const UpdateGroupModal: FC = () => {
               </ModalHeader>
 
               <ModalCloseButton />
-              <ModalBody display='flex' flexDir='column' alignItems='center'>
+              <ModalBody>
                 <Box w='100%' display='flex' flexWrap='wrap' pb={3}>
                   {selectedChat.users.map(user => (
                     <UserBadgeItem
@@ -181,15 +160,18 @@ const UpdateGroupModal: FC = () => {
                 {searchLoading || addUserLoading || removeUserLoading ? (
                   <Spinner size='md' />
                 ) : (
-                  searchResults
-                    .slice(0, 4)
-                    .map(user => (
-                      <UserListItem
-                        key={user._id}
-                        user={user}
-                        handleClick={() => handleAddUser(user)}
-                      />
-                    ))
+                  <Stack>
+                    {!!searchResults?.length &&
+                      searchResults
+                        .slice(0, 4)
+                        .map(user => (
+                          <UserListItem
+                            key={user._id}
+                            user={user}
+                            handleClick={() => handleAddUser(user)}
+                          />
+                        ))}
+                  </Stack>
                 )}
               </ModalBody>
               <ModalFooter>
