@@ -1,6 +1,6 @@
 import { ArrowBackIcon } from '@chakra-ui/icons';
-import { Box, IconButton, Text } from '@chakra-ui/react';
-import { FC } from 'react';
+import { Box, FormControl, IconButton, Input, Spinner, Text } from '@chakra-ui/react';
+import { ChangeEvent, FC, KeyboardEvent, useState } from 'react';
 import { shallow } from 'zustand/shallow';
 
 import { ChatState, useChatStore, useUserStore } from 'store';
@@ -16,6 +16,22 @@ const selector = (state: ChatState) => ({
 const ChatBox: FC = () => {
   const user = useUserStore(state => state.user);
   const { selectedChat, setSelectedChat } = useChatStore(selector, shallow);
+  const messagesLoading = false;
+  const messages: any[] = [];
+
+  const sendMessage = async (event: KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === 'Enter' && !!value.length) {
+      console.log('send message:', value);
+      setValue('');
+      // sendMessageMutate(selectedChat._id, value)
+    }
+  };
+
+  const [value, setValue] = useState<string>('');
+  const handleTyping = (event: ChangeEvent<HTMLInputElement>) => {
+    setValue(event.target.value);
+    // TODO toggle typing state in the chat room (socket).
+  };
 
   return (
     <Box
@@ -67,41 +83,32 @@ const ChatBox: FC = () => {
             h='100%'
             w='100%'
             p={3}
-            flexDir='column'
-            justifyContent='flex-end'
+            flexDirection='column'
             bg='#E8E8E8'
             borderRadius='lg'
             overflowY='hidden'
           >
-            {/* {loading ? (
-              <Spinner size='xl' w={20} h={20} alignSelf='center' margin='auto' />
-            ) : (
-              <div className='messages'>
-                <ScrollableChat messages={messages} />
-              </div>
-            )} */}
-
-            {/* <FormControl onKeyDown={sendMessage} id='first-name' isRequired mt={3}>
-              {istyping ? (
-                <div>
-                  <Lottie
-                    options={defaultOptions}
-                    // height={50}
-                    width={70}
-                    style={{ marginBottom: 15, marginLeft: 0 }}
-                  />
-                </div>
+            <Box display='flex' mb={3} flex={1} justifyContent='center' alignItems='center'>
+              {messagesLoading ? (
+                <Spinner size='xl' w={20} h={20} />
               ) : (
-                <></>
+                <>
+                  {/* <ScrollableChat messages={messages} /> */}
+                  {!!messages?.length &&
+                    messages.map(message => <p key={message.id}>{message.content}</p>)}
+                </>
               )}
+            </Box>
+
+            <FormControl id='first-name' isRequired onKeyDown={sendMessage}>
               <Input
                 variant='filled'
                 bg='#E0E0E0'
-                placeholder='Enter a message..'
-                value={newMessage}
-                onChange={typingHandler}
+                placeholder='Enter a message...'
+                value={value}
+                onChange={handleTyping}
               />
-            </FormControl> */}
+            </FormControl>
           </Box>
         </>
       ) : (

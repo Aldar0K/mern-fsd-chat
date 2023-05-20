@@ -6,4 +6,5 @@ export interface Chat {
   users: User[];
   isGroupChat: boolean;
   groupAdmin?: User;
+  latestMessage?: string;
 }
