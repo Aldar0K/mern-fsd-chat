@@ -4,7 +4,7 @@ import { Route, Routes } from 'react-router-dom';
 import { ROUTES } from 'consts';
 import { useUserStore } from 'store';
 
-import { ChatPage, HomePage } from 'pages';
+import { ChatsPage, HomePage } from 'pages';
 
 const AppRouter: FC = () => {
   const user = useUserStore(state => state.user);
@@ -13,9 +13,8 @@ const AppRouter: FC = () => {
     <>
       {user ? (
         <Routes>
-          <Route index path={ROUTES.CHATS} Component={ChatPage} />
-          <Route path={ROUTES.CHAT} Component={ChatPage} />
-          <Route path='*' Component={ChatPage} />
+          <Route index path={`${ROUTES.CHATS}/*`} Component={ChatsPage} />
+          <Route path='*' Component={ChatsPage} />
         </Routes>
       ) : (
         <Routes>
