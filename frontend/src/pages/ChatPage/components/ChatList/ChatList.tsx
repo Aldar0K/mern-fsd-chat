@@ -1,6 +1,6 @@
 import { AddIcon } from '@chakra-ui/icons';
 import { Box, Button, Spinner, Stack, Text } from '@chakra-ui/react';
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { shallow } from 'zustand/shallow';
 
 import { useChats } from 'hooks';
@@ -9,16 +9,23 @@ import { ChatState, useChatStore, useUserStore } from 'store';
 import { getSender } from 'utils';
 
 import { AddGroupModal } from 'components';
+import { ROUTES } from 'consts';
+import { NavLink } from 'react-router-dom';
 
 const selector = (state: ChatState) => ({
+  setChats: state.setChats,
   selectedChat: state.selectedChat,
   setSelectedChat: state.setSelectedChat
 });
 
 const ChatList: FC = () => {
   const user = useUserStore(state => state.user) as User;
-  const { selectedChat, setSelectedChat } = useChatStore(selector, shallow);
+  const { setChats, selectedChat, setSelectedChat } = useChatStore(selector, shallow);
   const { data: chats, isLoading: chatsLoading } = useChats();
+
+  useEffect(() => {
+    chats && setChats(chats);
+  }, [chats]);
 
   return (
     <Box
@@ -69,18 +76,23 @@ const ChatList: FC = () => {
             {chats ? (
               <Stack overflowY='auto'>
                 {chats.map(chat => (
-                  <Box
-                    key={chat._id}
-                    px='2'
-                    py='2'
-                    borderRadius='lg'
-                    bg={selectedChat === chat ? '#38B2AC' : '#E8E8E8'}
-                    color={selectedChat === chat ? 'white' : 'black'}
-                    cursor='pointer'
-                    onClick={() => setSelectedChat(chat)}
-                  >
-                    <Text>{chat.isGroupChat ? chat.chatName : getSender(user, chat.users)}</Text>
-                  </Box>
+                  <NavLink key={chat._id} to={`${ROUTES.CHATS}/${chat._id}`}>
+                    {({ isActive }) => (
+                      <Box
+                        px='2'
+                        py='2'
+                        borderRadius='lg'
+                        bg={isActive ? '#38B2AC' : '#E8E8E8'}
+                        color={isActive ? 'white' : 'black'}
+                        cursor='pointer'
+                        onClick={() => setSelectedChat(chat)}
+                      >
+                        <Text>
+                          {chat.isGroupChat ? chat.chatName : getSender(user, chat.users)}
+                        </Text>
+                      </Box>
+                    )}
+                  </NavLink>
                 ))}
               </Stack>
             ) : (

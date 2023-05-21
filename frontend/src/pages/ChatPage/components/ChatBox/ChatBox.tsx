@@ -1,23 +1,33 @@
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import { Box, FormControl, IconButton, Input, Spinner, Text } from '@chakra-ui/react';
-import { ChangeEvent, FC, KeyboardEvent, useState } from 'react';
+import { ChangeEvent, FC, KeyboardEvent, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { shallow } from 'zustand/shallow';
 
+import { useGetMessagesQuery } from 'hooks';
 import { ChatState, useChatStore, useUserStore } from 'store';
 import { getSender, getSenderFull } from 'utils';
 
 import { ProfileModal, UpdateGroupModal } from 'components';
 
+type Params = { chatId: string };
+
 const selector = (state: ChatState) => ({
+  chats: state.chats,
   selectedChat: state.selectedChat,
   setSelectedChat: state.setSelectedChat
 });
 
 const ChatBox: FC = () => {
   const user = useUserStore(state => state.user);
-  const { selectedChat, setSelectedChat } = useChatStore(selector, shallow);
-  const messagesLoading = false;
-  const messages: any[] = [];
+  const { chats, selectedChat, setSelectedChat } = useChatStore(selector, shallow);
+  const { chatId } = useParams<keyof Params>() as Params;
+  const { data: messages, isLoading: messagesLoading } = useGetMessagesQuery(chatId);
+
+  useEffect(() => {
+    const selectedChat = chats.find(chat => chat._id === chatId);
+    selectedChat && setSelectedChat(selectedChat);
+  }, [chats, chatId]);
 
   const sendMessage = async (event: KeyboardEvent<HTMLDivElement>) => {
     if (event.key === 'Enter' && !!value.length) {
@@ -95,7 +105,7 @@ const ChatBox: FC = () => {
                 <>
                   {/* <ScrollableChat messages={messages} /> */}
                   {!!messages?.length &&
-                    messages.map(message => <p key={message.id}>{message.content}</p>)}
+                    messages.map(message => <p key={message._id}>{message.content}</p>)}
                 </>
               )}
             </Box>
