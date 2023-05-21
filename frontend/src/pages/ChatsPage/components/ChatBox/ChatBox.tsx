@@ -1,5 +1,5 @@
 import { ArrowBackIcon } from '@chakra-ui/icons';
-import { Box, FormControl, IconButton, Input, Spinner, Text } from '@chakra-ui/react';
+import { Box, FormControl, IconButton, Input, Spinner, Stack, Text } from '@chakra-ui/react';
 import { ChangeEvent, FC, KeyboardEvent, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { shallow } from 'zustand/shallow';
@@ -9,6 +9,7 @@ import { ChatState, useChatStore, useUserStore } from 'store';
 import { getSender, getSenderFull } from 'utils';
 
 import { ProfileModal, UpdateGroupModal } from 'components';
+import { useSendMessage } from 'hooks/mutations/useSendMessage';
 
 type Params = { chatId: string };
 
@@ -23,6 +24,7 @@ const ChatBox: FC = () => {
   const { chats, selectedChat, setSelectedChat } = useChatStore(selector, shallow);
   const { chatId } = useParams<keyof Params>() as Params;
   const { data: messages, isLoading: messagesLoading } = useGetMessagesQuery(chatId);
+  const { mutateAsync: sendMessageMutate, isLoading: sendMessageLoading } = useSendMessage();
 
   useEffect(() => {
     const selectedChat = chats.find(chat => chat._id === chatId);
@@ -31,9 +33,11 @@ const ChatBox: FC = () => {
 
   const sendMessage = async (event: KeyboardEvent<HTMLDivElement>) => {
     if (event.key === 'Enter' && !!value.length) {
-      console.log('send message:', value);
+      const content = value;
       setValue('');
-      // sendMessageMutate(selectedChat._id, value)
+
+      const response = await sendMessageMutate({ chatId, content });
+      console.log(response);
     }
   };
 
@@ -102,11 +106,11 @@ const ChatBox: FC = () => {
               {messagesLoading ? (
                 <Spinner size='xl' w={20} h={20} />
               ) : (
-                <>
+                <Stack>
                   {/* <ScrollableChat messages={messages} /> */}
                   {!!messages?.length &&
                     messages.map(message => <p key={message._id}>{message.content}</p>)}
-                </>
+                </Stack>
               )}
             </Box>
 
