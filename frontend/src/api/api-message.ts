@@ -1,7 +1,7 @@
 import { Chat, Message, User } from 'models';
 import { instance } from './api';
 
-interface SendMessageDto {
+export interface SendMessageDto {
   chatId: string;
   content: string;
 }
