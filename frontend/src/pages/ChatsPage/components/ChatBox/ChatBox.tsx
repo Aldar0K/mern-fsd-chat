@@ -1,15 +1,15 @@
 import { ArrowBackIcon } from '@chakra-ui/icons';
-import { Box, FormControl, IconButton, Input, Spinner, Stack, Text } from '@chakra-ui/react';
+import { Box, FormControl, IconButton, Input, Spinner, Text } from '@chakra-ui/react';
 import { ChangeEvent, FC, KeyboardEvent, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { shallow } from 'zustand/shallow';
 
-import { useGetMessagesQuery } from 'hooks';
+import { useGetMessagesQuery, useSendMessage } from 'hooks';
 import { ChatState, useChatStore, useUserStore } from 'store';
 import { getSender, getSenderFull } from 'utils';
 
 import { ProfileModal, UpdateGroupModal } from 'components';
-import { useSendMessage } from 'hooks/mutations/useSendMessage';
+import { ScrollableChat } from '..';
 
 type Params = { chatId: string };
 
@@ -106,11 +106,7 @@ const ChatBox: FC = () => {
               {messagesLoading ? (
                 <Spinner size='xl' w={20} h={20} />
               ) : (
-                <Stack>
-                  {/* <ScrollableChat messages={messages} /> */}
-                  {!!messages?.length &&
-                    messages.map(message => <p key={message._id}>{message.content}</p>)}
-                </Stack>
+                !!messages?.length && <ScrollableChat messages={messages} />
               )}
             </Box>
 
