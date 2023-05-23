@@ -7,6 +7,7 @@ import { shallow } from 'zustand/shallow';
 import { useGetMessagesQuery, useSendMessage } from 'hooks';
 import { ChatState, useChatStore, useUserStore } from 'store';
 import { getSender, getSenderFull } from 'utils';
+import styles from './ChatBox.modules.scss';
 
 import { ProfileModal, UpdateGroupModal } from 'components';
 import { ScrollableChat } from '..';
@@ -98,17 +99,21 @@ const ChatBox: FC = () => {
             w='100%'
             p={3}
             flexDirection='column'
+            justifyContent='flex-end'
+            gap={2}
             bg='#E8E8E8'
             borderRadius='lg'
             overflowY='hidden'
           >
-            <Box display='flex' mb={3} flex={1} justifyContent='center' alignItems='center'>
-              {messagesLoading ? (
-                <Spinner size='xl' w={20} h={20} />
-              ) : (
-                !!messages?.length && <ScrollableChat messages={messages} />
-              )}
-            </Box>
+            {messagesLoading ? (
+              <Spinner size='xl' margin='auto' w={20} h={20} alignSelf='center' />
+            ) : (
+              !!messages?.length && (
+                <div className={styles.messages}>
+                  <ScrollableChat messages={messages} />
+                </div>
+              )
+            )}
 
             <FormControl id='first-name' isRequired onKeyDown={sendMessage}>
               <Input

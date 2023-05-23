@@ -4,7 +4,7 @@ import ScrollableFeed from 'react-scrollable-feed';
 
 import { Message } from 'models';
 import { useUserStore } from 'store';
-import { isLastMessage, isSameSender } from 'utils';
+import { isLastMessage, isSameSender, isSameSenderMargin, isSameUser } from 'utils';
 import styles from './ScrollableChat.module.scss';
 
 interface ScrollableChatProps {
@@ -17,30 +17,36 @@ const ScrollableChat: FC<ScrollableChatProps> = ({ messages }) => {
   return (
     <ScrollableFeed>
       {user &&
-        messages.map((message, index) => {
-          console.log(isSameSender(messages, message, index, user._id));
-          console.log(isLastMessage(messages, index, user._id));
+        messages.map((message, index) => (
+          <div key={message._id} className={styles.message}>
+            {(isSameSender(messages, message, index, user._id) ||
+              isLastMessage(messages, index, user._id)) && (
+              <Tooltip label={message.sender.name} placement='bottom-start' hasArrow>
+                <Avatar
+                  name={message.sender.name}
+                  src={message.sender.image}
+                  mt='7px'
+                  mr='1'
+                  size='sm'
+                  cursor='pointer'
+                />
+              </Tooltip>
+            )}
 
-          return (
-            <div key={message._id} className={styles.message}>
-              {(isSameSender(messages, message, index, user._id) ||
-                isLastMessage(messages, index, user._id)) && (
-                <Tooltip label={message.sender.name} placement='bottom-start' hasArrow>
-                  <Avatar
-                    name={message.sender.name}
-                    src={message.sender.image}
-                    mt='7px'
-                    mr='1'
-                    size='sm'
-                    cursor='pointer'
-                  />
-                </Tooltip>
-              )}
-
-              <span>{message.content}</span>
-            </div>
-          );
-        })}
+            <span
+              style={{
+                marginLeft: isSameSenderMargin(messages, message, index, user._id),
+                marginTop: isSameUser(messages, message, index) ? 3 : 10,
+                maxWidth: '75%',
+                padding: '5px 15px',
+                backgroundColor: `${message.sender._id === user._id ? '#BEE3F8' : '#B9F5D0'}`,
+                borderRadius: '20px'
+              }}
+            >
+              {message.content}
+            </span>
+          </div>
+        ))}
     </ScrollableFeed>
   );
 };
