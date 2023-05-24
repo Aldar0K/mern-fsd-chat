@@ -7,7 +7,7 @@ import { shallow } from 'zustand/shallow';
 import { useGetMessagesQuery, useSendMessage } from 'hooks';
 import { ChatState, useChatStore, useUserStore } from 'store';
 import { getSender, getSenderFull } from 'utils';
-import styles from './ChatBox.modules.scss';
+import styles from './ChatBox.module.scss';
 
 import { ProfileModal, UpdateGroupModal } from 'components';
 import { ScrollableChat } from '..';
@@ -72,7 +72,7 @@ const ChatBox: FC = () => {
           >
             <IconButton
               display={{ base: 'flex', md: 'none' }}
-              aria-label=''
+              aria-label={''}
               icon={<ArrowBackIcon />}
               onClick={() => setSelectedChat(null)}
             />
@@ -103,7 +103,7 @@ const ChatBox: FC = () => {
             gap={2}
             bg='#E8E8E8'
             borderRadius='lg'
-            overflowY='hidden'
+            overflow='hidden'
           >
             {messagesLoading ? (
               <Spinner size='xl' margin='auto' w={20} h={20} alignSelf='center' />

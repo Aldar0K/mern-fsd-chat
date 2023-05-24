@@ -18,7 +18,7 @@ const ChatsPage: FC = () => {
 
       <main className='main'>
         <div className={`container ${styles.container}`}>
-          <Box display='flex' w='100%' p='10px'>
+          <Box display='flex' h='93.5vh' w='100%' p='10px' justifyContent='space-between'>
             {user && (
               <>
                 <ChatList />

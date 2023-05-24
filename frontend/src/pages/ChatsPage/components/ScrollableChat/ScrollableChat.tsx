@@ -26,7 +26,7 @@ const ScrollableChat: FC<ScrollableChatProps> = ({ messages }) => {
                   name={message.sender.name}
                   src={message.sender.image}
                   mt='7px'
-                  mr='1'
+                  mr={1}
                   size='sm'
                   cursor='pointer'
                 />
