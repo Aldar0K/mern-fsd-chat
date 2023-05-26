@@ -2,6 +2,7 @@ import { ArrowBackIcon } from '@chakra-ui/icons';
 import { Box, FormControl, IconButton, Input, Spinner, Text } from '@chakra-ui/react';
 import { ChangeEvent, FC, KeyboardEvent, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { Socket, io } from 'socket.io-client';
 import { shallow } from 'zustand/shallow';
 
 import { useGetMessagesQuery, useSendMessage } from 'hooks';
@@ -10,7 +11,25 @@ import { getSender, getSenderFull } from 'utils';
 import styles from './ChatBox.module.scss';
 
 import { ProfileModal, UpdateGroupModal } from 'components';
+import { User } from 'models';
 import { ScrollableChat } from '..';
+
+// TODO move to "types" or "interfaces".
+interface ServerToClientEvents {
+  noArg: () => void;
+  basicEmit: (a: number, b: string, c: Buffer) => void;
+  withAck: (d: string, callback: (e: number) => void) => void;
+  connection: () => void;
+}
+
+interface ClientToServerEvents {
+  hello: () => void;
+  setup: (user: User) => void;
+  joinChat: (chatId: string) => void;
+}
+
+const ENDPONINT = 'http://localhost:8080';
+let socket: Socket<ServerToClientEvents, ClientToServerEvents>, selectedChatCompare;
 
 type Params = { chatId: string };
 
@@ -47,6 +66,18 @@ const ChatBox: FC = () => {
     setValue(event.target.value);
     // TODO toggle typing state in the chat room (socket).
   };
+
+  useEffect(() => {
+    socket = io(ENDPONINT);
+    user && socket.emit('setup', user);
+    socket.on('connection', () => console.log('connected!'));
+  }, []);
+
+  useEffect(() => {
+    if (!messages || !selectedChat) return;
+
+    selectedChat && socket.emit('joinChat', selectedChat._id);
+  }, [messages, selectedChat]);
 
   return (
     <Box
