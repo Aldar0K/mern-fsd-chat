@@ -1,16 +1,9 @@
-import { Chat, Message, User } from 'models';
+import { Message } from 'models';
 import { instance } from './api';
 
 export interface SendMessageDto {
   chatId: string;
   content: string;
-}
-
-interface SendMessageResponse {
-  _id: string;
-  sender: Pick<User, '_id' | 'name' | 'image'>;
-  content: string;
-  chat: Chat;
 }
 
 export const apiMessage = {
@@ -20,7 +13,7 @@ export const apiMessage = {
     return response.data;
   },
   sendMessage: async (data: SendMessageDto) => {
-    const response = await instance.post<SendMessageResponse>('/message', data);
+    const response = await instance.post<Message>('/message', data);
     console.log(response.data);
     return response.data;
   }

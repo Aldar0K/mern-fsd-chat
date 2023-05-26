@@ -11,7 +11,7 @@ import { getSender, getSenderFull } from 'utils';
 import styles from './ChatBox.module.scss';
 
 import { ProfileModal, UpdateGroupModal } from 'components';
-import { User } from 'models';
+import { Chat, Message, User } from 'models';
 import { ScrollableChat } from '..';
 
 // TODO move to "types" or "interfaces".
@@ -20,16 +20,19 @@ interface ServerToClientEvents {
   basicEmit: (a: number, b: string, c: Buffer) => void;
   withAck: (d: string, callback: (e: number) => void) => void;
   connection: () => void;
+  messageRecieved: (newMessage: Message) => void;
 }
 
 interface ClientToServerEvents {
   hello: () => void;
   setup: (user: User) => void;
   joinChat: (chatId: string) => void;
+  newMessage: (newMessage: Message) => void;
 }
 
 const ENDPONINT = 'http://localhost:8080';
-let socket: Socket<ServerToClientEvents, ClientToServerEvents>, selectedChatCompare;
+let socket: Socket<ServerToClientEvents, ClientToServerEvents>,
+  selectedChatCompare: Chat | undefined;
 
 type Params = { chatId: string };
 
@@ -43,11 +46,37 @@ const ChatBox: FC = () => {
   const user = useUserStore(state => state.user);
   const { chats, selectedChat, setSelectedChat } = useChatStore(selector, shallow);
   const { chatId } = useParams<keyof Params>() as Params;
+  const [currentMessages, setCurrentMessages] = useState<Message[]>([]);
   const { data: messages, isLoading: messagesLoading } = useGetMessagesQuery(chatId);
   const { mutateAsync: sendMessageMutate, isLoading: sendMessageLoading } = useSendMessage();
 
   useEffect(() => {
+    socket = io(ENDPONINT);
+    user && socket.emit('setup', user);
+    socket.on('connection', () => console.log('connected!'));
+
+    socket.on('messageRecieved', newMessage => {
+      if (!selectedChatCompare || selectedChatCompare._id !== newMessage.chat._id) {
+        // TODO send notification.
+      } else {
+        setCurrentMessages(prev => [...prev, newMessage]);
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    if (!messages || !selectedChat) return;
+
+    selectedChat && socket.emit('joinChat', selectedChat._id);
+  }, [messages, selectedChat]);
+
+  useEffect(() => {
+    messages && setCurrentMessages(messages);
+  }, [messages]);
+
+  useEffect(() => {
     const selectedChat = chats.find(chat => chat._id === chatId);
+    selectedChatCompare = selectedChat;
     selectedChat && setSelectedChat(selectedChat);
   }, [chats, chatId]);
 
@@ -56,8 +85,12 @@ const ChatBox: FC = () => {
       const content = value;
       setValue('');
 
-      const response = await sendMessageMutate({ chatId, content });
-      console.log(response);
+      const newMessage = await sendMessageMutate({ chatId, content });
+      console.log(newMessage);
+
+      // it's ok?
+      setCurrentMessages(prev => [...prev, newMessage]);
+      socket.emit('newMessage', newMessage);
     }
   };
 
@@ -66,18 +99,6 @@ const ChatBox: FC = () => {
     setValue(event.target.value);
     // TODO toggle typing state in the chat room (socket).
   };
-
-  useEffect(() => {
-    socket = io(ENDPONINT);
-    user && socket.emit('setup', user);
-    socket.on('connection', () => console.log('connected!'));
-  }, []);
-
-  useEffect(() => {
-    if (!messages || !selectedChat) return;
-
-    selectedChat && socket.emit('joinChat', selectedChat._id);
-  }, [messages, selectedChat]);
 
   return (
     <Box
@@ -139,9 +160,9 @@ const ChatBox: FC = () => {
             {messagesLoading ? (
               <Spinner size='xl' margin='auto' w={20} h={20} alignSelf='center' />
             ) : (
-              !!messages?.length && (
+              currentMessages.length && (
                 <div className={styles.messages}>
-                  <ScrollableChat messages={messages} />
+                  <ScrollableChat messages={currentMessages} />
                 </div>
               )
             )}
