@@ -70,8 +70,8 @@ io.on("connection", (socket) => {
     });
   });
 
-  socket.off("setup", () => {
-    console.log("USER DISCONNECTED");
+  socket.off("setup", (userData) => {
+    console.log("user disconnected");
     socket.leave(userData._id);
   });
 });
