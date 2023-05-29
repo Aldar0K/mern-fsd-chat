@@ -8,12 +8,18 @@ import { shallow } from 'zustand/shallow';
 
 import animationData from 'animations/typing.json';
 import { useGetMessagesQuery, useSendMessage } from 'hooks';
-import { ChatState, useChatStore, useUserStore } from 'store';
+import { Chat, Message, User } from 'models';
+import {
+  ChatState,
+  NotificationState,
+  useChatStore,
+  useNotificationStore,
+  useUserStore
+} from 'store';
 import { getSender, getSenderFull } from 'utils';
 import styles from './ChatBox.module.scss';
 
 import { ProfileModal, UpdateGroupModal } from 'components';
-import { Chat, Message, User } from 'models';
 import { ScrollableChat } from '..';
 
 // TODO move to "types" or "interfaces".
@@ -44,13 +50,20 @@ const selector = (state: ChatState) => ({
   setSelectedChat: state.setSelectedChat
 });
 
+const notificationSelector = (state: NotificationState) => ({
+  notifications: state.notifications,
+  addNotifications: state.addNotifications,
+  clearNotifications: state.clearNotifications
+});
+
 const ChatBox: FC = () => {
   const user = useUserStore(state => state.user);
   const { chats, selectedChat, setSelectedChat } = useChatStore(selector, shallow);
+  const { notifications, addNotifications } = useNotificationStore(notificationSelector, shallow);
   const { chatId } = useParams<keyof Params>() as Params;
   const [currentMessages, setCurrentMessages] = useState<Message[]>([]);
   const { data: messages, isLoading: messagesLoading } = useGetMessagesQuery(chatId);
-  const { mutateAsync: sendMessageMutate, isLoading: sendMessageLoading } = useSendMessage();
+  const { mutateAsync: sendMessageMutate } = useSendMessage();
   const [socketConnected, setSocketConnected] = useState<boolean>(false);
   const [typing, setTyping] = useState<boolean>(false);
   const [isTyping, setIsTyping] = useState<boolean>(false);
@@ -65,7 +78,9 @@ const ChatBox: FC = () => {
 
     socket.on('messageRecieved', newMessage => {
       if (!selectedChatCompare || selectedChatCompare._id !== newMessage.chat._id) {
-        // TODO send notification.
+        if (!notifications.includes(newMessage)) {
+          addNotifications([newMessage]);
+        }
       } else {
         setCurrentMessages(prev => [...prev, newMessage]);
       }
@@ -96,7 +111,6 @@ const ChatBox: FC = () => {
       setValue('');
 
       const newMessage = await sendMessageMutate({ chatId, content });
-      console.log(newMessage);
 
       setCurrentMessages(prev => [...prev, newMessage]);
       socket.emit('newMessage', newMessage);
