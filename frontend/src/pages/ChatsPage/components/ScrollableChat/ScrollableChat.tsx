@@ -1,11 +1,10 @@
 import { Avatar, Tooltip } from '@chakra-ui/react';
-import { FC } from 'react';
-import ScrollableFeed from 'react-scrollable-feed';
+import { FC, useRef } from 'react';
+import { Virtuoso, VirtuosoHandle } from 'react-virtuoso';
 
 import { Message } from 'models';
 import { useUserStore } from 'store';
 import { isLastMessage, isSameSender, isSameSenderMargin, isSameUser } from 'utils';
-import styles from './ScrollableChat.module.scss';
 
 interface ScrollableChatProps {
   messages: Message[];
@@ -13,12 +12,17 @@ interface ScrollableChatProps {
 
 const ScrollableChat: FC<ScrollableChatProps> = ({ messages }) => {
   const user = useUserStore(state => state.user);
+  const virtuosoRef = useRef<VirtuosoHandle>(null);
 
+  if (!user) return null;
   return (
-    <ScrollableFeed>
-      {user &&
-        messages.map((message, index) => (
-          <div key={message._id} className={styles.message}>
+    <Virtuoso
+      ref={virtuosoRef}
+      data={messages}
+      initialTopMostItemIndex={messages?.length - 1}
+      itemContent={(index, message) => (
+        <>
+          <div key={message._id} style={{ display: 'flex' }}>
             {(isSameSender(messages, message, index, user._id) ||
               isLastMessage(messages, index, user._id)) && (
               <Tooltip label={message.sender.name} placement='bottom-start' hasArrow>
@@ -46,8 +50,9 @@ const ScrollableChat: FC<ScrollableChatProps> = ({ messages }) => {
               {message.content}
             </span>
           </div>
-        ))}
-    </ScrollableFeed>
+        </>
+      )}
+    />
   );
 };
 
