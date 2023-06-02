@@ -1,5 +1,5 @@
 import { Avatar, Tooltip } from '@chakra-ui/react';
-import { FC, useRef } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import { Virtuoso, VirtuosoHandle } from 'react-virtuoso';
 
 import { Message } from 'models';
@@ -13,6 +13,14 @@ interface ScrollableChatProps {
 const ScrollableChat: FC<ScrollableChatProps> = ({ messages }) => {
   const user = useUserStore(state => state.user);
   const virtuosoRef = useRef<VirtuosoHandle>(null);
+  const [showButton, setShowButton] = useState<boolean>(false);
+  const [atBottom, setAtBottom] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (atBottom) {
+      setShowButton(false);
+    }
+  }, [atBottom, setShowButton]);
 
   if (!user) return null;
   return (
@@ -20,6 +28,12 @@ const ScrollableChat: FC<ScrollableChatProps> = ({ messages }) => {
       ref={virtuosoRef}
       data={messages}
       initialTopMostItemIndex={messages?.length - 1}
+      atBottomStateChange={bottom => {
+        if (atBottom) {
+          virtuosoRef.current?.scrollToIndex(messages.length);
+        }
+        setAtBottom(bottom);
+      }}
       itemContent={(index, message) => (
         <>
           <div key={message._id} style={{ display: 'flex' }}>
