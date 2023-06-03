@@ -1,7 +1,7 @@
 import { useMutation } from 'react-query';
 
-import { RenameChatDto, apiChat } from 'api';
 import { useHandleError, useInvalidate, useNotify } from 'hooks';
+import { RenameChatDto, apiChat } from 'shared/api';
 
 export const useRenameChat = () => {
   const handleError = useHandleError();

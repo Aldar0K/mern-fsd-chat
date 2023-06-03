@@ -1,7 +1,7 @@
 import { useQuery } from 'react-query';
 
-import { apiMessage } from 'api';
 import { useHandleError } from 'hooks';
+import { apiMessage } from 'shared/api';
 
 // TODO add onSuccess callback to params.
 export const useGetMessagesQuery = (chatId: string) => {

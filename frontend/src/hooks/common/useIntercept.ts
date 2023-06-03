@@ -1,4 +1,4 @@
-import { instance } from 'api';
+import { instance } from 'shared/api';
 import { useAuth } from '../useAuth';
 
 export const useIntercept = () => {

@@ -1,7 +1,7 @@
 import { useQuery } from 'react-query';
 
-import { apiUser } from 'api';
 import { useHandleError } from 'hooks';
+import { apiUser } from 'shared/api';
 
 export const useSearchUserQuery = (searchValue: string) => {
   const handleError = useHandleError();

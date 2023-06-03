@@ -1,5 +1,5 @@
-import { apiChat } from 'api';
 import { useHandleError, useInvalidate, useNotify } from 'hooks';
+import { apiChat } from 'shared/api';
 import { useChatStore } from 'store';
 
 export const useAccessChat = () => {

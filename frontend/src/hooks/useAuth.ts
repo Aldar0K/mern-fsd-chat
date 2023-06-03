@@ -1,9 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 
-import { apiUser } from 'api';
 import { ROUTES } from 'consts';
 import { useHandleError, useNotify, useToggle } from 'hooks';
 import { User } from 'models';
+import { apiUser } from 'shared/api';
 import { useUserStore } from 'store';
 
 export const useAuth = () => {
