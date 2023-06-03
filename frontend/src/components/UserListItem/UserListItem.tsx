@@ -2,7 +2,7 @@ import { Avatar } from '@chakra-ui/avatar';
 import { Box, Text } from '@chakra-ui/layout';
 import { FC } from 'react';
 
-import { User } from 'models';
+import { User } from 'entities/User';
 
 interface UserListItemProps {
   user: User;

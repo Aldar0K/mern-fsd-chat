@@ -10,7 +10,8 @@ import {
 } from '@chakra-ui/react';
 import { FC, useState } from 'react';
 
-import { useAuth, useToggle } from 'hooks';
+import { useToggle } from 'hooks';
+import { useAuth } from 'entities/User';
 
 const LoginForm: FC = () => {
   const toast = useToast();

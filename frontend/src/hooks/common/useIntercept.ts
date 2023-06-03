@@ -1,5 +1,5 @@
+import { useAuth } from 'entities/User';
 import { instance } from 'shared/api';
-import { useAuth } from '../useAuth';
 
 export const useIntercept = () => {
   const { logout } = useAuth();

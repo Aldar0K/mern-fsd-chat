@@ -2,7 +2,7 @@ import { CloseIcon } from '@chakra-ui/icons';
 import { Badge } from '@chakra-ui/layout';
 import { FC } from 'react';
 
-import { User } from 'models';
+import { User } from 'entities/User';
 
 interface UserBadgeItemProps {
   user: User;

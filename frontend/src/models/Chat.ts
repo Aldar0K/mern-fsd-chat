@@ -1,4 +1,4 @@
-import { User } from 'models';
+import { User } from 'entities/User';
 
 export interface Chat {
   _id: string;

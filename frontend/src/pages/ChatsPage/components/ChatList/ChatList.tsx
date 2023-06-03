@@ -3,10 +3,9 @@ import { Box, Button, Spinner, Stack, Text } from '@chakra-ui/react';
 import { FC, useEffect } from 'react';
 import { shallow } from 'zustand/shallow';
 
+import { User, getSender, useUserStore } from 'entities/User';
 import { useChats } from 'hooks';
-import { User } from 'models';
-import { ChatState, useChatStore, useUserStore } from 'store';
-import { getSender } from 'utils';
+import { ChatState, useChatStore } from 'store';
 
 import { AddGroupModal } from 'components';
 import { ROUTES } from 'consts';

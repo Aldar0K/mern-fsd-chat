@@ -7,16 +7,10 @@ import { Socket, io } from 'socket.io-client';
 import { shallow } from 'zustand/shallow';
 
 import animationData from 'animations/typing.json';
+import { User, getSender, getSenderFull, useUserStore } from 'entities/User';
 import { useGetMessagesQuery, useSendMessage } from 'hooks';
-import { Chat, Message, User } from 'models';
-import {
-  ChatState,
-  NotificationState,
-  useChatStore,
-  useNotificationStore,
-  useUserStore
-} from 'store';
-import { getSender, getSenderFull } from 'utils';
+import { Chat, Message } from 'models';
+import { ChatState, NotificationState, useChatStore, useNotificationStore } from 'store';
 import styles from './ChatBox.module.scss';
 
 import { ProfileModal, UpdateGroupModal } from 'components';

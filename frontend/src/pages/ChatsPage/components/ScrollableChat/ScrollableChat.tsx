@@ -2,8 +2,8 @@ import { Avatar, Tooltip } from '@chakra-ui/react';
 import { FC, useEffect, useRef, useState } from 'react';
 import { Virtuoso, VirtuosoHandle } from 'react-virtuoso';
 
+import { useUserStore } from 'entities/User';
 import { Message } from 'models';
-import { useUserStore } from 'store';
 import { isLastMessage, isSameSender, isSameSenderMargin, isSameUser } from 'utils';
 
 interface ScrollableChatProps {

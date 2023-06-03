@@ -1,4 +1,5 @@
-import { Chat, User } from 'models';
+import { User } from 'entities/User';
+import { Chat } from 'models';
 
 export interface Message {
   _id: string;

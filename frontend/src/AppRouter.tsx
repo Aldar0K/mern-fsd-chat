@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
 import { ROUTES } from 'consts';
-import { useUserStore } from 'store';
+import { useUserStore } from 'entities/User';
 
 import { ChatsPage, HomePage } from 'pages';
 

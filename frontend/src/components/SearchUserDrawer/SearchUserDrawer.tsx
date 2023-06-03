@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react';
 import { FC } from 'react';
 
-import { useSearchUsers } from 'hooks';
+import { useSearchUsers } from 'entities/User';
 
 import { ChatsLoader, UserCard } from 'components';
 

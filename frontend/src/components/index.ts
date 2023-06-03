@@ -7,5 +7,5 @@ export * from './SearchUserDrawer';
 export * from './SignupForm';
 export * from './UpdateGroupModal';
 export * from './UserBadgeItem';
-export * from './UserCard';
+export * from '../entities/User/components/UserCard';
 export * from './UserListItem';

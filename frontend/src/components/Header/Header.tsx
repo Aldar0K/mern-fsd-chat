@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { useUserStore } from 'store';
+import { useUserStore } from 'entities/User';
 import styles from './Header.module.scss';
 
 // TODO add HeaderDefault variant for unauthorized users?

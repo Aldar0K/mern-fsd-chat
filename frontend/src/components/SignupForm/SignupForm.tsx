@@ -11,7 +11,8 @@ import {
 import axios from 'axios';
 import { FC, useState } from 'react';
 
-import { useAuth, useToggle } from 'hooks';
+import { useAuth } from 'entities/User';
+import { useToggle } from 'hooks';
 
 const SignupForm: FC = () => {
   const toast = useToast();
