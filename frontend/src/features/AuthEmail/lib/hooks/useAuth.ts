@@ -1,11 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 
 import { ROUTES } from 'consts';
+import { User, apiUser, useUserStore } from 'entities/User';
 import { useHandleError, useNotify, useToggle } from 'hooks';
-import {} from 'store';
-import { apiUser } from '../../api/api-user';
-import { User } from '../../model/types';
-import { useUserStore } from '../../model/user-store';
 
 export const useAuth = () => {
   const navigate = useNavigate();

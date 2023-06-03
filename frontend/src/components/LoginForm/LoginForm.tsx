@@ -11,7 +11,7 @@ import {
 import { FC, useState } from 'react';
 
 import { useToggle } from 'hooks';
-import { useAuth } from 'entities/User';
+import { useAuth } from 'features/AuthEmail';
 
 const LoginForm: FC = () => {
   const toast = useToast();
