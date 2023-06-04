@@ -1,7 +1,10 @@
-// common.
+// common
 @use 'common/reset.scss';
 @use 'common/global.scss';
 @use 'common/constants.scss';
 
-// fonts.
+// fonts
 @use '../fonts/Roboto/stylesheet.scss';
+
+// libraries
+@use 'libraries/tailwind.css';
