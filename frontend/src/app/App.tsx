@@ -1,9 +1,9 @@
 import { FC } from 'react';
 
-import 'assets/styles/main.scss';
 import { useIntercept } from 'hooks';
+import './styles/main.scss';
 
-import AppRouter from 'AppRouter';
+import AppRouter from './AppRouter';
 
 const App: FC = () => {
   useIntercept();
