@@ -3,11 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { ROUTES } from 'consts';
 import { User, apiUser, useUserStore } from 'entities/User';
 import { useHandleError, useNotify, useToggle } from 'hooks';
+import { useAuthStore } from '../auth-store';
 
 export const useAuth = () => {
   const navigate = useNavigate();
   const handleError = useHandleError();
   const setUser = useUserStore(state => state.setUser);
+  const setAuth = useAuthStore(state => state.setAuth);
   const notify = useNotify();
   const [isLoading, toggleLoading] = useToggle(false);
 
@@ -19,6 +21,7 @@ export const useAuth = () => {
       notify({ text: 'Login successful', type: 'success' });
       _saveCredentials(user);
       setUser(user);
+      setAuth(true);
       navigate(ROUTES.CHATS);
     } catch (error) {
       handleError(error);
@@ -35,6 +38,7 @@ export const useAuth = () => {
       notify({ text: 'Registration successful', type: 'success' });
       _saveCredentials(user);
       setUser(user);
+      setAuth(true);
       navigate(ROUTES.CHATS);
     } catch (error) {
       handleError(error);
@@ -46,6 +50,7 @@ export const useAuth = () => {
   const logout = () => {
     _clearCredentials();
     setUser(null);
+    setAuth(false);
     navigate(ROUTES.HOME);
   };
 

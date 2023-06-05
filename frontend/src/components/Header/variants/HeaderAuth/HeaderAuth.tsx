@@ -17,8 +17,8 @@ import { useNavigate } from 'react-router-dom';
 import { shallow } from 'zustand/shallow';
 
 import { ROUTES } from 'consts';
+import { useAuth } from 'entities/Auth';
 import { getSender, useUserStore } from 'entities/User';
-import { useAuth } from 'features/AuthEmail';
 import { NotificationState, useNotificationStore } from 'store';
 
 import { ProfileModal, SearchUserDrawer } from 'components';

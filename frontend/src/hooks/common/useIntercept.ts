@@ -1,4 +1,4 @@
-import { useAuth } from 'features/AuthEmail';
+import { useAuth } from 'entities/Auth';
 import { instance } from 'shared/api';
 
 export const useIntercept = () => {
