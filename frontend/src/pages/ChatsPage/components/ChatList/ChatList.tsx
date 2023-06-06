@@ -1,15 +1,14 @@
 import { AddIcon } from '@chakra-ui/icons';
 import { Box, Button, Spinner, Stack, Text } from '@chakra-ui/react';
 import { FC, useEffect } from 'react';
+import { NavLink } from 'react-router-dom';
 import { shallow } from 'zustand/shallow';
 
+import { ROUTES } from 'consts';
+import { ChatState, useChatStore, useChats } from 'entities/Chat';
 import { User, getSender, useUserStore } from 'entities/User';
-import { useChats } from 'hooks';
-import { ChatState, useChatStore } from 'store';
 
 import { AddGroupModal } from 'components';
-import { ROUTES } from 'consts';
-import { NavLink } from 'react-router-dom';
 
 const selector = (state: ChatState) => ({
   setChats: state.setChats,

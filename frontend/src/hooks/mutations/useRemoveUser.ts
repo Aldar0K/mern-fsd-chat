@@ -1,7 +1,7 @@
 import { useMutation } from 'react-query';
 
 import { useHandleError, useInvalidate, useNotify } from 'hooks';
-import { RemoveUserDto, apiChat } from 'shared/api';
+import { RemoveUserDto, apiChat } from 'entities/Chat';
 
 export const useRemoveUser = () => {
   const handleError = useHandleError();

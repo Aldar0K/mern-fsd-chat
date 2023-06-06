@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-import { Chat } from 'models';
+import { Chat } from './types';
 
 export type ChatState = {
   selectedChat: Chat | null;

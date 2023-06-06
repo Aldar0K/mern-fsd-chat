@@ -1,7 +1,7 @@
 import { useMutation } from 'react-query';
 
 import { useHandleError, useInvalidate, useNotify } from 'hooks';
-import { CreateGroupDto, apiChat } from 'shared/api';
+import { CreateGroupDto, apiChat } from 'entities/Chat';
 
 export const useCreateGroup = () => {
   const handleError = useHandleError();

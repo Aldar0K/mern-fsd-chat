@@ -1,8 +1,9 @@
 import { Avatar, Box, Spinner, Text } from '@chakra-ui/react';
 import { FC } from 'react';
 
-import { useAccessChat, useToggle } from 'hooks';
+import { useToggle } from 'hooks';
 import { User } from '../../model/types';
+import { useAccessChat } from 'entities/Chat';
 
 interface UserCardProps {
   user: User;

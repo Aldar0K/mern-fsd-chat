@@ -1,5 +1,5 @@
-import { Chat } from 'models';
-import { instance } from './api';
+import { instance } from 'shared/api';
+import { Chat } from '../model/types';
 
 export interface CreateGroupDto {
   name: string;
