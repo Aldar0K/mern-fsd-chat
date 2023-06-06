@@ -11,7 +11,7 @@ import {
 import { FC, useState } from 'react';
 
 import { useAuth } from 'entities/Auth';
-import { useToggle } from 'hooks';
+import { useToggle } from 'shared/lib';
 
 const LoginForm: FC = () => {
   const toast = useToast();

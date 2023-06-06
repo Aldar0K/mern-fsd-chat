@@ -2,7 +2,7 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { FC, Suspense } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
-import { useIntercept } from 'hooks';
+import { useIntercept } from 'shared/lib';
 import './styles/main.scss';
 
 import AppRouter from './AppRouter';

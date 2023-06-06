@@ -1,7 +1,7 @@
 import { useQuery } from 'react-query';
 
 import { apiChat } from 'entities/Chat';
-import { useHandleError } from 'hooks';
+import { useHandleError } from 'shared/lib';
 
 export const useChats = () => {
   const handleError = useHandleError();

@@ -20,7 +20,8 @@ import { shallow } from 'zustand/shallow';
 
 import { ChatState, useChatStore } from 'entities/Chat';
 import { User, useSearchUsers, useUserStore } from 'entities/User';
-import { useAddUser, useNotify, useRemoveUser, useRenameChat } from 'hooks';
+import { useAddUser, useRemoveUser, useRenameChat } from 'hooks';
+import { useNotify } from 'shared/lib';
 
 import { ChatsLoader, UserBadgeItem, UserListItem } from 'components';
 

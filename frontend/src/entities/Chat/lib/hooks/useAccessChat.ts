@@ -1,5 +1,5 @@
 import { apiChat, useChatStore } from 'entities/Chat';
-import { useHandleError, useInvalidate, useNotify } from 'hooks';
+import { useHandleError, useInvalidate, useNotify } from 'shared/lib';
 
 export const useAccessChat = () => {
   const handleError = useHandleError();

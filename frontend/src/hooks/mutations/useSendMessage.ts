@@ -1,6 +1,6 @@
 import { useMutation } from 'react-query';
 
-import { useHandleError, useInvalidate } from 'hooks';
+import { useHandleError, useInvalidate } from 'shared/lib';
 import { SendMessageDto, apiMessage } from 'shared/api';
 
 export const useSendMessage = () => {
