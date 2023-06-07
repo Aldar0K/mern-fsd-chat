@@ -4,7 +4,7 @@ import { Virtuoso, VirtuosoHandle } from 'react-virtuoso';
 
 import { useUserStore } from 'entities/User';
 import { Message } from 'models';
-import { isLastMessage, isSameSender, isSameSenderMargin, isSameUser } from 'utils';
+import { isLastMessage, isSameSender, isSameSenderMargin, isSameUser } from 'shared/lib/utils';
 
 interface ScrollableChatProps {
   messages: Message[];
