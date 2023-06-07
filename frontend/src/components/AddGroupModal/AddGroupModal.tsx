@@ -19,9 +19,8 @@ import {
 import { FC, useState } from 'react';
 import { shallow } from 'zustand/shallow';
 
-import { ChatState, useChatStore } from 'entities/Chat';
+import { ChatState, useChatStore, useCreateGroup } from 'entities/Chat';
 import { User, useSearchUsers } from 'entities/User';
-import { useCreateGroup } from 'hooks';
 import { useNotify } from 'shared/lib';
 
 import { UserBadgeItem, UserListItem } from 'components';

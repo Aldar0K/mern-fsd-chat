@@ -8,3 +8,7 @@ export type { ChatState } from './model/chat-store';
 // lib
 export { useChats } from './lib/hooks/useChats';
 export { useAccessChat } from './lib/hooks/useAccessChat';
+export { useAddUser } from './lib/hooks/useAddUser';
+export { useRemoveUser } from './lib/hooks/useRemoveUser';
+export { useCreateGroup } from './lib/hooks/useCreateGroup';
+export { useRenameChat } from './lib/hooks/useRenameChat';
