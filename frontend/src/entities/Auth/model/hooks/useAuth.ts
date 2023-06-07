@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 
-import { ROUTES } from 'consts';
 import { User, apiUser, useUserStore } from 'entities/User';
+import { ROUTES } from 'shared/const';
 import { useHandleError, useNotify, useToggle } from 'shared/lib';
 import { useAuthStore } from '../auth-store';
 

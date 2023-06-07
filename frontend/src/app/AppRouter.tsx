@@ -1,8 +1,8 @@
 import { FC } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
-import { ROUTES } from 'consts';
 import { useUserStore } from 'entities/User';
+import { ROUTES } from 'shared/const';
 
 import { ChatsPage, HomePage } from 'pages';
 

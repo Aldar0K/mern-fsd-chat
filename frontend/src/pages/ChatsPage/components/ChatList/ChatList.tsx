@@ -4,9 +4,9 @@ import { FC, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { shallow } from 'zustand/shallow';
 
-import { ROUTES } from 'consts';
 import { ChatState, useChatStore, useChats } from 'entities/Chat';
 import { User, getSender, useUserStore } from 'entities/User';
+import { ROUTES } from 'shared/const';
 
 import { AddGroupModal } from 'components';
 

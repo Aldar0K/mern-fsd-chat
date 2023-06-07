@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { ERROR_MESSAGES } from 'consts';
+import { ERROR_MESSAGES } from 'shared/const';
 import { useNotify } from './useNotify';
 
 export const useHandleError = () => {
