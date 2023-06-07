@@ -6,12 +6,16 @@ import { useParams } from 'react-router-dom';
 import { Socket, io } from 'socket.io-client';
 import { shallow } from 'zustand/shallow';
 
-import animationData from 'animations/typing.json';
 import { Chat, ChatState, useChatStore } from 'entities/Chat';
+import {
+  Message,
+  NotificationState,
+  useGetMessagesQuery,
+  useNotificationStore,
+  useSendMessage
+} from 'entities/Message';
 import { User, getSender, getSenderFull, useUserStore } from 'entities/User';
-import { useGetMessagesQuery, useSendMessage } from 'hooks';
-import { Message } from 'models';
-import { NotificationState, useNotificationStore } from 'store';
+import animationData from 'shared/animations/typing.json';
 import styles from './ChatBox.module.scss';
 
 import { ProfileModal, UpdateGroupModal } from 'components';

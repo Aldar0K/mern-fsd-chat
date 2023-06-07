@@ -1,4 +1,4 @@
-import { Message } from 'models';
+import { Message } from 'entities/Message';
 
 export const isSameUser = (messages: Message[], message: Message, index: number) => {
   return index > 0 && messages[index - 1].sender._id === message.sender._id;

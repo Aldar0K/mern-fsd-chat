@@ -1,4 +1,4 @@
-import { Message } from 'models';
+import { Message } from 'entities/Message';
 
 export const isLastMessage = (messages: Message[], index: number, userId: string) => {
   return (

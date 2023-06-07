@@ -1,5 +1,5 @@
-import { Message } from 'models';
-import { instance } from './api';
+import { instance } from 'shared/api';
+import { Message } from '../model/types';
 
 export interface SendMessageDto {
   chatId: string;

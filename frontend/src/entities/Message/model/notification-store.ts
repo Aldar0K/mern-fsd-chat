@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-import { Message } from 'models';
+import { Message } from 'entities/Message';
 
 export type NotificationState = {
   notifications: Message[];

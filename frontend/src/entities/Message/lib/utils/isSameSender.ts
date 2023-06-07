@@ -1,4 +1,4 @@
-import { Message } from 'models';
+import { Message } from 'entities/Message';
 
 export const isSameSender = (
   messages: Message[],
