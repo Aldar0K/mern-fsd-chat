@@ -5,7 +5,8 @@ import { NavLink } from 'react-router-dom';
 import { shallow } from 'zustand/shallow';
 
 import { ChatState, useChatStore, useChats } from 'entities/Chat';
-import { User, getSender, useUserStore } from 'entities/User';
+import { getSender } from 'entities/User';
+import { viewerModel } from 'entities/viewer';
 import { ROUTES } from 'shared/const';
 
 import { AddGroupModal } from 'components';
@@ -17,7 +18,7 @@ const selector = (state: ChatState) => ({
 });
 
 const ChatList: FC = () => {
-  const user = useUserStore(state => state.user) as User;
+  const viewer = viewerModel.useViewerStore(state => state.viewer);
   const { setChats, selectedChat, setSelectedChat } = useChatStore(selector, shallow);
   const { data: chats, isLoading: chatsLoading } = useChats();
 
@@ -86,7 +87,8 @@ const ChatList: FC = () => {
                         onClick={() => setSelectedChat(chat)}
                       >
                         <Text>
-                          {chat.isGroupChat ? chat.chatName : getSender(user, chat.users)}
+                          {viewer &&
+                            (chat.isGroupChat ? chat.chatName : getSender(viewer, chat.users))}
                         </Text>
                       </Box>
                     )}

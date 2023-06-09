@@ -14,7 +14,8 @@ import {
   useNotificationStore,
   useSendMessage
 } from 'entities/Message';
-import { User, getSender, getSenderFull, useUserStore } from 'entities/User';
+import { User, getSender, getSenderFull } from 'entities/User';
+import { viewerModel } from 'entities/viewer';
 import animationData from 'shared/animations/typing.json';
 import styles from './ChatBox.module.scss';
 
@@ -56,7 +57,7 @@ const notificationSelector = (state: NotificationState) => ({
 });
 
 const ChatBox: FC = () => {
-  const user = useUserStore(state => state.user);
+  const viewer = viewerModel.useViewerStore(state => state.viewer);
   const { chats, selectedChat, setSelectedChat } = useChatStore(selector, shallow);
   const { notifications, addNotifications } = useNotificationStore(notificationSelector, shallow);
   const { chatId } = useParams<keyof Params>() as Params;
@@ -69,7 +70,7 @@ const ChatBox: FC = () => {
 
   useEffect(() => {
     socket = io(ENDPONINT);
-    user && socket.emit('setup', user);
+    viewer && socket.emit('setup', viewer);
     socket.on('connected', () => setSocketConnected(true));
 
     socket.on('typing', () => setIsTyping(true));
@@ -176,10 +177,10 @@ const ChatBox: FC = () => {
               </>
             ) : (
               <>
-                {user && (
+                {viewer && (
                   <>
-                    {getSender(user, selectedChat.users)}
-                    <ProfileModal user={getSenderFull(user, selectedChat.users)} />
+                    {getSender(viewer, selectedChat.users)}
+                    <ProfileModal user={getSenderFull(viewer, selectedChat.users)} />
                   </>
                 )}
               </>

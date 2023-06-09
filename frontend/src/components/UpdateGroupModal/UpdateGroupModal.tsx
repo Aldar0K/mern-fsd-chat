@@ -19,7 +19,8 @@ import { FC, useState } from 'react';
 import { shallow } from 'zustand/shallow';
 
 import { ChatState, useAddUser, useChatStore, useRemoveUser, useRenameChat } from 'entities/Chat';
-import { User, useSearchUsers, useUserStore } from 'entities/User';
+import { User, useSearchUsers } from 'entities/User';
+import { viewerModel } from 'entities/viewer';
 import { useNotify } from 'shared/lib';
 
 import { ChatsLoader, UserBadgeItem, UserListItem } from 'components';
@@ -31,7 +32,7 @@ const selector = (state: ChatState) => ({
 
 const UpdateGroupModal: FC = () => {
   const notify = useNotify();
-  const user = useUserStore(state => state.user);
+  const viewer = viewerModel.useViewerStore(state => state.viewer);
   const { selectedChat, setSelectedChat } = useChatStore(selector, shallow);
   const [groupChatName, setGroupChatName] = useState<string>('');
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -59,12 +60,12 @@ const UpdateGroupModal: FC = () => {
   };
 
   const handleAddUser = async (userToAdd: User) => {
-    if (!selectedChat || !user) return;
+    if (!selectedChat || !viewer) return;
     if (selectedChat.users.find(user => user._id === userToAdd._id)) {
       notify({ text: 'User already in the group', type: 'error' });
       return;
     }
-    if (selectedChat.groupAdmin?._id !== user._id) {
+    if (selectedChat.groupAdmin?._id !== viewer._id) {
       notify({ text: 'Only administrators can add someone to the group', type: 'error' });
       return;
     }
@@ -74,8 +75,8 @@ const UpdateGroupModal: FC = () => {
   };
 
   const handleRemoveUser = async (userToRemove: User) => {
-    if (!selectedChat || !user) return;
-    if (selectedChat.groupAdmin?._id !== user._id) {
+    if (!selectedChat || !viewer) return;
+    if (selectedChat.groupAdmin?._id !== viewer._id) {
       notify({ text: 'Only administrators can remove someone from the group', type: 'error' });
       return;
     }
@@ -84,12 +85,12 @@ const UpdateGroupModal: FC = () => {
       chatId: selectedChat._id,
       userId: userToRemove._id
     });
-    userToRemove._id === user._id ? setSelectedChat(null) : setSelectedChat(updatedChat);
+    userToRemove._id === viewer._id ? setSelectedChat(null) : setSelectedChat(updatedChat);
   };
 
   return (
     <>
-      {selectedChat && user && (
+      {selectedChat && viewer && (
         <>
           <IconButton
             display={{ base: 'flex' }}
@@ -163,7 +164,7 @@ const UpdateGroupModal: FC = () => {
               </ModalBody>
 
               <ModalFooter>
-                <Button onClick={() => handleRemoveUser(user)} colorScheme='red'>
+                <Button onClick={() => handleRemoveUser(viewer)} colorScheme='red'>
                   Leave Group
                 </Button>
               </ModalFooter>

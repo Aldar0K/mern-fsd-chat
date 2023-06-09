@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 
-import { User, apiUser, useUserStore } from 'entities/User';
+import { User, apiUser } from 'entities/User';
+import { viewerModel } from 'entities/viewer';
 import { ROUTES } from 'shared/const';
 import { useHandleError, useNotify, useToggle } from 'shared/lib';
 import { useAuthStore } from '../auth-store';
@@ -8,7 +9,7 @@ import { useAuthStore } from '../auth-store';
 export const useAuth = () => {
   const navigate = useNavigate();
   const handleError = useHandleError();
-  const setUser = useUserStore(state => state.setUser);
+  const setViewer = viewerModel.useViewerStore(state => state.setViewer);
   const setAuth = useAuthStore(state => state.setAuth);
   const notify = useNotify();
   const [isLoading, toggleLoading] = useToggle(false);
@@ -20,7 +21,7 @@ export const useAuth = () => {
       const user = await apiUser.login(email, password);
       notify({ text: 'Login successful', type: 'success' });
       _saveCredentials(user);
-      setUser(user);
+      setViewer(user);
       setAuth(true);
       navigate(ROUTES.CHATS);
     } catch (error) {
@@ -37,7 +38,7 @@ export const useAuth = () => {
       const user = await apiUser.register(name, email, password, imageUrl);
       notify({ text: 'Registration successful', type: 'success' });
       _saveCredentials(user);
-      setUser(user);
+      setViewer(user);
       setAuth(true);
       navigate(ROUTES.CHATS);
     } catch (error) {
@@ -49,7 +50,7 @@ export const useAuth = () => {
 
   const logout = () => {
     _clearCredentials();
-    setUser(null);
+    setViewer(null);
     setAuth(false);
     navigate(ROUTES.HOME);
   };

@@ -2,7 +2,7 @@ import { Box } from '@chakra-ui/react';
 import { FC } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
-import { useUserStore } from 'entities/User';
+import { viewerModel } from 'entities/viewer';
 import { ROUTES } from 'shared/const';
 import styles from './ChatsPage.module.scss';
 
@@ -10,7 +10,7 @@ import { Header } from 'components';
 import { ChatBox, ChatBoxPlaceholder, ChatList } from './components';
 
 const ChatsPage: FC = () => {
-  const user = useUserStore(state => state.user);
+  const viewer = viewerModel.useViewerStore(state => state.viewer);
 
   return (
     <div className='wrapper'>
@@ -19,7 +19,7 @@ const ChatsPage: FC = () => {
       <main className='main'>
         <div className={`container ${styles.container}`}>
           <Box display='flex' h='93.5vh' w='100%' p='10px' justifyContent='space-between'>
-            {user && (
+            {viewer && (
               <>
                 <ChatList />
                 <Routes>

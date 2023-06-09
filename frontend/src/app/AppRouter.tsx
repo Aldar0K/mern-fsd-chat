@@ -1,17 +1,17 @@
 import { FC } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
-import { useUserStore } from 'entities/User';
+import { viewerModel } from 'entities/viewer';
 import { ROUTES } from 'shared/const';
 
 import { ChatsPage, HomePage } from 'pages';
 
 const AppRouter: FC = () => {
-  const user = useUserStore(state => state.user);
+  const viewer = viewerModel.useViewerStore(state => state.viewer);
 
   return (
     <>
-      {user ? (
+      {viewer ? (
         <Routes>
           <Route index path={`${ROUTES.CHATS}/*`} Component={ChatsPage} />
           <Route path='*' Component={ChatsPage} />

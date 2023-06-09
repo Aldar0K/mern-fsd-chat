@@ -18,7 +18,8 @@ import { shallow } from 'zustand/shallow';
 
 import { useAuth } from 'entities/Auth';
 import { NotificationState, useNotificationStore } from 'entities/Message';
-import { getSender, useUserStore } from 'entities/User';
+import { getSender } from 'entities/User';
+import { viewerModel } from 'entities/viewer';
 import { ROUTES } from 'shared/const';
 
 import { ProfileModal, SearchUserDrawer } from 'components';
@@ -31,14 +32,14 @@ const selector = (state: NotificationState) => ({
 
 const HeaderAuth: FC = () => {
   const { notifications, removeNotification } = useNotificationStore(selector, shallow);
-  const user = useUserStore(state => state.user);
+  const viewer = viewerModel.useViewerStore(state => state.viewer);
   const navigate = useNavigate();
   const { logout } = useAuth();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
-      {user && (
+      {viewer && (
         <>
           <Box
             display='flex'
@@ -78,7 +79,7 @@ const HeaderAuth: FC = () => {
                     >
                       {notification.chat.isGroupChat
                         ? `New message in ${notification.chat.chatName}`
-                        : `New message from ${getSender(user, notification.chat.users)}`}
+                        : `New message from ${getSender(viewer, notification.chat.users)}`}
                     </MenuItem>
                   ))}
                 </MenuList>
@@ -86,10 +87,10 @@ const HeaderAuth: FC = () => {
 
               <Menu>
                 <MenuButton as={Button} rightIcon={<ChevronDownIcon />} px={2}>
-                  <Avatar src={user.image} name={user.name} size='sm' cursor='pointer' />
+                  <Avatar src={viewer.image} name={viewer.name} size='sm' cursor='pointer' />
                 </MenuButton>
                 <MenuList>
-                  <ProfileModal user={user}>
+                  <ProfileModal user={viewer}>
                     <MenuItem>My profile</MenuItem>
                   </ProfileModal>
                   <MenuDivider />

@@ -9,14 +9,14 @@ import {
   isSameUser,
   Message
 } from 'entities/Message';
-import { useUserStore } from 'entities/User';
+import { viewerModel } from 'entities/viewer';
 
 interface ScrollableChatProps {
   messages: Message[];
 }
 
 const ScrollableChat: FC<ScrollableChatProps> = ({ messages }) => {
-  const user = useUserStore(state => state.user);
+  const viewer = viewerModel.useViewerStore(state => state.viewer);
   const virtuosoRef = useRef<VirtuosoHandle>(null);
   const [showButton, setShowButton] = useState<boolean>(false);
   const [atBottom, setAtBottom] = useState<boolean>(false);
@@ -27,7 +27,7 @@ const ScrollableChat: FC<ScrollableChatProps> = ({ messages }) => {
     }
   }, [atBottom, setShowButton]);
 
-  if (!user) return null;
+  if (!viewer) return null;
   return (
     <Virtuoso
       ref={virtuosoRef}
@@ -42,8 +42,8 @@ const ScrollableChat: FC<ScrollableChatProps> = ({ messages }) => {
       itemContent={(index, message) => (
         <>
           <div key={message._id} style={{ display: 'flex' }}>
-            {(isSameSender(messages, message, index, user._id) ||
-              isLastMessage(messages, index, user._id)) && (
+            {(isSameSender(messages, message, index, viewer._id) ||
+              isLastMessage(messages, index, viewer._id)) && (
               <Tooltip label={message.sender.name} placement='bottom-start' hasArrow>
                 <Avatar
                   name={message.sender.name}
@@ -58,11 +58,11 @@ const ScrollableChat: FC<ScrollableChatProps> = ({ messages }) => {
 
             <span
               style={{
-                marginLeft: isSameSenderMargin(messages, message, index, user._id),
+                marginLeft: isSameSenderMargin(messages, message, index, viewer._id),
                 marginTop: isSameUser(messages, message, index) ? 3 : 10,
                 maxWidth: '75%',
                 padding: '5px 15px',
-                backgroundColor: `${message.sender._id === user._id ? '#BEE3F8' : '#B9F5D0'}`,
+                backgroundColor: `${message.sender._id === viewer._id ? '#BEE3F8' : '#B9F5D0'}`,
                 borderRadius: '20px'
               }}
             >

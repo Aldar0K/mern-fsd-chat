@@ -1,18 +1,18 @@
 import { FC } from 'react';
 
-import { useUserStore } from 'entities/User';
+import { viewerModel } from 'entities/viewer';
 import styles from './Header.module.scss';
 
 // TODO add HeaderDefault variant for unauthorized users?
 import { HeaderAuth } from './variants';
 
 const Header: FC = () => {
-  const user = useUserStore(state => state.user);
+  const viewer = viewerModel.useViewerStore(state => state.viewer);
 
   return (
     <header className={styles.header}>
       <div className={`container ${styles.container}`}>
-        {user ? <HeaderAuth /> : <h2>HeaderDefault</h2>}
+        {viewer ? <HeaderAuth /> : <h2>HeaderDefault</h2>}
       </div>
     </header>
   );

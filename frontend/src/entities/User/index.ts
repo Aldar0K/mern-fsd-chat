@@ -9,4 +9,3 @@ export { useSearchUserQuery } from './lib/hooks/useSearchUserQuery';
 export { useSearchUsers } from './lib/hooks/useSearchUsers';
 // model
 export type { User } from './model/types';
-export { useUserStore } from './model/user-store';
