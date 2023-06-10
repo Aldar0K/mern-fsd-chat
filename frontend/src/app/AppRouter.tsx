@@ -7,11 +7,11 @@ import { ROUTES } from 'shared/const';
 import { ChatsPage, HomePage } from 'pages';
 
 const AppRouter: FC = () => {
-  const viewer = viewerModel.useViewerStore(state => state.viewer);
+  const isAuth = viewerModel.useAuth();
 
   return (
     <>
-      {viewer ? (
+      {isAuth ? (
         <Routes>
           <Route index path={`${ROUTES.CHATS}/*`} Component={ChatsPage} />
           <Route path='*' Component={ChatsPage} />
