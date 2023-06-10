@@ -1,5 +1,5 @@
 // api
-export { apiUser } from './api/api-user';
+export * as userApi from './api/api-user';
 // components
 export { UserCard } from './components/UserCard';
 // lib

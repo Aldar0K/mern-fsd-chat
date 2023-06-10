@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 
-import { User, apiUser } from 'entities/User';
+import { User } from 'entities/User';
 import { viewerApi, viewerModel } from 'entities/viewer';
 import { ROUTES } from 'shared/const';
 import { useHandleError, useNotify, useToggle } from 'shared/lib';
