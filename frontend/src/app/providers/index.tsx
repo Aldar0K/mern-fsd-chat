@@ -1,9 +1,8 @@
-import { compose } from 'shared/helpers';
+import { compose } from 'ramda';
+
 import withAuth from './withAuth';
 import withChakraUi from './withChakraUi';
 import withQueryClient from './withQueryClient';
 import withRouter from './withRouter';
 
-export { withAuth, withChakraUi, withQueryClient, withRouter };
-
-export const withProviders = compose(withAuth, withQueryClient);
+export const withProviders = compose(withRouter, withAuth, withQueryClient, withChakraUi);
