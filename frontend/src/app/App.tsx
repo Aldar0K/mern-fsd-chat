@@ -1,16 +1,10 @@
-import { Suspense } from 'react';
-
 import './styles/main.scss';
 
 import AppRouter from './AppRouter';
-import { withAuth, withChakraUi, withQueryClient } from './providers';
+import { withAuth, withChakraUi, withQueryClient, withRouter } from './providers';
 
 const App = () => {
-  return (
-    <Suspense fallback={<h2>Loading...</h2>}>
-      <AppRouter />
-    </Suspense>
-  );
+  return <AppRouter />;
 };
 
-export default withChakraUi(withQueryClient(withAuth(App)));
+export default withRouter(withChakraUi(withQueryClient(withAuth(App))));
