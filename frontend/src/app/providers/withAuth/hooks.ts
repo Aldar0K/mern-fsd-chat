@@ -1,5 +1,6 @@
 import { useAuth } from 'entities/Auth';
 import { instance } from 'shared/api';
+import { getToken } from './utils';
 
 export const useIntercept = () => {
   const { logout } = useAuth();
@@ -21,7 +22,7 @@ export const useIntercept = () => {
   instance.interceptors.request.use(
     config => {
       config.headers = {
-        Authorization: `Bearer ${localStorage.getItem('token')}`
+        Authorization: `Bearer ${getToken()}`
       };
       return config;
     },
@@ -33,7 +34,7 @@ export const useIntercept = () => {
   instance.interceptors.response.use(
     config => {
       config.headers = {
-        Authorization: `Bearer ${localStorage.getItem('token')}`
+        Authorization: `Bearer ${getToken()}`
       };
       return config;
     },

@@ -1,10 +1,11 @@
 import { ChakraProvider } from '@chakra-ui/react';
-import { FC, Suspense } from 'react';
+import { Suspense } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
 import './styles/main.scss';
 
 import AppRouter from './AppRouter';
+import { withProviders } from './providers';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -14,7 +15,7 @@ const queryClient = new QueryClient({
   }
 });
 
-const App: FC = () => {
+const App = () => {
   return (
     <ChakraProvider>
       <QueryClientProvider client={queryClient}>
@@ -26,4 +27,4 @@ const App: FC = () => {
   );
 };
 
-export default App;
+export default withProviders(App);

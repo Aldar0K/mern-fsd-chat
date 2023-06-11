@@ -1,5 +1,5 @@
 // lib
-export { getToken } from './lib/helpers/getToken';
+
 // components
 export { LoginForm } from './components/LoginForm';
 export { SignupForm } from './components/SignupForm';
