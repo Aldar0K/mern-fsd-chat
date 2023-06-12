@@ -4,7 +4,7 @@ import { Route, Routes } from 'react-router-dom';
 import { viewerModel } from 'entities/viewer';
 import { ROUTES } from 'shared/const';
 
-import { ChatsPage, HomePage } from 'pages';
+import { AuthPage, ChatsPage } from 'pages';
 
 const AppRouter: FC = () => {
   const isAuth = viewerModel.useAuth();
@@ -18,8 +18,8 @@ const AppRouter: FC = () => {
         </Routes>
       ) : (
         <Routes>
-          <Route index path={ROUTES.HOME} Component={HomePage} />
-          <Route path='*' Component={HomePage} />
+          <Route index path={ROUTES.HOME} Component={AuthPage} />
+          <Route path='*' Component={AuthPage} />
         </Routes>
       )}
     </>

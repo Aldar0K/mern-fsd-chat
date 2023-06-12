@@ -1,2 +1,2 @@
+export * from './AuthPage';
 export * from './ChatsPage';
-export * from './HomePage';
