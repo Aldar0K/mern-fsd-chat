@@ -1,7 +1,7 @@
 import { Box, Container, Tab, TabList, TabPanel, TabPanels, Tabs, Text } from '@chakra-ui/react';
 import { FC } from 'react';
 
-import { LoginForm, SignupForm } from 'entities/Auth';
+import { LoginForm, SignupForm } from 'features/auth';
 
 const AuthPage: FC = () => {
   return (
