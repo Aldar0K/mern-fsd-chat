@@ -13,7 +13,7 @@ import {
   ModalOverlay,
   Text
 } from '@chakra-ui/react';
-import { User } from 'entities/User';
+import { User } from 'entities/user';
 import { FC } from 'react';
 
 interface ProfileModalProps {

@@ -16,8 +16,8 @@ import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { shallow } from 'zustand/shallow';
 
-import { NotificationState, useNotificationStore } from 'entities/Message';
-import { getSender } from 'entities/User';
+import { NotificationState, useNotificationStore } from 'entities/message';
+import { getSender } from 'entities/user';
 import { viewerModel } from 'entities/viewer';
 import { useLogout } from 'features/auth';
 import { ROUTES } from 'shared/const';

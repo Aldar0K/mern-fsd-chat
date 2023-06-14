@@ -18,8 +18,8 @@ import {
 import { FC, useState } from 'react';
 import { shallow } from 'zustand/shallow';
 
-import { ChatState, useAddUser, useChatStore, useRemoveUser, useRenameChat } from 'entities/Chat';
-import { User, useSearchUsers } from 'entities/User';
+import { ChatState, useAddUser, useChatStore, useRemoveUser, useRenameChat } from 'entities/chat';
+import { User, useSearchUsers } from 'entities/user';
 import { viewerModel } from 'entities/viewer';
 import { useNotify } from 'shared/lib';
 
