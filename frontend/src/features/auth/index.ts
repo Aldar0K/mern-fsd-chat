@@ -1,1 +1,2 @@
-export { LoginForm, SignupForm, useLogin } from './login';
+export { LoginForm, useLogin } from './login';
+export { SignupForm, useRegister } from './registration';

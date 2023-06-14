@@ -11,12 +11,12 @@ import {
 import axios from 'axios';
 import { FC, useState } from 'react';
 
-import { useAuth } from 'entities/Auth';
 import { useToggle } from 'shared/lib';
+import { useRegister } from '../../hooks';
 
 const SignupForm: FC = () => {
   const toast = useToast();
-  const { register, isLoading: authLoading } = useAuth();
+  const [register, authLoading] = useRegister();
 
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
