@@ -10,16 +10,14 @@ import {
 } from '@chakra-ui/react';
 import { FC, useState } from 'react';
 
-import { useAuth } from 'entities/Auth';
 import { useToggle } from 'shared/lib';
+import { useLogin } from '../../hooks';
 
 const LoginForm: FC = () => {
   const toast = useToast();
-  const { login, isLoading } = useAuth();
-
+  const [login, isLoading] = useLogin();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-
   const [showPassword, toggleShowPassword] = useToggle(false);
 
   const submitHandler = async () => {

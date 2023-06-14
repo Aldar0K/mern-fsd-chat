@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { viewerApi, viewerModel } from 'entities/viewer';
 import { ROUTES } from 'shared/const';
 import { useHandleError, useNotify, useToggle } from 'shared/lib';
-import { clearCredentials, saveCredentials } from '../utils';
+import { saveCredentials } from '../utils';
 
-export const useAuth = () => {
+export const useLogin = () => {
   const navigate = useNavigate();
   const handleError = useHandleError();
   const setViewer = viewerModel.useViewerStore(state => state.setViewer);
@@ -28,27 +28,5 @@ export const useAuth = () => {
     toggleLoading();
   };
 
-  const register = async (name: string, email: string, password: string, imageUrl: string) => {
-    toggleLoading();
-
-    try {
-      const user = await viewerApi.register(name, email, password, imageUrl);
-      notify({ text: 'Registration successful', type: 'success' });
-      saveCredentials(user);
-      setViewer(user);
-      navigate(ROUTES.CHATS);
-    } catch (error) {
-      handleError(error);
-    }
-
-    toggleLoading();
-  };
-
-  const logout = () => {
-    clearCredentials();
-    setViewer(null);
-    navigate(ROUTES.HOME);
-  };
-
-  return { login, register, logout, isLoading };
+  return [login, isLoading] as const;
 };
