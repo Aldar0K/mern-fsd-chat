@@ -16,10 +16,10 @@ import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { shallow } from 'zustand/shallow';
 
-import { useAuth } from 'entities/Auth';
 import { NotificationState, useNotificationStore } from 'entities/Message';
 import { getSender } from 'entities/User';
 import { viewerModel } from 'entities/viewer';
+import { useLogout } from 'features/auth';
 import { ROUTES } from 'shared/const';
 
 import { ProfileModal, SearchUserDrawer } from 'components';
@@ -34,7 +34,7 @@ const HeaderAuth: FC = () => {
   const { notifications, removeNotification } = useNotificationStore(selector, shallow);
   const viewer = viewerModel.useViewerStore(state => state.viewer);
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const logout = useLogout();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (

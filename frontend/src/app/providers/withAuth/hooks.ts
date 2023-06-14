@@ -1,9 +1,9 @@
-import { useAuth } from 'entities/Auth';
+import { useLogout } from 'features/auth';
 import { instance } from 'shared/api';
 import { getToken } from './utils';
 
 export const useIntercept = () => {
-  const { logout } = useAuth();
+  const logout = useLogout();
 
   instance.interceptors.response.use(
     response => {
