@@ -1,7 +1,7 @@
 // api
 export * as userApi from './api/api-user';
-// components
-export { UserCard } from './components/UserCard';
+// ui
+export { UserBadgeItem, UserCard, UserListItem } from './ui';
 // lib
 export { getSender } from './lib/helpers/getSender';
 export { getSenderFull } from './lib/helpers/getSenderFull';

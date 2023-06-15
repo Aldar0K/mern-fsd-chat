@@ -19,10 +19,10 @@ import { FC, useState } from 'react';
 import { shallow } from 'zustand/shallow';
 
 import { ChatState, useAddUser, useChatStore, useRemoveUser, useRenameChat } from 'entities/chat';
-import { User, useSearchUsers } from 'entities/user';
+import { User, UserListItem, useSearchUsers } from 'entities/user';
 import { viewerModel } from 'entities/viewer';
 import { useNotify } from 'shared/lib';
-import { ChatsLoader, UserBadgeItem, UserListItem } from 'shared/ui';
+import { ChatsLoader, UserBadgeItem } from 'shared/ui';
 
 const selector = (state: ChatState) => ({
   selectedChat: state.selectedChat,
