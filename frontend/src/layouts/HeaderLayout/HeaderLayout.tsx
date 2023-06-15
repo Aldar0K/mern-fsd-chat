@@ -1,6 +1,6 @@
 import { FC, ReactNode } from 'react';
 
-import { Header } from 'components';
+import { Header } from 'shared/ui';
 
 interface HeaderLayoutProps {
   children: ReactNode;

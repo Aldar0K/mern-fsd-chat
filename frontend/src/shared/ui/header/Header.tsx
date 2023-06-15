@@ -3,8 +3,9 @@ import { FC } from 'react';
 import { viewerModel } from 'entities/viewer';
 import styles from './Header.module.scss';
 
+import { HeaderAuth } from 'shared/ui/header-auth';
+
 // TODO add HeaderDefault variant for unauthorized users?
-import { HeaderAuth } from './variants';
 
 const Header: FC = () => {
   const viewer = viewerModel.useViewerStore(state => state.viewer);

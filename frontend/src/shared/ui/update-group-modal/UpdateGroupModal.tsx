@@ -22,8 +22,7 @@ import { ChatState, useAddUser, useChatStore, useRemoveUser, useRenameChat } fro
 import { User, useSearchUsers } from 'entities/user';
 import { viewerModel } from 'entities/viewer';
 import { useNotify } from 'shared/lib';
-
-import { ChatsLoader, UserBadgeItem, UserListItem } from 'components';
+import { ChatsLoader, UserBadgeItem, UserListItem } from 'shared/ui';
 
 const selector = (state: ChatState) => ({
   selectedChat: state.selectedChat,

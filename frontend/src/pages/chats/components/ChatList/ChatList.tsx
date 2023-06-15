@@ -8,8 +8,7 @@ import { ChatState, useChatStore, useChats } from 'entities/chat';
 import { getSender } from 'entities/user';
 import { viewerModel } from 'entities/viewer';
 import { ROUTES } from 'shared/const';
-
-import { AddGroupModal } from 'components';
+import { AddGroupModal } from 'shared/ui';
 
 const selector = (state: ChatState) => ({
   setChats: state.setChats,

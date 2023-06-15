@@ -21,8 +21,7 @@ import { getSender } from 'entities/user';
 import { viewerModel } from 'entities/viewer';
 import { useLogout } from 'features/auth';
 import { ROUTES } from 'shared/const';
-
-import { ProfileModal, SearchUserDrawer } from 'components';
+import { ProfileModal, SearchUserDrawer } from 'shared/ui';
 
 const selector = (state: NotificationState) => ({
   notifications: state.notifications,

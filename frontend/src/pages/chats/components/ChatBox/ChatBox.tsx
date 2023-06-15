@@ -19,7 +19,7 @@ import { viewerModel } from 'entities/viewer';
 import animationData from 'shared/animations/typing.json';
 import styles from './ChatBox.module.scss';
 
-import { ProfileModal, UpdateGroupModal } from 'components';
+import { ProfileModal, UpdateGroupModal } from 'shared/ui';
 import { ScrollableChat } from '..';
 
 // TODO move to "types" or "interfaces".

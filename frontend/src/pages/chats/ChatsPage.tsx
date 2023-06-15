@@ -6,7 +6,7 @@ import { viewerModel } from 'entities/viewer';
 import { ROUTES } from 'shared/const';
 import styles from './ChatsPage.module.scss';
 
-import { Header } from 'components';
+import { Header } from 'shared/ui';
 import { ChatBox, ChatBoxPlaceholder, ChatList } from './components';
 
 const ChatsPage: FC = () => {

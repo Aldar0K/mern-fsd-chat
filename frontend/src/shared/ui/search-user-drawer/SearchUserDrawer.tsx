@@ -13,7 +13,7 @@ import { FC } from 'react';
 
 import { UserCard, useSearchUsers } from 'entities/user';
 
-import { ChatsLoader } from 'components';
+import { ChatsLoader } from 'shared/ui/chats-loader';
 
 const SearchUserDrawer: FC<Omit<DrawerProps, 'children'>> = ({ onClose, ...props }) => {
   const [value, setValue, searchResults, searchLoading] = useSearchUsers();

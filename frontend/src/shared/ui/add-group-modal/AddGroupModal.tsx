@@ -22,8 +22,7 @@ import { shallow } from 'zustand/shallow';
 import { ChatState, useChatStore, useCreateGroup } from 'entities/chat';
 import { User, useSearchUsers } from 'entities/user';
 import { useNotify } from 'shared/lib';
-
-import { UserBadgeItem, UserListItem } from 'components';
+import { UserBadgeItem, UserListItem } from 'shared/ui';
 
 const selector = (state: ChatState) => ({
   chats: state.chats,
