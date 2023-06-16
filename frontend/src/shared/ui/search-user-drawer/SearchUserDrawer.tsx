@@ -11,12 +11,12 @@ import {
 } from '@chakra-ui/react';
 import { FC } from 'react';
 
-import { UserCard, useSearchUsers } from 'entities/user';
+import { UserCard, userModel } from 'entities/user';
 
 import { ChatsLoader } from 'shared/ui/chats-loader';
 
 const SearchUserDrawer: FC<Omit<DrawerProps, 'children'>> = ({ onClose, ...props }) => {
-  const [value, setValue, searchResults, searchLoading] = useSearchUsers();
+  const [value, setValue, searchResults, searchLoading] = userModel.useSearchUsers();
 
   return (
     <Drawer onClose={onClose} {...props}>

@@ -19,7 +19,7 @@ import { FC, useState } from 'react';
 import { shallow } from 'zustand/shallow';
 
 import { ChatState, useAddUser, useChatStore, useRemoveUser, useRenameChat } from 'entities/chat';
-import { User, UserListItem, useSearchUsers } from 'entities/user';
+import { User, UserListItem, userModel } from 'entities/user';
 import { viewerModel } from 'entities/viewer';
 import { useNotify } from 'shared/lib';
 import { ChatsLoader, UserBadgeItem } from 'shared/ui';
@@ -38,7 +38,7 @@ const UpdateGroupModal: FC = () => {
   const { mutateAsync: renameChatMutate, isLoading: renameChatLoading } = useRenameChat();
   const { mutateAsync: addUserMutate, isLoading: addUserLoading } = useAddUser();
   const { mutateAsync: removeUserMutate, isLoading: removeUserLoading } = useRemoveUser();
-  const [value, setValue, searchResults, searchLoading] = useSearchUsers();
+  const [value, setValue, searchResults, searchLoading] = userModel.useSearchUsers();
 
   const handleRename = async () => {
     if (!selectedChat) return;

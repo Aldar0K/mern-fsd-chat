@@ -20,7 +20,7 @@ import { FC, useState } from 'react';
 import { shallow } from 'zustand/shallow';
 
 import { ChatState, useChatStore, useCreateGroup } from 'entities/chat';
-import { User, UserListItem, useSearchUsers } from 'entities/user';
+import { User, UserListItem, userModel } from 'entities/user';
 import { useNotify } from 'shared/lib';
 import { UserBadgeItem } from 'shared/ui';
 
@@ -41,7 +41,7 @@ const AddGroupModal: FC<AddGroupModalProps> = ({ children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [groupChatName, setGroupChatName] = useState<string>('');
   const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
-  const [value, setValue, searchResults, searchLoading] = useSearchUsers();
+  const [value, setValue, searchResults, searchLoading] = userModel.useSearchUsers();
 
   const handleAddUser = (userToAdd: User) => {
     if (selectedUsers.includes(userToAdd)) {

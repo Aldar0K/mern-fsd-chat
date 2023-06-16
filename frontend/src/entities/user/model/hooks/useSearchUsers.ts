@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
-import { useSearchUserQuery } from 'entities/user';
 import { useDebounce } from 'shared/lib';
+import { useSearchUserQuery } from './useSearchUserQuery';
 
 export const useSearchUsers = (initialValue = '') => {
   const [value, setValue] = useState<string>(initialValue);
