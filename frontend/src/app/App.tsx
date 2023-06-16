@@ -1,6 +1,6 @@
 import './styles/main.scss';
 
-import AppRouter from './AppRouter';
+import { AppRouter } from 'pages';
 import { withProviders } from './providers';
 
 const App = () => {
