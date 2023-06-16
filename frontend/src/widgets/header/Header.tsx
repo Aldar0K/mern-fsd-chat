@@ -3,7 +3,7 @@ import { FC } from 'react';
 import { viewerModel } from 'entities/viewer';
 import styles from './Header.module.scss';
 
-import { HeaderAuth } from 'shared/ui/header-auth';
+import { HeaderAuth } from './variants';
 
 // TODO add HeaderDefault variant for unauthorized users?
 
