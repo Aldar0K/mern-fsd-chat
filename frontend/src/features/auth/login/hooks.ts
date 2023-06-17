@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { viewerApi, viewerModel } from 'entities/viewer';
 import { ROUTES } from 'shared/const';
-import { useHandleError, useNotify, useToggle } from 'shared/lib';
+import { useHandleError, useNotify, useToggle } from 'shared/lib/hooks';
 import { saveCredentials } from '../utils';
 
 export const useLogin = () => {

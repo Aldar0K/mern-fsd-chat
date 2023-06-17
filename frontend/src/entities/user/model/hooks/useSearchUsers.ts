@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { useDebounce } from 'shared/lib';
+import { useDebounce } from 'shared/lib/hooks';
 import { useSearchUserQuery } from './useSearchUserQuery';
 
 export const useSearchUsers = (initialValue = '') => {

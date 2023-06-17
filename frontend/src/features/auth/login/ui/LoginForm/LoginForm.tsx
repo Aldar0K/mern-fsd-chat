@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/react';
 import { FC, useState } from 'react';
 
-import { useToggle } from 'shared/lib';
+import { useToggle } from 'shared/lib/hooks';
 import { useLogin } from '../../hooks';
 
 const LoginForm: FC = () => {

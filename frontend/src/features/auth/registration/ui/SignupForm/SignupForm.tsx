@@ -11,7 +11,7 @@ import {
 import axios from 'axios';
 import { FC, useState } from 'react';
 
-import { useToggle } from 'shared/lib';
+import { useToggle } from 'shared/lib/hooks';
 import { useRegister } from '../../hooks';
 
 const SignupForm: FC = () => {

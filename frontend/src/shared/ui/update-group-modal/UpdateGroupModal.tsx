@@ -21,7 +21,7 @@ import { shallow } from 'zustand/shallow';
 import { ChatState, useAddUser, useChatStore, useRemoveUser, useRenameChat } from 'entities/chat';
 import { User, UserListItem, userModel } from 'entities/user';
 import { viewerModel } from 'entities/viewer';
-import { useNotify } from 'shared/lib';
+import { useNotify } from 'shared/lib/hooks';
 import { ChatsLoader, UserBadgeItem } from 'shared/ui';
 
 const selector = (state: ChatState) => ({
