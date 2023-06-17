@@ -16,12 +16,12 @@ import {
 import { User } from 'entities/user';
 import { FC } from 'react';
 
-interface ProfileModalProps {
+interface UserProfileModalProps {
   user: User;
   children?: JSX.Element;
 }
 
-const ProfileModal: FC<ProfileModalProps> = ({ user, children }) => {
+const UserProfileModal: FC<UserProfileModalProps> = ({ user, children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -64,4 +64,4 @@ const ProfileModal: FC<ProfileModalProps> = ({ user, children }) => {
   );
 };
 
-export default ProfileModal;
+export default UserProfileModal;

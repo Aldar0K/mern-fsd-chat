@@ -1,6 +1,4 @@
-export { UserBadgeItem } from '../../entities/user/ui/user-badge-item';
+export { Header } from '../../widgets/header';
 export { AddGroupModal } from './add-group-modal';
 export { ChatsLoader } from './chats-loader';
-export { Header } from '../../widgets/header';
-export { ProfileModal } from './profile-modal';
 export { UpdateGroupModal } from './update-group-modal';

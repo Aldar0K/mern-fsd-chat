@@ -14,12 +14,12 @@ import {
   useNotificationStore,
   useSendMessage
 } from 'entities/message';
-import { User, getSender, getSenderFull } from 'entities/user';
+import { User, UserProfileModal, getSender, getSenderFull } from 'entities/user';
 import { viewerModel } from 'entities/viewer';
 import animationData from 'shared/animations/typing.json';
 import styles from './ChatBox.module.scss';
 
-import { ProfileModal, UpdateGroupModal } from 'shared/ui';
+import { UpdateGroupModal } from 'shared/ui';
 import { ScrollableChat } from '..';
 
 // TODO move to "types" or "interfaces".
@@ -180,7 +180,7 @@ const ChatBox: FC = () => {
                 {viewer && (
                   <>
                     {getSender(viewer, selectedChat.users)}
-                    <ProfileModal user={getSenderFull(viewer, selectedChat.users)} />
+                    <UserProfileModal user={getSenderFull(viewer, selectedChat.users)} />
                   </>
                 )}
               </>
