@@ -6,9 +6,10 @@ import { viewerModel } from 'entities/viewer';
 import { ROUTES } from 'shared/const';
 import styles from './MainPage.module.scss';
 
-import { Header } from 'shared/ui';
+import { ChatBoxPlaceholder } from 'shared/ui';
 import { ChatBox } from 'widgets/chat-box';
-import { ChatBoxPlaceholder, ChatList } from './components';
+import { Header } from 'widgets/header';
+import { ChatList } from './components';
 
 const MainPage: FC = () => {
   const viewer = viewerModel.useViewer();

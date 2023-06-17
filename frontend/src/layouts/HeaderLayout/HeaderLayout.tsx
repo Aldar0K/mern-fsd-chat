@@ -1,10 +1,12 @@
 import { FC, ReactNode } from 'react';
 
-import { Header } from 'shared/ui';
+import { Header } from 'widgets/header';
 
 interface HeaderLayoutProps {
   children: ReactNode;
 }
+
+// TODO remove this component?
 
 const HeaderLayout: FC<HeaderLayoutProps> = ({ children }) => {
   return (

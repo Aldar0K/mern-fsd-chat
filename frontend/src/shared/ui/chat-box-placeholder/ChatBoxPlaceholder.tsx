@@ -1,7 +1,7 @@
 import { Box, Text } from '@chakra-ui/react';
 import { FC } from 'react';
 
-const ChatBox: FC = () => {
+const ChatBoxPlaceholder: FC = () => {
   return (
     <Box
       display='flex'
@@ -22,4 +22,4 @@ const ChatBox: FC = () => {
   );
 };
 
-export default ChatBox;
+export default ChatBoxPlaceholder;
