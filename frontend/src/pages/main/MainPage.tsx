@@ -8,8 +8,8 @@ import styles from './MainPage.module.scss';
 
 import { ChatBoxPlaceholder } from 'shared/ui';
 import { ChatBox } from 'widgets/chat-box';
+import { ChatList } from 'widgets/chat-list';
 import { Header } from 'widgets/header';
-import { ChatList } from './components';
 
 const MainPage: FC = () => {
   const viewer = viewerModel.useViewer();
