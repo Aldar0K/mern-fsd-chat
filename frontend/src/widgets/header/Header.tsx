@@ -1,11 +1,12 @@
+import { Box, Text } from '@chakra-ui/react';
 import { FC } from 'react';
 
 import { viewerModel } from 'entities/viewer';
 import styles from './Header.module.scss';
 
-import { HeaderAuth } from './variants';
-
-// TODO add HeaderDefault variant for unauthorized users?
+import { AuthToolbar } from 'features/auth-toolbar';
+import { NotificationBadge } from 'features/notification-badge';
+import { SearchUsers } from 'features/search-users';
 
 const Header: FC = () => {
   const isAuth = viewerModel.useAuth();
@@ -13,7 +14,22 @@ const Header: FC = () => {
   return (
     <header className={styles.header}>
       <div className={`container ${styles.container}`}>
-        {isAuth ? <HeaderAuth /> : <h2>HeaderDefault</h2>}
+        <Box
+          display='flex'
+          justifyContent='space-between'
+          alignItems='center'
+          bg='white'
+          w='100%'
+          p='5px 10px'
+          borderWidth='5px'
+        >
+          {isAuth && <SearchUsers />}
+          <Text fontSize='2xl'>Chat App</Text>
+          <div>
+            {isAuth && <NotificationBadge />}
+            {isAuth && <AuthToolbar />}
+          </div>
+        </Box>
       </div>
     </header>
   );
