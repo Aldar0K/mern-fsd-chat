@@ -17,7 +17,7 @@ const selector = (state: ChatState) => ({
 });
 
 const ChatList: FC = () => {
-  const viewer = viewerModel.useViewerStore(state => state.viewer);
+  const viewer = viewerModel.useViewer();
   const { setChats, selectedChat, setSelectedChat } = useChatStore(selector, shallow);
   const { data: chats, isLoading: chatsLoading } = useChats();
 

@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 import { Socket, io } from 'socket.io-client';
 import { shallow } from 'zustand/shallow';
 
-import { Chat, ChatState, useChatStore } from 'entities/chat';
+import { Chat, ChatState, ScrollableChat, useChatStore } from 'entities/chat';
 import {
   Message,
   NotificationState,
@@ -14,29 +14,13 @@ import {
   useNotificationStore,
   useSendMessage
 } from 'entities/message';
-import { User, UserProfileModal, getSender, getSenderFull } from 'entities/user';
+import { UserProfileModal, getSender, getSenderFull } from 'entities/user';
 import { viewerModel } from 'entities/viewer';
 import animationData from 'shared/animations/typing.json';
 import styles from './ChatBox.module.scss';
+import { ClientToServerEvents, ServerToClientEvents } from './types';
 
 import { UpdateGroupModal } from 'shared/ui';
-import { ScrollableChat } from '..';
-
-// TODO move to "types" or "interfaces".
-interface ServerToClientEvents {
-  connected: () => void;
-  typing: () => void;
-  stopTyping: () => void;
-  messageRecieved: (newMessage: Message) => void;
-}
-
-interface ClientToServerEvents {
-  setup: (user: User) => void;
-  joinChat: (chatId: string) => void;
-  newMessage: (newMessage: Message) => void;
-  typing: (chatId: string) => void;
-  stopTyping: (chatId: string) => void;
-}
 
 const ENDPONINT = 'http://localhost:8080';
 let socket: Socket<ServerToClientEvents, ClientToServerEvents>,
@@ -57,7 +41,7 @@ const notificationSelector = (state: NotificationState) => ({
 });
 
 const ChatBox: FC = () => {
-  const viewer = viewerModel.useViewerStore(state => state.viewer);
+  const viewer = viewerModel.useViewer();
   const { chats, selectedChat, setSelectedChat } = useChatStore(selector, shallow);
   const { notifications, addNotifications } = useNotificationStore(notificationSelector, shallow);
   const { chatId } = useParams<keyof Params>() as Params;

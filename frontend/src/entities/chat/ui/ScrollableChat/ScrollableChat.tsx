@@ -16,7 +16,7 @@ interface ScrollableChatProps {
 }
 
 const ScrollableChat: FC<ScrollableChatProps> = ({ messages }) => {
-  const viewer = viewerModel.useViewerStore(state => state.viewer);
+  const viewer = viewerModel.useViewer();
   const virtuosoRef = useRef<VirtuosoHandle>(null);
   const [showButton, setShowButton] = useState<boolean>(false);
   const [atBottom, setAtBottom] = useState<boolean>(false);

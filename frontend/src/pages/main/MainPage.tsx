@@ -7,10 +7,11 @@ import { ROUTES } from 'shared/const';
 import styles from './MainPage.module.scss';
 
 import { Header } from 'shared/ui';
-import { ChatBox, ChatBoxPlaceholder, ChatList } from './components';
+import { ChatBox } from 'widgets/chat-box';
+import { ChatBoxPlaceholder, ChatList } from './components';
 
 const MainPage: FC = () => {
-  const viewer = viewerModel.useViewerStore(state => state.viewer);
+  const viewer = viewerModel.useViewer();
 
   return (
     <div className='wrapper'>

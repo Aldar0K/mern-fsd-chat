@@ -31,7 +31,7 @@ const selector = (state: ChatState) => ({
 
 const UpdateGroupModal: FC = () => {
   const notify = useNotify();
-  const viewer = viewerModel.useViewerStore(state => state.viewer);
+  const viewer = viewerModel.useViewer();
   const { selectedChat, setSelectedChat } = useChatStore(selector, shallow);
   const [groupChatName, setGroupChatName] = useState<string>('');
   const { isOpen, onOpen, onClose } = useDisclosure();

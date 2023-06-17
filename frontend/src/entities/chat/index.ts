@@ -1,3 +1,4 @@
+// TODO update public api imports
 // api
 export { apiChat } from './api/api-chat';
 export type { AddUserDto, CreateGroupDto, RemoveUserDto, RenameChatDto } from './api/api-chat';
@@ -12,3 +13,5 @@ export { useAddUser } from './lib/hooks/useAddUser';
 export { useRemoveUser } from './lib/hooks/useRemoveUser';
 export { useCreateGroup } from './lib/hooks/useCreateGroup';
 export { useRenameChat } from './lib/hooks/useRenameChat';
+// ui
+export { ScrollableChat } from './ui';
