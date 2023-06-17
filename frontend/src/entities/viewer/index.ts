@@ -1,2 +1,4 @@
-export * as viewerApi from './api';
-export * as viewerModel from './model';
+import * as viewerApi from './api';
+import * as viewerModel from './model';
+
+export { viewerApi, viewerModel };

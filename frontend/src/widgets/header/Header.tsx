@@ -8,12 +8,12 @@ import { HeaderAuth } from './variants';
 // TODO add HeaderDefault variant for unauthorized users?
 
 const Header: FC = () => {
-  const viewer = viewerModel.useViewerStore(state => state.viewer);
+  const isAuth = viewerModel.useAuth();
 
   return (
     <header className={styles.header}>
       <div className={`container ${styles.container}`}>
-        {viewer ? <HeaderAuth /> : <h2>HeaderDefault</h2>}
+        {isAuth ? <HeaderAuth /> : <h2>HeaderDefault</h2>}
       </div>
     </header>
   );
