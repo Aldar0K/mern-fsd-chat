@@ -1,20 +1,20 @@
 import { useMutation } from 'react-query';
 
-import { RemoveUserDto, apiChat } from 'entities/chat';
+import { chatApi } from 'entities/chat';
 import { useHandleError, useInvalidate, useNotify } from 'shared/lib/hooks';
 
-export const useRemoveUser = () => {
+export const useCreateGroup = () => {
   const handleError = useHandleError();
   const notify = useNotify();
   const invalidate = useInvalidate();
 
   return useMutation(
-    (data: RemoveUserDto) => {
-      return apiChat.removeUser(data);
+    (createGroupDto: chatApi.CreateGroupDto) => {
+      return chatApi.createGroup(createGroupDto);
     },
     {
       onSuccess() {
-        notify({ text: 'User removed', type: 'success' });
+        notify({ text: 'Group created', type: 'success' });
         invalidate('/chat');
       },
       onError(error) {

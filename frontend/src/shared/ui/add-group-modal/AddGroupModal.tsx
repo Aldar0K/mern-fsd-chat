@@ -19,11 +19,11 @@ import {
 import { FC, useState } from 'react';
 import { shallow } from 'zustand/shallow';
 
-import { ChatState, useChatStore, useCreateGroup } from 'entities/chat';
+import { chatModel } from 'entities/chat';
 import { User, UserBadgeItem, UserListItem, userModel } from 'entities/user';
 import { useNotify } from 'shared/lib/hooks';
 
-const selector = (state: ChatState) => ({
+const selector = (state: chatModel.ChatState) => ({
   chats: state.chats,
   setChats: state.setChats,
   setSelectedChat: state.setSelectedChat
@@ -34,9 +34,10 @@ interface AddGroupModalProps {
 }
 
 const AddGroupModal: FC<AddGroupModalProps> = ({ children }) => {
-  const { chats, setChats, setSelectedChat } = useChatStore(selector, shallow);
+  const { chats, setChats, setSelectedChat } = chatModel.useChatStore(selector, shallow);
   const notify = useNotify();
-  const { mutateAsync: createGroupMutate, isLoading: createGroupLoading } = useCreateGroup();
+  const { mutateAsync: createGroupMutate, isLoading: createGroupLoading } =
+    chatModel.useCreateGroup();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [groupChatName, setGroupChatName] = useState<string>('');
   const [selectedUsers, setSelectedUsers] = useState<User[]>([]);

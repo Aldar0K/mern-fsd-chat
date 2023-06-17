@@ -1,7 +1,7 @@
 import { Avatar, Box, Spinner, Text } from '@chakra-ui/react';
 import { FC } from 'react';
 
-import { useAccessChat } from 'entities/chat';
+import { chatModel } from 'entities/chat';
 import { useToggle } from 'shared/lib/hooks';
 import { User } from '../../model/types';
 
@@ -11,7 +11,7 @@ interface UserCardProps {
 }
 
 const UserCard: FC<UserCardProps> = ({ user, onClose }) => {
-  const accessChat = useAccessChat();
+  const accessChat = chatModel.useAccessChat();
   const [isLoading, toggleLoading] = useToggle(false);
 
   const handleClick = async () => {

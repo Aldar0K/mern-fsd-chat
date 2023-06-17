@@ -1,12 +1,12 @@
 import { useQuery } from 'react-query';
 
-import { apiChat } from 'entities/chat';
 import { useHandleError } from 'shared/lib/hooks';
+import { getChats } from '../../api';
 
 export const useChats = () => {
   const handleError = useHandleError();
 
-  return useQuery(['/chat'], async () => await apiChat.getChats(), {
+  return useQuery(['/chat'], async () => await getChats(), {
     onError(error) {
       handleError(error);
     }

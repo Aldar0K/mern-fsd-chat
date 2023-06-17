@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 import { Socket, io } from 'socket.io-client';
 import { shallow } from 'zustand/shallow';
 
-import { Chat, ChatState, ScrollableChat, useChatStore } from 'entities/chat';
+import { ScrollableChat, chatModel } from 'entities/chat';
 import {
   Message,
   NotificationState,
@@ -24,11 +24,11 @@ import { UpdateGroupModal } from 'shared/ui';
 
 const ENDPONINT = 'http://localhost:8080';
 let socket: Socket<ServerToClientEvents, ClientToServerEvents>,
-  selectedChatCompare: Chat | undefined;
+  selectedChatCompare: chatModel.Chat | undefined;
 
 type Params = { chatId: string };
 
-const selector = (state: ChatState) => ({
+const selector = (state: chatModel.ChatState) => ({
   chats: state.chats,
   selectedChat: state.selectedChat,
   setSelectedChat: state.setSelectedChat
@@ -42,7 +42,7 @@ const notificationSelector = (state: NotificationState) => ({
 
 const ChatBox: FC = () => {
   const viewer = viewerModel.useViewer();
-  const { chats, selectedChat, setSelectedChat } = useChatStore(selector, shallow);
+  const { chats, selectedChat, setSelectedChat } = chatModel.useChatStore(selector, shallow);
   const { notifications, addNotifications } = useNotificationStore(notificationSelector, shallow);
   const { chatId } = useParams<keyof Params>() as Params;
   const [currentMessages, setCurrentMessages] = useState<Message[]>([]);

@@ -4,13 +4,13 @@ import { FC, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { shallow } from 'zustand/shallow';
 
-import { ChatState, useChatStore, useChats } from 'entities/chat';
+import { chatModel } from 'entities/chat';
 import { getSender } from 'entities/user';
 import { viewerModel } from 'entities/viewer';
 import { ROUTES } from 'shared/const';
 import { AddGroupModal } from 'shared/ui';
 
-const selector = (state: ChatState) => ({
+const selector = (state: chatModel.ChatState) => ({
   setChats: state.setChats,
   selectedChat: state.selectedChat,
   setSelectedChat: state.setSelectedChat
@@ -18,12 +18,14 @@ const selector = (state: ChatState) => ({
 
 const ChatList: FC = () => {
   const viewer = viewerModel.useViewer();
-  const { setChats, selectedChat, setSelectedChat } = useChatStore(selector, shallow);
-  const { data: chats, isLoading: chatsLoading } = useChats();
+  const { setChats, selectedChat, setSelectedChat } = chatModel.useChatStore(selector, shallow);
+  const { data: chats, isLoading: chatsLoading } = chatModel.useChats();
 
   useEffect(() => {
     chats && setChats(chats);
   }, [chats]);
+
+  if (!viewer) return null;
 
   return (
     <Box
@@ -86,8 +88,7 @@ const ChatList: FC = () => {
                         onClick={() => setSelectedChat(chat)}
                       >
                         <Text>
-                          {viewer &&
-                            (chat.isGroupChat ? chat.chatName : getSender(viewer, chat.users))}
+                          {chat.isGroupChat ? chat.chatName : getSender(viewer, chat.users)}
                         </Text>
                       </Box>
                     )}

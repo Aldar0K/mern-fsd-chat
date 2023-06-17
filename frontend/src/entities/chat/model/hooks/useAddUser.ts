@@ -1,6 +1,6 @@
 import { useMutation } from 'react-query';
 
-import { AddUserDto, apiChat } from 'entities/chat';
+import { chatApi } from 'entities/chat';
 import { useHandleError, useInvalidate, useNotify } from 'shared/lib/hooks';
 
 export const useAddUser = () => {
@@ -9,8 +9,8 @@ export const useAddUser = () => {
   const invalidate = useInvalidate();
 
   return useMutation(
-    (addUserDto: AddUserDto) => {
-      return apiChat.addUser(addUserDto);
+    (addUserDto: chatApi.AddUserDto) => {
+      return chatApi.addUser(addUserDto);
     },
     {
       onSuccess() {

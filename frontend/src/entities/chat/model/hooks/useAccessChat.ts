@@ -1,5 +1,6 @@
-import { apiChat, useChatStore } from 'entities/chat';
+import { chatApi } from 'entities/chat';
 import { useHandleError, useInvalidate, useNotify } from 'shared/lib/hooks';
+import { useChatStore } from '../chat-store';
 
 export const useAccessChat = () => {
   const handleError = useHandleError();
@@ -9,7 +10,7 @@ export const useAccessChat = () => {
 
   const accessChat = async (userId: string) => {
     try {
-      const chat = await apiChat.accessChat(userId);
+      const chat = await chatApi.accessChat(userId);
       notify({ text: 'Chat received', type: 'success' });
       setSelectedChat(chat);
       invalidate('/chat');

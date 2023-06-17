@@ -18,13 +18,13 @@ import {
 import { FC, useState } from 'react';
 import { shallow } from 'zustand/shallow';
 
-import { ChatState, useAddUser, useChatStore, useRemoveUser, useRenameChat } from 'entities/chat';
+import { chatModel } from 'entities/chat';
 import { User, UserBadgeItem, UserListItem, userModel } from 'entities/user';
 import { viewerModel } from 'entities/viewer';
 import { useNotify } from 'shared/lib/hooks';
 import { ChatsLoader } from 'shared/ui';
 
-const selector = (state: ChatState) => ({
+const selector = (state: chatModel.ChatState) => ({
   selectedChat: state.selectedChat,
   setSelectedChat: state.setSelectedChat
 });
@@ -32,12 +32,12 @@ const selector = (state: ChatState) => ({
 const UpdateGroupModal: FC = () => {
   const notify = useNotify();
   const viewer = viewerModel.useViewer();
-  const { selectedChat, setSelectedChat } = useChatStore(selector, shallow);
+  const { selectedChat, setSelectedChat } = chatModel.useChatStore(selector, shallow);
   const [groupChatName, setGroupChatName] = useState<string>('');
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { mutateAsync: renameChatMutate, isLoading: renameChatLoading } = useRenameChat();
-  const { mutateAsync: addUserMutate, isLoading: addUserLoading } = useAddUser();
-  const { mutateAsync: removeUserMutate, isLoading: removeUserLoading } = useRemoveUser();
+  const { mutateAsync: renameChatMutate, isLoading: renameChatLoading } = chatModel.useRenameChat();
+  const { mutateAsync: addUserMutate, isLoading: addUserLoading } = chatModel.useAddUser();
+  const { mutateAsync: removeUserMutate, isLoading: removeUserLoading } = chatModel.useRemoveUser();
   const [value, setValue, searchResults, searchLoading] = userModel.useSearchUsers();
 
   const handleRename = async () => {
