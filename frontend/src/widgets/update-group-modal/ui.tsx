@@ -15,12 +15,13 @@ import {
   Stack,
   useDisclosure
 } from '@chakra-ui/react';
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import { shallow } from 'zustand/shallow';
 
 import { chatModel } from 'entities/chat';
 import { User, UserBadgeItem, UserListItem, userModel } from 'entities/user';
 import { viewerModel } from 'entities/viewer';
+import { RenameGroupForm } from 'features/group';
 import { useNotify } from 'shared/lib/hooks';
 import { ChatsLoader } from 'shared/ui';
 
@@ -33,30 +34,10 @@ const UpdateGroupModal: FC = () => {
   const notify = useNotify();
   const viewer = viewerModel.useViewer();
   const { selectedChat, setSelectedChat } = chatModel.useChatStore(selector, shallow);
-  const [groupChatName, setGroupChatName] = useState<string>('');
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { mutateAsync: renameChatMutate, isLoading: renameChatLoading } = chatModel.useRenameChat();
   const { mutateAsync: addUserMutate, isLoading: addUserLoading } = chatModel.useAddUser();
   const { mutateAsync: removeUserMutate, isLoading: removeUserLoading } = chatModel.useRemoveUser();
   const [value, setValue, searchResults, searchLoading] = userModel.useSearchUsers();
-
-  const handleRename = async () => {
-    if (!selectedChat) return;
-    if (!groupChatName) {
-      notify({ text: 'Please enter a group name', type: 'warning' });
-      return;
-    }
-    if (groupChatName === selectedChat.chatName) {
-      notify({ text: 'Please enter a new group name', type: 'warning' });
-      return;
-    }
-
-    const updatedChat = await renameChatMutate({
-      chatId: selectedChat._id,
-      chatName: groupChatName
-    });
-    setSelectedChat(updatedChat);
-  };
 
   const handleAddUser = async (userToAdd: User) => {
     if (!selectedChat || !viewer) return;
@@ -118,23 +99,7 @@ const UpdateGroupModal: FC = () => {
                     />
                   ))}
                 </Box>
-                <FormControl display='flex'>
-                  <Input
-                    placeholder='Chat Name'
-                    mr={2}
-                    mb={3}
-                    value={groupChatName}
-                    onChange={e => setGroupChatName(e.target.value)}
-                  />
-                  <Button
-                    variant='solid'
-                    colorScheme='teal'
-                    isLoading={renameChatLoading}
-                    onClick={handleRename}
-                  >
-                    Update
-                  </Button>
-                </FormControl>
+                <RenameGroupForm className='mb-3' />
                 <FormControl>
                   <Input
                     mb={3}
