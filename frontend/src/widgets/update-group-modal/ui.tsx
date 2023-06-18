@@ -2,9 +2,7 @@ import { ViewIcon } from '@chakra-ui/icons';
 import {
   Box,
   Button,
-  FormControl,
   IconButton,
-  Input,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -12,18 +10,16 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Stack,
   useDisclosure
 } from '@chakra-ui/react';
 import { FC } from 'react';
 import { shallow } from 'zustand/shallow';
 
 import { chatModel } from 'entities/chat';
-import { User, UserBadgeItem, UserListItem, userModel } from 'entities/user';
+import { User, UserBadgeItem } from 'entities/user';
 import { viewerModel } from 'entities/viewer';
-import { RenameGroupForm } from 'features/group';
+import { AddUserForm, RenameGroupForm } from 'features/group';
 import { useNotify } from 'shared/lib/hooks';
-import { ChatsLoader } from 'shared/ui';
 
 const selector = (state: chatModel.ChatState) => ({
   selectedChat: state.selectedChat,
@@ -35,24 +31,7 @@ const UpdateGroupModal: FC = () => {
   const viewer = viewerModel.useViewer();
   const { selectedChat, setSelectedChat } = chatModel.useChatStore(selector, shallow);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { mutateAsync: addUserMutate, isLoading: addUserLoading } = chatModel.useAddUser();
   const { mutateAsync: removeUserMutate, isLoading: removeUserLoading } = chatModel.useRemoveUser();
-  const [value, setValue, searchResults, searchLoading] = userModel.useSearchUsers();
-
-  const handleAddUser = async (userToAdd: User) => {
-    if (!selectedChat || !viewer) return;
-    if (selectedChat.users.find(user => user._id === userToAdd._id)) {
-      notify({ text: 'User already in the group', type: 'error' });
-      return;
-    }
-    if (selectedChat.groupAdmin?._id !== viewer._id) {
-      notify({ text: 'Only administrators can add someone to the group', type: 'error' });
-      return;
-    }
-
-    const updatedChat = await addUserMutate({ chatId: selectedChat._id, userId: userToAdd._id });
-    setSelectedChat(updatedChat);
-  };
 
   const handleRemoveUser = async (userToRemove: User) => {
     if (!selectedChat || !viewer) return;
@@ -100,35 +79,15 @@ const UpdateGroupModal: FC = () => {
                   ))}
                 </Box>
                 <RenameGroupForm className='mb-3' />
-                <FormControl>
-                  <Input
-                    mb={3}
-                    placeholder='Add user to group...'
-                    value={value}
-                    onChange={e => setValue(e.target.value)}
-                  />
-                </FormControl>
-
-                {searchLoading || addUserLoading || removeUserLoading ? (
-                  <ChatsLoader amount={4} />
-                ) : (
-                  <Stack>
-                    {!!searchResults?.length &&
-                      searchResults
-                        .slice(0, 4)
-                        .map(user => (
-                          <UserListItem
-                            key={user._id}
-                            user={user}
-                            handleClick={() => handleAddUser(user)}
-                          />
-                        ))}
-                  </Stack>
-                )}
+                <AddUserForm />
               </ModalBody>
 
               <ModalFooter>
-                <Button onClick={() => handleRemoveUser(viewer)} colorScheme='red'>
+                <Button
+                  onClick={() => handleRemoveUser(viewer)}
+                  colorScheme='red'
+                  disabled={removeUserLoading}
+                >
                   Leave Group
                 </Button>
               </ModalFooter>

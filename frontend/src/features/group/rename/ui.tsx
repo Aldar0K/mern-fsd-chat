@@ -18,23 +18,23 @@ interface Props {
 const RenameGroupForm: FC<Props> = ({ className }) => {
   const notify = useNotify();
   const { selectedChat, setSelectedChat } = chatModel.useChatStore(selector, shallow);
-  const [groupChatName, setGroupChatName] = useState<string>(selectedChat?.chatName || '');
+  const [value, setValue] = useState<string>(selectedChat?.chatName || '');
   const { mutateAsync: renameChatMutate, isLoading: renameChatLoading } = useRenameChat();
 
   const handleRename = async () => {
     if (!selectedChat) return;
-    if (!groupChatName) {
+    if (!value) {
       notify({ text: 'Please enter a group name', type: 'warning' });
       return;
     }
-    if (groupChatName === selectedChat.chatName) {
+    if (value === selectedChat.chatName) {
       notify({ text: 'Please enter a new group name', type: 'warning' });
       return;
     }
 
     const updatedChat = await renameChatMutate({
       chatId: selectedChat._id,
-      chatName: groupChatName
+      chatName: value
     });
     setSelectedChat(updatedChat);
   };
@@ -44,8 +44,8 @@ const RenameGroupForm: FC<Props> = ({ className }) => {
       <Input
         placeholder='Chat name'
         mr={2}
-        value={groupChatName}
-        onChange={e => setGroupChatName(e.target.value)}
+        value={value}
+        onChange={e => setValue(e.target.value)}
       />
       <Button
         variant='solid'
