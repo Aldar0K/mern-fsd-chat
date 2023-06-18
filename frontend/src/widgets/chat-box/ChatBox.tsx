@@ -16,11 +16,10 @@ import {
 } from 'entities/message';
 import { UserProfileModal, getSender, getSenderFull } from 'entities/user';
 import { viewerModel } from 'entities/viewer';
+import { UpdateGroupModal } from 'features/group';
 import animationData from 'shared/animations/typing.json';
 import styles from './ChatBox.module.scss';
 import { ClientToServerEvents, ServerToClientEvents } from './types';
-
-import { UpdateGroupModal } from 'shared/ui';
 
 const ENDPONINT = 'http://localhost:8080';
 let socket: Socket<ServerToClientEvents, ClientToServerEvents>,
