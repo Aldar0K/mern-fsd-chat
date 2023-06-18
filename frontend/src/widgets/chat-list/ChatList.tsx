@@ -7,8 +7,8 @@ import { shallow } from 'zustand/shallow';
 import { chatModel } from 'entities/chat';
 import { getSender } from 'entities/user';
 import { viewerModel } from 'entities/viewer';
+import { AddGroupModal } from 'features/group';
 import { ROUTES } from 'shared/const';
-import { AddGroupModal } from 'shared/ui';
 
 const selector = (state: chatModel.ChatState) => ({
   setChats: state.setChats,
