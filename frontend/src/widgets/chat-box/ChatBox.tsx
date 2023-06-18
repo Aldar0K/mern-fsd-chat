@@ -16,8 +16,8 @@ import {
 } from 'entities/message';
 import { UserProfileModal, getSender, getSenderFull } from 'entities/user';
 import { viewerModel } from 'entities/viewer';
-import { UpdateGroupModal } from 'features/group';
 import animationData from 'shared/animations/typing.json';
+import { UpdateGroupModal } from 'widgets/update-group-modal';
 import styles from './ChatBox.module.scss';
 import { ClientToServerEvents, ServerToClientEvents } from './types';
 
