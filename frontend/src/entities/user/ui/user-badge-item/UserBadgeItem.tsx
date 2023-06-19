@@ -8,9 +8,10 @@ interface UserBadgeItemProps {
   user: User;
   isAdmin?: boolean;
   handleClick: () => void;
+  loading?: boolean;
 }
 
-const UserBadgeItem: FC<UserBadgeItemProps> = ({ user, isAdmin, handleClick }) => {
+const UserBadgeItem: FC<UserBadgeItemProps> = ({ user, isAdmin, handleClick, loading }) => {
   return (
     <Badge
       m={1}
@@ -22,7 +23,7 @@ const UserBadgeItem: FC<UserBadgeItemProps> = ({ user, isAdmin, handleClick }) =
       fontSize={12}
       colorScheme='purple'
       cursor='pointer'
-      onClick={handleClick}
+      onClick={() => !loading && handleClick()}
     >
       {user.name}
       {isAdmin && <span> (Admin)</span>}
