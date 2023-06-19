@@ -1,5 +1,6 @@
 import { CloseIcon } from '@chakra-ui/icons';
 import { Badge } from '@chakra-ui/layout';
+import { Spinner } from '@chakra-ui/react';
 import { FC } from 'react';
 
 import { User } from 'entities/user';
@@ -27,7 +28,7 @@ const UserBadgeItem: FC<UserBadgeItemProps> = ({ user, isAdmin, handleClick, loa
     >
       {user.name}
       {isAdmin && <span> (Admin)</span>}
-      <CloseIcon pl={1} />
+      {loading ? <Spinner size='xs' /> : <CloseIcon pl={1} />}
     </Badge>
   );
 };
