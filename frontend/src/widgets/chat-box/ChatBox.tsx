@@ -112,7 +112,7 @@ const ChatBox: FC = () => {
       socket.emit('typing', selectedChat._id);
     }
 
-    // TODO add more straight debounce logic.
+    // TODO simplify debounce logic.
     const lastTypingTime = new Date().getTime();
     const DEFAULT_TYPING_TIMEOUT = 3000;
     setTimeout(() => {
