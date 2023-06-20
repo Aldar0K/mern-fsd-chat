@@ -15,6 +15,8 @@ interface UserBadgeItemProps {
 const UserBadgeItem: FC<UserBadgeItemProps> = ({ user, isAdmin, handleClick, loading }) => {
   return (
     <Badge
+      display='flex'
+      alignItems='center'
       m={1}
       mb={2}
       px={2}
