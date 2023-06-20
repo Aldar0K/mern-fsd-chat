@@ -27,6 +27,10 @@ const ScrollableChat: FC<ScrollableChatProps> = ({ messages }) => {
     }
   }, [atBottom, setShowButton]);
 
+  const scrollToBottom = () => {
+    virtuosoRef.current?.scrollToIndex(messages.length);
+  };
+
   if (!viewer) return null;
   return (
     <Virtuoso
@@ -34,9 +38,6 @@ const ScrollableChat: FC<ScrollableChatProps> = ({ messages }) => {
       data={messages}
       initialTopMostItemIndex={messages?.length - 1}
       atBottomStateChange={bottom => {
-        if (atBottom) {
-          virtuosoRef.current?.scrollToIndex(messages.length);
-        }
         setAtBottom(bottom);
       }}
       itemContent={(index, message) => (
@@ -60,6 +61,7 @@ const ScrollableChat: FC<ScrollableChatProps> = ({ messages }) => {
               style={{
                 marginLeft: isSameSenderMargin(messages, message, index, viewer._id),
                 marginTop: isSameUser(messages, message, index) ? 3 : 10,
+                marginRight: 5,
                 maxWidth: '75%',
                 padding: '5px 15px',
                 backgroundColor: `${message.sender._id === viewer._id ? '#BEE3F8' : '#B9F5D0'}`,
