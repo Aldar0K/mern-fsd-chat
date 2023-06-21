@@ -1,1 +1,1 @@
-export { default as SearchUserDrawer } from './SearchUserDrawer';
+export { default as SearchUsersDrawer } from './SearchUsersDrawer';

@@ -15,7 +15,7 @@ import { UserCard, userModel } from 'entities/user';
 
 import { ChatsLoader } from 'shared/ui/chats-loader';
 
-const SearchUserDrawer: FC<Omit<DrawerProps, 'children'>> = ({ onClose, ...props }) => {
+const SearchUsersDrawer: FC<Omit<DrawerProps, 'children'>> = ({ onClose, ...props }) => {
   const [value, setValue, searchResults, searchLoading] = userModel.useSearchUsers();
 
   return (
@@ -49,4 +49,4 @@ const SearchUserDrawer: FC<Omit<DrawerProps, 'children'>> = ({ onClose, ...props
   );
 };
 
-export default SearchUserDrawer;
+export default SearchUsersDrawer;

@@ -3,7 +3,7 @@ import { SearchIcon } from '@chakra-ui/icons';
 import { Button, Text, Tooltip } from '@chakra-ui/react';
 import { FC } from 'react';
 
-import { SearchUserDrawer } from '../search-users-drawer';
+import { SearchUsersDrawer } from '../search-users-drawer';
 
 const SearchUsers: FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -19,7 +19,7 @@ const SearchUsers: FC = () => {
         </Button>
       </Tooltip>
 
-      <SearchUserDrawer placement='left' onClose={onClose} isOpen={isOpen} />
+      <SearchUsersDrawer placement='left' onClose={onClose} isOpen={isOpen} />
     </>
   );
 };
