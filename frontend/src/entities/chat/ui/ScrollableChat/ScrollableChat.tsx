@@ -29,7 +29,11 @@ const ScrollableChat: FC<ScrollableChatProps> = ({ messages }) => {
   }, [atBottom, setShowButton]);
 
   const scrollToBottom = () => {
-    virtuosoRef.current?.scrollToIndex(messages.length);
+    virtuosoRef.current?.scrollToIndex({
+      index: messages.length,
+      align: 'end',
+      behavior: 'smooth'
+    });
   };
 
   if (!viewer) return null;
