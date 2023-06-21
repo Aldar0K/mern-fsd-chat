@@ -1,0 +1,33 @@
+.container {
+  position: relative;
+
+  height: 100%;
+  width: 100%;
+}
+
+.button-bottom {
+  position: absolute;
+  z-index: -1;
+
+  height: 40px;
+  width: 40px;
+
+  right: 2rem;
+  bottom: 2rem;
+
+  background: var(--chakra-colors-gray-100);
+  border-radius: 50%;
+
+  opacity: 0;
+  transition: ease 0.3s all;
+
+  &_active {
+    z-index: 1;
+    opacity: 1;
+  }
+
+  & svg {
+    height: 32px;
+    width: 32px;
+  }
+}
