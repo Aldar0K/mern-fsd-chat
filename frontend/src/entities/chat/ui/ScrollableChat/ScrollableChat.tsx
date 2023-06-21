@@ -24,7 +24,6 @@ const ScrollableChat: FC<ScrollableChatProps> = ({ messages }) => {
   const [atBottom, setAtBottom] = useState<boolean>(false);
 
   useEffect(() => {
-    console.log(!atBottom);
     setShowButton(!atBottom);
   }, [atBottom, setShowButton]);
 
