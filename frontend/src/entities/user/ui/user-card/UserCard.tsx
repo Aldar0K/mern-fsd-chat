@@ -2,7 +2,6 @@ import { Avatar, Box, Spinner, Text } from '@chakra-ui/react';
 import { FC } from 'react';
 
 import { chatModel } from 'entities/chat';
-import { useToggle } from 'shared/lib/hooks';
 import { User } from '../../model/types';
 
 interface UserCardProps {
@@ -11,13 +10,10 @@ interface UserCardProps {
 }
 
 const UserCard: FC<UserCardProps> = ({ user, onClose }) => {
-  const accessChat = chatModel.useAccessChat();
-  const [isLoading, toggleLoading] = useToggle(false);
+  const [accessChat, chatLoading] = chatModel.useAccessChat();
 
   const handleClick = async () => {
-    toggleLoading();
     await accessChat(user._id);
-    toggleLoading();
     onClose();
   };
 
@@ -48,7 +44,7 @@ const UserCard: FC<UserCardProps> = ({ user, onClose }) => {
           {user.email}
         </Text>
       </Box>
-      {isLoading && <Spinner display='flex' />}
+      {chatLoading && <Spinner display='flex' />}
     </Box>
   );
 };
