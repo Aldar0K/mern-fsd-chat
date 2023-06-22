@@ -17,24 +17,17 @@ import {
   useDisclosure
 } from '@chakra-ui/react';
 import { FC, useState } from 'react';
-import { shallow } from 'zustand/shallow';
 
 import { chatModel } from 'entities/chat';
 import { User, UserBadgeItem, UserListItem, userModel } from 'entities/user';
 import { useNotify } from 'shared/lib/hooks';
-
-const selector = (state: chatModel.ChatState) => ({
-  chats: state.chats,
-  setChats: state.setChats,
-  setSelectedChat: state.setSelectedChat
-});
 
 interface AddGroupModalProps {
   children: JSX.Element;
 }
 
 const AddGroupModal: FC<AddGroupModalProps> = ({ children }) => {
-  const { chats, setChats, setSelectedChat } = chatModel.useChatStore(selector, shallow);
+  const setSelectedChat = chatModel.useChatStore(state => state.setSelectedChat);
   const notify = useNotify();
   const { mutateAsync: createGroupMutate, isLoading: createGroupLoading } =
     chatModel.useCreateGroup();
@@ -62,13 +55,18 @@ const AddGroupModal: FC<AddGroupModalProps> = ({ children }) => {
       return;
     }
 
-    const newGroup = await createGroupMutate({
-      name: groupChatName,
-      users: JSON.stringify(selectedUsers.map(user => user._id))
-    });
-    setChats([newGroup, ...chats]);
-    setSelectedChat(newGroup);
-    onClose();
+    const newGroup = await createGroupMutate(
+      {
+        name: groupChatName,
+        users: JSON.stringify(selectedUsers.map(user => user._id))
+      },
+      {
+        onSuccess: () => {
+          setSelectedChat(newGroup);
+          onClose();
+        }
+      }
+    );
   };
 
   return (

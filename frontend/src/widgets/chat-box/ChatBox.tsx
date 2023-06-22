@@ -28,7 +28,6 @@ let socket: Socket<ServerToClientEvents, ClientToServerEvents>,
 type Params = { chatId: string };
 
 const selector = (state: chatModel.ChatState) => ({
-  chats: state.chats,
   selectedChat: state.selectedChat,
   setSelectedChat: state.setSelectedChat
 });
@@ -41,7 +40,8 @@ const notificationSelector = (state: NotificationState) => ({
 
 const ChatBox: FC = () => {
   const viewer = viewerModel.useViewer();
-  const { chats, selectedChat, setSelectedChat } = chatModel.useChatStore(selector, shallow);
+  const { selectedChat, setSelectedChat } = chatModel.useChatStore(selector, shallow);
+  const { data: chats } = chatModel.useChats();
   const { notifications, addNotifications } = useNotificationStore(notificationSelector, shallow);
   const { chatId } = useParams<keyof Params>() as Params;
   const [currentMessages, setCurrentMessages] = useState<Message[]>([]);
@@ -81,7 +81,7 @@ const ChatBox: FC = () => {
   }, [messages]);
 
   useEffect(() => {
-    const selectedChat = chats.find(chat => chat._id === chatId);
+    const selectedChat = chats?.find(chat => chat._id === chatId);
     selectedChatCompare = selectedChat;
     selectedChat && setSelectedChat(selectedChat);
   }, [chats, chatId]);

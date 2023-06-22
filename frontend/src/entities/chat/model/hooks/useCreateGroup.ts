@@ -15,7 +15,8 @@ export const useCreateGroup = () => {
     {
       onSuccess() {
         notify({ text: 'Group created', type: 'success' });
-        invalidate('/chat');
+        // TODO switch to cache updating
+        invalidate('/chats');
       },
       onError(error) {
         handleError(error);

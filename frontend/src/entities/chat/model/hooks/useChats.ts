@@ -1,20 +1,16 @@
 import { useQuery } from 'react-query';
 
-import { chatModel } from 'entities/chat';
+import { DEFAULT_STALE_TIME } from 'shared/const';
 import { useHandleError } from 'shared/lib/hooks';
 import { getChats } from '../../api';
 
 export const useChats = () => {
-  const setChats = chatModel.useChatStore(state => state.setChats);
   const handleError = useHandleError();
 
-  return useQuery(['/chat'], async () => await getChats(), {
+  return useQuery(['/chats'], async () => await getChats(), {
+    staleTime: DEFAULT_STALE_TIME,
     onError(error) {
       handleError(error);
-    },
-    onSuccess(data) {
-      // TODO remove this state in chat store?
-      setChats(data);
     }
   });
 };
