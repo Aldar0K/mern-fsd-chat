@@ -1,6 +1,6 @@
 import { AddIcon } from '@chakra-ui/icons';
 import { Box, Button, Spinner, Stack, Text } from '@chakra-ui/react';
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 import { NavLink } from 'react-router-dom';
 import { shallow } from 'zustand/shallow';
 
@@ -11,19 +11,14 @@ import { AddGroupModal } from 'features/group';
 import { ROUTES } from 'shared/const';
 
 const selector = (state: chatModel.ChatState) => ({
-  setChats: state.setChats,
   selectedChat: state.selectedChat,
   setSelectedChat: state.setSelectedChat
 });
 
 const ChatList: FC = () => {
   const viewer = viewerModel.useViewer();
-  const { setChats, selectedChat, setSelectedChat } = chatModel.useChatStore(selector, shallow);
+  const { selectedChat, setSelectedChat } = chatModel.useChatStore(selector, shallow);
   const { data: chats, isLoading: chatsLoading } = chatModel.useChats();
-
-  useEffect(() => {
-    chats && setChats(chats);
-  }, [chats]);
 
   if (!viewer) return null;
 
