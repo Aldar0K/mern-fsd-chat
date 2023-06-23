@@ -15,7 +15,7 @@ export const useRemoveUser = () => {
     {
       onSuccess() {
         notify({ text: 'User removed', type: 'success' });
-        invalidate('/chat');
+        invalidate('/chats');
       },
       onError(error) {
         handleError(error);
