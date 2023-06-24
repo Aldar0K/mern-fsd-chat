@@ -18,22 +18,23 @@ import {
 } from '@chakra-ui/react';
 import { FC, useState } from 'react';
 
-import { chatModel } from 'entities/chat';
 import { User, UserBadgeItem, UserListItem, userModel } from 'entities/user';
+import { useNavigate } from 'react-router';
+import { ROUTES } from 'shared/const';
 import { useNotify } from 'shared/lib/hooks';
+import { useCreateGroup } from './model';
 
 interface AddGroupModalProps {
   children: JSX.Element;
 }
 
 const AddGroupModal: FC<AddGroupModalProps> = ({ children }) => {
-  const setSelectedChat = chatModel.useChatStore(state => state.setSelectedChat);
   const notify = useNotify();
-  const { mutateAsync: createGroupMutate, isLoading: createGroupLoading } =
-    chatModel.useCreateGroup();
+  const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [groupChatName, setGroupChatName] = useState<string>('');
   const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
+  const { mutateAsync: createGroupMutate, isLoading: createGroupLoading } = useCreateGroup();
   const [value, setValue, searchResults, searchLoading] = userModel.useSearchUsers();
 
   const handleAddUser = (userToAdd: User) => {
@@ -45,24 +46,29 @@ const AddGroupModal: FC<AddGroupModalProps> = ({ children }) => {
     setSelectedUsers([...selectedUsers, userToAdd]);
   };
 
-  const removeUser = (userToRemove: User) => {
+  const handleRemoveUser = (userToRemove: User) => {
     setSelectedUsers(selectedUsers.filter(user => user._id !== userToRemove._id));
   };
 
   const handleSubmit = async () => {
-    if (!groupChatName || !selectedUsers.length) {
+    if (!groupChatName) {
       notify({ text: 'Please fill all the feilds', type: 'error' });
       return;
     }
 
-    const newGroup = await createGroupMutate(
+    if (selectedUsers.length < 2) {
+      notify({ text: 'Add at least two group members', type: 'error' });
+      return;
+    }
+
+    createGroupMutate(
       {
         name: groupChatName,
         users: JSON.stringify(selectedUsers.map(user => user._id))
       },
       {
-        onSuccess: () => {
-          setSelectedChat(newGroup);
+        onSuccess: data => {
+          navigate(`${ROUTES.CHATS}/${data._id}`);
           onClose();
         }
       }
@@ -110,7 +116,11 @@ const AddGroupModal: FC<AddGroupModalProps> = ({ children }) => {
             </FormControl>
             <Box display='flex' w='100%' flexWrap='wrap'>
               {selectedUsers.map(user => (
-                <UserBadgeItem key={user._id} user={user} handleClick={() => removeUser(user)} />
+                <UserBadgeItem
+                  key={user._id}
+                  user={user}
+                  handleClick={() => handleRemoveUser(user)}
+                />
               ))}
             </Box>
             {searchLoading ? (
