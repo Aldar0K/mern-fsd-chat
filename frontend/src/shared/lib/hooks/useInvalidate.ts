@@ -1,6 +1,14 @@
-import { useQueryClient } from 'react-query';
+import { InvalidateOptions, InvalidateQueryFilters, QueryKey, useQueryClient } from 'react-query';
 
-export function useInvalidate(): (query: string) => Promise<void> {
+export function useInvalidate(): (
+  query: QueryKey,
+  invalidateQueryFilters?: InvalidateQueryFilters,
+  invalidateOptions?: InvalidateOptions
+) => Promise<void> {
   const queryClient = useQueryClient();
-  return (query: string) => queryClient.invalidateQueries(query);
+  return (
+    query: QueryKey,
+    invalidateQueryFilters?: InvalidateQueryFilters,
+    invalidateOptions?: InvalidateOptions
+  ) => queryClient.invalidateQueries(query, invalidateQueryFilters, invalidateOptions);
 }

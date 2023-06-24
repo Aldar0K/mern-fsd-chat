@@ -17,9 +17,9 @@ import {
   useDisclosure
 } from '@chakra-ui/react';
 import { FC, useState } from 'react';
+import { useNavigate } from 'react-router';
 
 import { User, UserBadgeItem, UserListItem, userModel } from 'entities/user';
-import { useNavigate } from 'react-router';
 import { ROUTES } from 'shared/const';
 import { useNotify } from 'shared/lib/hooks';
 import { useCreateGroup } from './model';
@@ -55,7 +55,6 @@ const AddGroupModal: FC<AddGroupModalProps> = ({ children }) => {
       notify({ text: 'Please fill all the feilds', type: 'error' });
       return;
     }
-
     if (selectedUsers.length < 2) {
       notify({ text: 'Add at least two group members', type: 'error' });
       return;
