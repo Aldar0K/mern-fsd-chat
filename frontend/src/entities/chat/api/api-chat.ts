@@ -1,7 +1,6 @@
 import { instance } from 'shared/api';
 import { Chat } from '../model/types';
 
-// TODO move to types?
 export interface CreateGroupDto {
   name: string;
   users: string;
