@@ -26,11 +26,17 @@ const LeaveGroupButton: FC = () => {
       return;
     }
 
-    const updatedChat = await removeUserMutate({
-      chatId: selectedChat._id,
-      userId: userToRemove._id
-    });
-    userToRemove._id === viewer._id ? setSelectedChat(null) : setSelectedChat(updatedChat);
+    removeUserMutate(
+      {
+        chatId: selectedChat._id,
+        userId: userToRemove._id
+      },
+      {
+        onSuccess(updatedChat) {
+          userToRemove._id === viewer._id ? setSelectedChat(null) : setSelectedChat(updatedChat);
+        }
+      }
+    );
   };
 
   if (!viewer) return null;
