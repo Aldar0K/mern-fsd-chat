@@ -18,7 +18,6 @@ import { UserProfileModal, getSender, getSenderFull } from 'entities/user';
 import { viewerModel } from 'entities/viewer';
 import animationData from 'shared/animations/typing.json';
 import { UpdateGroupModal } from 'widgets/update-group-modal';
-import styles from './ChatBox.module.scss';
 import { ClientToServerEvents, ServerToClientEvents } from './types';
 
 const ENDPONINT = 'http://localhost:8080';
@@ -184,12 +183,14 @@ const ChatBox: FC = () => {
           >
             {messagesLoading ? (
               <Spinner size='xl' margin='auto' w={20} h={20} alignSelf='center' />
+            ) : currentMessages.length ? (
+              <div className='flex-auto'>
+                <ScrollableChat messages={currentMessages} />
+              </div>
             ) : (
-              currentMessages.length && (
-                <div className={styles.messages}>
-                  <ScrollableChat messages={currentMessages} />
-                </div>
-              )
+              <div className='flex flex-auto justify-center items-center'>
+                <h2>No messages yet. Start your communication, send a message!</h2>
+              </div>
             )}
 
             <FormControl id='first-name' isRequired onKeyDown={sendMessage}>
