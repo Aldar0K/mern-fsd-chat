@@ -1,3 +1,4 @@
+// TODO add messageModel and messageLib exports
 // api
 export { apiMessage } from './api/api-message';
 export type { SendMessageDto } from './api/api-message';

@@ -85,6 +85,12 @@ const ChatList: FC = () => {
                         <Text>
                           {chat.isGroupChat ? chat.chatName : getSender(viewer, chat.users)}
                         </Text>
+
+                        {chat.latestMessage && (
+                          <Text fontSize='small'>
+                            {chat.latestMessage.sender.name}: {chat.latestMessage.content}
+                          </Text>
+                        )}
                       </Box>
                     )}
                   </NavLink>

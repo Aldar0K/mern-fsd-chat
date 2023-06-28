@@ -1,3 +1,4 @@
+import { Message } from 'entities/message';
 import { User } from 'entities/user';
 
 export interface Chat {
@@ -6,5 +7,5 @@ export interface Chat {
   users: User[];
   isGroupChat: boolean;
   groupAdmin?: User;
-  latestMessage?: string;
+  latestMessage?: Message;
 }
