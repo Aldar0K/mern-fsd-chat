@@ -13,11 +13,12 @@ import {
   ModalOverlay,
   Text
 } from '@chakra-ui/react';
-import { User } from 'entities/user';
 import { FC } from 'react';
 
+import { userModel } from 'entities/user';
+
 interface UserProfileModalProps {
-  user: User;
+  user: userModel.User;
   children?: JSX.Element;
 }
 

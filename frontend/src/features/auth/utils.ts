@@ -1,6 +1,6 @@
-import { User } from 'entities/user';
+import { userModel } from 'entities/user';
 
-export const saveCredentials = (data: User) => {
+export const saveCredentials = (data: userModel.User) => {
   localStorage.setItem('viewer', JSON.stringify(data));
   localStorage.setItem('token', data.token);
 };

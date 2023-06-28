@@ -3,10 +3,10 @@ import { Badge } from '@chakra-ui/layout';
 import { Spinner } from '@chakra-ui/react';
 import { FC } from 'react';
 
-import { User } from 'entities/user';
+import { userModel } from 'entities/user';
 
 interface UserBadgeItemProps {
-  user: User;
+  user: userModel.User;
   isAdmin?: boolean;
   handleClick: () => void;
   loading?: boolean;

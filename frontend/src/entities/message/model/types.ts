@@ -1,9 +1,9 @@
 import { chatModel } from 'entities/chat';
-import { User } from 'entities/user';
+import { userModel } from 'entities/user';
 
 export interface Message {
   _id: string;
-  sender: User;
+  sender: userModel.User;
   content: string;
   chat: chatModel.Chat;
 }

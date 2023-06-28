@@ -3,7 +3,7 @@ import { FC } from 'react';
 import { shallow } from 'zustand/shallow';
 
 import { chatModel } from 'entities/chat';
-import { User, UserBadgeItem } from 'entities/user';
+import { userModel, UserBadgeItem } from 'entities/user';
 import { viewerModel } from 'entities/viewer';
 import { useNotify } from 'shared/lib/hooks';
 import { useRemoveUser } from '../model';
@@ -19,7 +19,7 @@ const GroupUsers: FC = () => {
   const { selectedChat, setSelectedChat } = chatModel.useChatStore(selector, shallow);
   const { mutateAsync: removeUserMutate, isLoading: removeUserLoading } = useRemoveUser();
 
-  const handleRemoveUser = async (userToRemove: User) => {
+  const handleRemoveUser = async (userToRemove: userModel.User) => {
     if (!selectedChat || !viewer) return;
     if (selectedChat.groupAdmin?._id !== viewer._id) {
       notify({ text: 'Only administrators can remove someone from the group', type: 'error' });

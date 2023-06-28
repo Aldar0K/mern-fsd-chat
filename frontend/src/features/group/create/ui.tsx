@@ -19,7 +19,7 @@ import {
 import { FC, useState } from 'react';
 import { useNavigate } from 'react-router';
 
-import { User, UserBadgeItem, UserListItem, userModel } from 'entities/user';
+import { UserBadgeItem, UserListItem, userModel } from 'entities/user';
 import { ROUTES } from 'shared/const';
 import { useNotify } from 'shared/lib/hooks';
 import { useCreateGroup } from './model';
@@ -33,11 +33,11 @@ const AddGroupModal: FC<AddGroupModalProps> = ({ children }) => {
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [groupChatName, setGroupChatName] = useState<string>('');
-  const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
+  const [selectedUsers, setSelectedUsers] = useState<userModel.User[]>([]);
   const { mutateAsync: createGroupMutate, isLoading: createGroupLoading } = useCreateGroup();
   const [value, setValue, searchResults, searchLoading] = userModel.useSearchUsers();
 
-  const handleAddUser = (userToAdd: User) => {
+  const handleAddUser = (userToAdd: userModel.User) => {
     if (selectedUsers.includes(userToAdd)) {
       notify({ text: 'User already added', type: 'error' });
       return;
@@ -46,7 +46,7 @@ const AddGroupModal: FC<AddGroupModalProps> = ({ children }) => {
     setSelectedUsers([...selectedUsers, userToAdd]);
   };
 
-  const handleRemoveUser = (userToRemove: User) => {
+  const handleRemoveUser = (userToRemove: userModel.User) => {
     setSelectedUsers(selectedUsers.filter(user => user._id !== userToRemove._id));
   };
 

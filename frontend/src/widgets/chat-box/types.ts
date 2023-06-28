@@ -1,5 +1,5 @@
 import { Message } from 'entities/message';
-import { User } from 'entities/user';
+import { userModel } from 'entities/user';
 
 export interface ServerToClientEvents {
   connected: () => void;
@@ -9,7 +9,7 @@ export interface ServerToClientEvents {
 }
 
 export interface ClientToServerEvents {
-  setup: (user: User) => void;
+  setup: (user: userModel.User) => void;
   joinChat: (chatId: string) => void;
   newMessage: (newMessage: Message) => void;
   typing: (chatId: string) => void;

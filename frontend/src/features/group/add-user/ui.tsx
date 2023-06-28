@@ -3,7 +3,7 @@ import { FC } from 'react';
 import { shallow } from 'zustand/shallow';
 
 import { chatModel } from 'entities/chat';
-import { User, UserListItem, userModel } from 'entities/user';
+import { UserListItem, userModel } from 'entities/user';
 import { viewerModel } from 'entities/viewer';
 import { useAddUser } from 'features/group';
 import { useNotify } from 'shared/lib/hooks';
@@ -25,7 +25,7 @@ const AddUserForm: FC<Props> = ({ className }) => {
   const [value, setValue, searchResults, searchLoading] = userModel.useSearchUsers();
   const { selectedChat, setSelectedChat } = chatModel.useChatStore(selector, shallow);
 
-  const handleAddUser = async (userToAdd: User) => {
+  const handleAddUser = async (userToAdd: userModel.User) => {
     if (!selectedChat || !viewer) return;
     if (selectedChat.users.find(user => user._id === userToAdd._id)) {
       notify({ text: 'User already in the group', type: 'error' });

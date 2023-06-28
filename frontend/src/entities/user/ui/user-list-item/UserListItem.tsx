@@ -2,10 +2,10 @@ import { Avatar } from '@chakra-ui/avatar';
 import { Box, Text } from '@chakra-ui/layout';
 import { FC } from 'react';
 
-import { User } from 'entities/user';
+import { userModel } from 'entities/user';
 
 interface UserListItemProps {
-  user: User;
+  user: userModel.User;
   handleClick: () => void;
 }
 
