@@ -7,7 +7,7 @@ import { Socket, io } from 'socket.io-client';
 import { shallow } from 'zustand/shallow';
 
 import { ScrollableChat, chatModel } from 'entities/chat';
-import { messageModel, useGetMessagesQuery, useSendMessage } from 'entities/message';
+import { messageModel } from 'entities/message';
 import { UserProfileModal, getSender, getSenderFull } from 'entities/user';
 import { viewerModel } from 'entities/viewer';
 import animationData from 'shared/animations/typing.json';
@@ -41,8 +41,8 @@ const ChatBox: FC = () => {
   );
   const { chatId } = useParams<keyof Params>() as Params;
   const [currentMessages, setCurrentMessages] = useState<messageModel.Message[]>([]);
-  const { data: messages, isLoading: messagesLoading } = useGetMessagesQuery(chatId);
-  const { mutateAsync: sendMessageMutate } = useSendMessage();
+  const { data: messages, isLoading: messagesLoading } = messageModel.useGetMessagesQuery(chatId);
+  const { mutateAsync: sendMessageMutate } = messageModel.useSendMessage();
   const [socketConnected, setSocketConnected] = useState<boolean>(false);
   const [typing, setTyping] = useState<boolean>(false);
   const [isTyping, setIsTyping] = useState<boolean>(false);

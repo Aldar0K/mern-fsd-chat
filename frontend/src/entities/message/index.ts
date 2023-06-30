@@ -5,8 +5,7 @@ export type { SendMessageDto } from './api/api-message';
 // model
 export * as messageModel from './model';
 // lib
-export { useGetMessagesQuery } from './lib/hooks/useGetMessagesQuery';
-export { useSendMessage } from './lib/hooks/useSendMessage';
+export * as messageLib from './lib';
 export { isLastMessage } from './lib/utils/isLastMessage';
 export { isSameSender } from './lib/utils/isSameSender';
 export { isSameSenderMargin } from './lib/utils/isSameSenderMargin';
