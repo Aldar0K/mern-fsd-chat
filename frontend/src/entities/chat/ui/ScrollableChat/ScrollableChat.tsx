@@ -8,13 +8,13 @@ import {
   isSameSender,
   isSameSenderMargin,
   isSameUser,
-  Message
+  messageModel
 } from 'entities/message';
 import { viewerModel } from 'entities/viewer';
 import styles from './ScrollableChat.module.scss';
 
 interface ScrollableChatProps {
-  messages: Message[];
+  messages: messageModel.Message[];
 }
 
 const ScrollableChat: FC<ScrollableChatProps> = ({ messages }) => {

@@ -3,9 +3,7 @@
 export { apiMessage } from './api/api-message';
 export type { SendMessageDto } from './api/api-message';
 // model
-export type { Message } from './model/types';
-export { useNotificationStore } from './model/notification-store';
-export type { NotificationState } from './model/notification-store';
+export * as messageModel from './model';
 // lib
 export { useGetMessagesQuery } from './lib/hooks/useGetMessagesQuery';
 export { useSendMessage } from './lib/hooks/useSendMessage';

@@ -1,4 +1,4 @@
-import { Message } from 'entities/message';
+import { messageModel } from 'entities/message';
 import { userModel } from 'entities/user';
 
 export interface Chat {
@@ -7,5 +7,5 @@ export interface Chat {
   users: userModel.User[];
   isGroupChat: boolean;
   groupAdmin?: userModel.User;
-  latestMessage?: Message;
+  latestMessage?: messageModel.Message;
 }

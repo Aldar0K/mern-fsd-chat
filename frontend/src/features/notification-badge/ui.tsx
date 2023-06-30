@@ -4,12 +4,12 @@ import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { shallow } from 'zustand/shallow';
 
-import { NotificationState, useNotificationStore } from 'entities/message';
+import { messageModel } from 'entities/message';
 import { getSender } from 'entities/user';
 import { viewerModel } from 'entities/viewer';
 import { ROUTES } from 'shared/const';
 
-const selector = (state: NotificationState) => ({
+const selector = (state: messageModel.NotificationState) => ({
   notifications: state.notifications,
   removeNotification: state.removeNotification,
   clearNotifications: state.clearNotifications
@@ -17,7 +17,10 @@ const selector = (state: NotificationState) => ({
 
 const NotificationBadge: FC = () => {
   const navigate = useNavigate();
-  const { notifications, removeNotification } = useNotificationStore(selector, shallow);
+  const { notifications, removeNotification } = messageModel.useNotificationStore(
+    selector,
+    shallow
+  );
   const viewer = viewerModel.useViewer();
 
   if (!viewer) return null;

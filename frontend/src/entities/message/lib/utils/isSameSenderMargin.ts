@@ -1,4 +1,4 @@
-import { Message } from 'entities/message';
+import { Message } from '../../model';
 
 export const isSameSenderMargin = (
   messages: Message[],

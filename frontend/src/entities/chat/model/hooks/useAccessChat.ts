@@ -5,6 +5,7 @@ import { ROUTES } from 'shared/const';
 import { useHandleError, useToggle } from 'shared/lib/hooks';
 import { useChatStore } from '../chat-store';
 
+// TODO switch to mutation?
 export const useAccessChat = () => {
   const handleError = useHandleError();
   const navigate = useNavigate();

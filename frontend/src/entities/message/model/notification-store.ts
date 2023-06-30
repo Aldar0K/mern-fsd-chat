@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-import { Message } from 'entities/message';
+import { Message } from './types';
 
 export type NotificationState = {
   notifications: Message[];

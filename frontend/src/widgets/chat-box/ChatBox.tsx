@@ -7,13 +7,7 @@ import { Socket, io } from 'socket.io-client';
 import { shallow } from 'zustand/shallow';
 
 import { ScrollableChat, chatModel } from 'entities/chat';
-import {
-  Message,
-  NotificationState,
-  useGetMessagesQuery,
-  useNotificationStore,
-  useSendMessage
-} from 'entities/message';
+import { messageModel, useGetMessagesQuery, useSendMessage } from 'entities/message';
 import { UserProfileModal, getSender, getSenderFull } from 'entities/user';
 import { viewerModel } from 'entities/viewer';
 import animationData from 'shared/animations/typing.json';
@@ -31,7 +25,7 @@ const selector = (state: chatModel.ChatState) => ({
   setSelectedChat: state.setSelectedChat
 });
 
-const notificationSelector = (state: NotificationState) => ({
+const notificationSelector = (state: messageModel.NotificationState) => ({
   notifications: state.notifications,
   addNotifications: state.addNotifications,
   clearNotifications: state.clearNotifications
@@ -41,9 +35,12 @@ const ChatBox: FC = () => {
   const viewer = viewerModel.useViewer();
   const { selectedChat, setSelectedChat } = chatModel.useChatStore(selector, shallow);
   const { data: chats } = chatModel.useChats();
-  const { notifications, addNotifications } = useNotificationStore(notificationSelector, shallow);
+  const { notifications, addNotifications } = messageModel.useNotificationStore(
+    notificationSelector,
+    shallow
+  );
   const { chatId } = useParams<keyof Params>() as Params;
-  const [currentMessages, setCurrentMessages] = useState<Message[]>([]);
+  const [currentMessages, setCurrentMessages] = useState<messageModel.Message[]>([]);
   const { data: messages, isLoading: messagesLoading } = useGetMessagesQuery(chatId);
   const { mutateAsync: sendMessageMutate } = useSendMessage();
   const [socketConnected, setSocketConnected] = useState<boolean>(false);
