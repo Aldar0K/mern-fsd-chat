@@ -3,13 +3,7 @@ import { Avatar, Tooltip } from '@chakra-ui/react';
 import { FC, useEffect, useRef, useState } from 'react';
 import { Virtuoso, VirtuosoHandle } from 'react-virtuoso';
 
-import {
-  isLastMessage,
-  isSameSender,
-  isSameSenderMargin,
-  isSameUser,
-  messageModel
-} from 'entities/message';
+import { messageLib, messageModel } from 'entities/message';
 import { viewerModel } from 'entities/viewer';
 import styles from './ScrollableChat.module.scss';
 
@@ -48,8 +42,8 @@ const ScrollableChat: FC<ScrollableChatProps> = ({ messages }) => {
         itemContent={(index, message) => (
           <>
             <div key={message._id} style={{ display: 'flex' }}>
-              {(isSameSender(messages, message, index, viewer._id) ||
-                isLastMessage(messages, index, viewer._id)) && (
+              {(messageLib.isSameSender(messages, message, index, viewer._id) ||
+                messageLib.isLastMessage(messages, index, viewer._id)) && (
                 <Tooltip label={message.sender.name} placement='bottom-start' hasArrow>
                   <Avatar
                     name={message.sender.name}
@@ -64,8 +58,8 @@ const ScrollableChat: FC<ScrollableChatProps> = ({ messages }) => {
 
               <span
                 style={{
-                  marginLeft: isSameSenderMargin(messages, message, index, viewer._id),
-                  marginTop: isSameUser(messages, message, index) ? 3 : 10,
+                  marginLeft: messageLib.isSameSenderMargin(messages, message, index, viewer._id),
+                  marginTop: messageLib.isSameUser(messages, message, index) ? 3 : 10,
                   marginRight: 5,
                   maxWidth: '75%',
                   padding: '5px 15px',
