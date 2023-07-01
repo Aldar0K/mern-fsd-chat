@@ -1,6 +1,6 @@
 import { useMutation } from 'react-query';
 
-import { SendMessageDto, apiMessage } from 'entities/message';
+import { messageApi } from 'entities/message';
 import { useHandleError, useInvalidate } from 'shared/lib/hooks';
 
 export const useSendMessage = () => {
@@ -8,8 +8,8 @@ export const useSendMessage = () => {
   const invalidate = useInvalidate();
 
   return useMutation(
-    (data: SendMessageDto) => {
-      return apiMessage.sendMessage(data);
+    (data: messageApi.SendMessageDto) => {
+      return messageApi.sendMessage(data);
     },
     {
       onSuccess(_, variables) {
