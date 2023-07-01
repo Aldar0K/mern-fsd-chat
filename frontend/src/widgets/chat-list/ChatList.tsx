@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom';
 import { shallow } from 'zustand/shallow';
 
 import { chatModel } from 'entities/chat';
-import { getSender } from 'entities/user';
+import { userLib } from 'entities/user';
 import { viewerModel } from 'entities/viewer';
 import { AddGroupModal } from 'features/group';
 import { ROUTES } from 'shared/const';
@@ -83,7 +83,7 @@ const ChatList: FC = () => {
                         onClick={() => setSelectedChat(chat)}
                       >
                         <Text>
-                          {chat.isGroupChat ? chat.chatName : getSender(viewer, chat.users)}
+                          {chat.isGroupChat ? chat.chatName : userLib.getSender(viewer, chat.users)}
                         </Text>
 
                         {chat.latestMessage && (

@@ -8,7 +8,7 @@ import { shallow } from 'zustand/shallow';
 
 import { ScrollableChat, chatModel } from 'entities/chat';
 import { messageModel } from 'entities/message';
-import { UserProfileModal, getSender, getSenderFull } from 'entities/user';
+import { UserProfileModal, userLib } from 'entities/user';
 import { viewerModel } from 'entities/viewer';
 import animationData from 'shared/animations/typing.json';
 import { UpdateGroupModal } from 'widgets/update-group-modal';
@@ -158,8 +158,8 @@ const ChatBox: FC = () => {
               <>
                 {viewer && (
                   <>
-                    {getSender(viewer, selectedChat.users)}
-                    <UserProfileModal user={getSenderFull(viewer, selectedChat.users)} />
+                    {userLib.getSender(viewer, selectedChat.users)}
+                    <UserProfileModal user={userLib.getSenderFull(viewer, selectedChat.users)} />
                   </>
                 )}
               </>

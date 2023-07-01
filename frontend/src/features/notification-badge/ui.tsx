@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { shallow } from 'zustand/shallow';
 
 import { messageModel } from 'entities/message';
-import { getSender } from 'entities/user';
+import { userLib } from 'entities/user';
 import { viewerModel } from 'entities/viewer';
 import { ROUTES } from 'shared/const';
 
@@ -43,7 +43,7 @@ const NotificationBadge: FC = () => {
           >
             {notification.chat.isGroupChat
               ? `New message in ${notification.chat.chatName}`
-              : `New message from ${getSender(viewer, notification.chat.users)}`}
+              : `New message from ${userLib.getSender(viewer, notification.chat.users)}`}
           </MenuItem>
         ))}
       </MenuList>

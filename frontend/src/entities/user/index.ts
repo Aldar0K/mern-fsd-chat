@@ -1,4 +1,4 @@
 export * as userApi from './api';
-export { getSender, getSenderFull } from './lib/helpers';
+export * as userLib from './lib';
 export * as userModel from './model';
 export { UserBadgeItem, UserCard, UserListItem, UserProfileModal } from './ui';
