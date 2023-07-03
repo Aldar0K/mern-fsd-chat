@@ -54,10 +54,12 @@ const UserProfileModal: FC<UserProfileModalProps> = ({ user, children }) => {
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme='blue' mr={3} onClick={onClose}>
+            <Button variant='solid' mr={3} colorScheme='green'>
+              Edit profile
+            </Button>
+            <Button variant='solid' onClick={onClose}>
               Close
             </Button>
-            <Button variant='ghost'>Secondary Action</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
