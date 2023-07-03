@@ -1,4 +1,4 @@
-import { Message } from '../../model';
+import { Message } from '../model';
 
 export const isLastMessage = (messages: Message[], index: number, userId: string) => {
   return (
