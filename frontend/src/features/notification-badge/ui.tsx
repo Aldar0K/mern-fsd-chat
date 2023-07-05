@@ -1,5 +1,5 @@
 import { BellIcon } from '@chakra-ui/icons';
-import { Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react';
+import { Menu, MenuButton, MenuItem, MenuList, Text } from '@chakra-ui/react';
 import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { shallow } from 'zustand/shallow';
@@ -27,8 +27,10 @@ const NotificationBadge: FC = () => {
 
   return (
     <Menu>
-      <MenuButton p={1}>
-        {/* <NotificationBadge count={notifications.length} effect={Effect.SCALE} /> */}
+      <MenuButton p={1} className='relative'>
+        {!!notifications.length && (
+          <Text className='absolute right-[4px] top-[2px]'>{notifications.length}</Text>
+        )}
         <BellIcon fontSize='2xl' m={1} />
       </MenuButton>
       <MenuList px={1}>
