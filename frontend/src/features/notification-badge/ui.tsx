@@ -31,7 +31,7 @@ const NotificationBadge: FC = () => {
         {/* <NotificationBadge count={notifications.length} effect={Effect.SCALE} /> */}
         <BellIcon fontSize='2xl' m={1} />
       </MenuButton>
-      <MenuList pl={2}>
+      <MenuList px={1}>
         {!notifications.length && 'No new messages'}
         {notifications.map(notification => (
           <MenuItem
