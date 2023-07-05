@@ -25,7 +25,7 @@ const Header: FC = () => {
         >
           {isAuth && <SearchUsers />}
           <Text fontSize='2xl'>Chat App</Text>
-          <div>
+          <div className='flex gap-2'>
             {isAuth && <NotificationBadge />}
             {isAuth && <AuthToolbar />}
           </div>
