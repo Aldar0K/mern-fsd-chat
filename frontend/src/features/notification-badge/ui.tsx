@@ -31,7 +31,7 @@ const NotificationBadge: FC = () => {
         {!!notifications.length && (
           <Text className='absolute right-[4px] top-[2px]'>{notifications.length}</Text>
         )}
-        <BellIcon color='yellow.500' fontSize='2xl' m={1} />
+        <BellIcon color={notifications.length ? 'yellow.400' : 'black'} fontSize='2xl' m={1} />
       </MenuButton>
 
       <MenuList px={2}>
