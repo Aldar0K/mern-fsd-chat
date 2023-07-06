@@ -1,5 +1,5 @@
 import { BellIcon } from '@chakra-ui/icons';
-import { Button, Menu, MenuButton, MenuItem, MenuList, Text } from '@chakra-ui/react';
+import { Button, List, Menu, MenuButton, MenuItem, MenuList, Text } from '@chakra-ui/react';
 import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { shallow } from 'zustand/shallow';
@@ -35,19 +35,21 @@ const NotificationBadge: FC = () => {
       <MenuList px={2}>
         {notifications.length ? (
           <>
-            {notifications.map(notification => (
-              <MenuItem
-                key={notification._id}
-                onClick={() => {
-                  navigate(`${ROUTES.CHATS}/${notification.chat._id}`);
-                  removeNotification(notification._id);
-                }}
-              >
-                {notification.chat.isGroupChat
-                  ? `New message in ${notification.chat.chatName}`
-                  : `New message from ${userLib.getSender(viewer, notification.chat.users)}`}
-              </MenuItem>
-            ))}
+            <List maxHeight='216px' overflowY='auto'>
+              {notifications.map(notification => (
+                <MenuItem
+                  key={notification._id}
+                  onClick={() => {
+                    navigate(`${ROUTES.CHATS}/${notification.chat._id}`);
+                    removeNotification(notification._id);
+                  }}
+                >
+                  {notification.chat.isGroupChat
+                    ? `New message in ${notification.chat.chatName}`
+                    : `New message from ${userLib.getSender(viewer, notification.chat.users)}`}
+                </MenuItem>
+              ))}
+            </List>
             <Button variant='solid' width='full' className='mt-1' onClick={clearNotifications}>
               Clear
             </Button>
