@@ -17,10 +17,8 @@ const selector = (state: messageModel.NotificationState) => ({
 
 const NotificationBadge: FC = () => {
   const navigate = useNavigate();
-  const { notifications, removeNotification } = messageModel.useNotificationStore(
-    selector,
-    shallow
-  );
+  const { notifications, removeNotification, clearNotifications } =
+    messageModel.useNotificationStore(selector, shallow);
   const viewer = viewerModel.useViewer();
 
   if (!viewer) return null;
@@ -35,20 +33,28 @@ const NotificationBadge: FC = () => {
       </MenuButton>
 
       <MenuList px={2}>
-        {!notifications.length && 'No new messages'}
-        {notifications.map(notification => (
-          <MenuItem
-            key={notification._id}
-            onClick={() => {
-              navigate(`${ROUTES.CHATS}/${notification.chat._id}`);
-              removeNotification(notification._id);
-            }}
-          >
-            {notification.chat.isGroupChat
-              ? `New message in ${notification.chat.chatName}`
-              : `New message from ${userLib.getSender(viewer, notification.chat.users)}`}
-          </MenuItem>
-        ))}
+        {notifications.length ? (
+          <>
+            {notifications.map(notification => (
+              <MenuItem
+                key={notification._id}
+                onClick={() => {
+                  navigate(`${ROUTES.CHATS}/${notification.chat._id}`);
+                  removeNotification(notification._id);
+                }}
+              >
+                {notification.chat.isGroupChat
+                  ? `New message in ${notification.chat.chatName}`
+                  : `New message from ${userLib.getSender(viewer, notification.chat.users)}`}
+              </MenuItem>
+            ))}
+            <Button variant='solid' width='full' className='mt-1' onClick={clearNotifications}>
+              Clear
+            </Button>
+          </>
+        ) : (
+          'No new messages'
+        )}
       </MenuList>
     </Menu>
   );
