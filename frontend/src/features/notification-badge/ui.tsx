@@ -1,5 +1,14 @@
 import { BellIcon } from '@chakra-ui/icons';
-import { Button, List, Menu, MenuButton, MenuItem, MenuList, Text } from '@chakra-ui/react';
+import {
+  Button,
+  List,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Text,
+  useDisclosure
+} from '@chakra-ui/react';
 import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { shallow } from 'zustand/shallow';
@@ -19,12 +28,13 @@ const NotificationBadge: FC = () => {
   const navigate = useNavigate();
   const { notifications, removeNotification, clearNotifications } =
     messageModel.useNotificationStore(selector, shallow);
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const viewer = viewerModel.useViewer();
 
   if (!viewer) return null;
 
   return (
-    <Menu>
+    <Menu isOpen={isOpen} onOpen={onOpen} onClose={onClose}>
       <MenuButton p={1} as={Button} className='relative'>
         {!!notifications.length && (
           <Text className='absolute right-[4px] top-[2px]'>{notifications.length}</Text>
@@ -50,7 +60,15 @@ const NotificationBadge: FC = () => {
                 </MenuItem>
               ))}
             </List>
-            <Button variant='solid' width='full' className='mt-1' onClick={clearNotifications}>
+            <Button
+              variant='solid'
+              width='full'
+              className='mt-1'
+              onClick={() => {
+                clearNotifications();
+                onClose();
+              }}
+            >
               Clear
             </Button>
           </>
