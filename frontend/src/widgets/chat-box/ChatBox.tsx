@@ -1,9 +1,8 @@
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import { Box, FormControl, IconButton, Input, Spinner, Text } from '@chakra-ui/react';
-import { ChangeEvent, FC, KeyboardEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FC, useEffect, useState } from 'react';
 import Lottie from 'react-lottie';
 import { useParams } from 'react-router-dom';
-import { Socket, io } from 'socket.io-client';
 import { shallow } from 'zustand/shallow';
 
 import { ScrollableChat, chatModel } from 'entities/chat';
@@ -12,23 +11,13 @@ import { UserProfileModal, userLib } from 'entities/user';
 import { viewerModel } from 'entities/viewer';
 import animationData from 'shared/animations/typing.json';
 import { UpdateGroupModal } from 'widgets/update-group-modal';
-import { ClientToServerEvents, ServerToClientEvents } from './types';
-
-const ENDPONINT = 'http://localhost:8080';
-let socket: Socket<ServerToClientEvents, ClientToServerEvents>,
-  selectedChatCompare: chatModel.Chat | undefined;
+import { useChatSocket } from './model';
 
 type Params = { chatId: string };
 
 const selector = (state: chatModel.ChatState) => ({
   selectedChat: state.selectedChat,
   setSelectedChat: state.setSelectedChat
-});
-
-const notificationSelector = (state: messageModel.NotificationState) => ({
-  notifications: state.notifications,
-  addNotifications: state.addNotifications,
-  clearNotifications: state.clearNotifications
 });
 
 const ChatBox: FC = () => {
@@ -38,39 +27,11 @@ const ChatBox: FC = () => {
   const { chatId } = useParams<keyof Params>() as Params;
   const [currentMessages, setCurrentMessages] = useState<messageModel.Message[]>([]);
   const { data: messages, isLoading: messagesLoading } = messageModel.useGetMessagesQuery(chatId);
-  const { mutateAsync: sendMessageMutate } = messageModel.useSendMessage();
-  const [socketConnected, setSocketConnected] = useState<boolean>(false);
   const [value, setValue] = useState<string>('');
-  const [typing, setTyping] = useState<boolean>(false);
-  const [isTyping, setIsTyping] = useState<boolean>(false);
-  const { notifications, addNotifications } = messageModel.useNotificationStore(
-    notificationSelector,
-    shallow
-  );
-
-  useEffect(() => {
-    socket = io(ENDPONINT);
-    viewer && socket.emit('setup', viewer);
-    socket.on('connected', () => setSocketConnected(true));
-
-    socket.on('typing', () => setIsTyping(true));
-    socket.on('stopTyping', () => setIsTyping(false));
-
-    socket.on('messageRecieved', newMessage => {
-      if (!selectedChatCompare || selectedChatCompare._id !== newMessage.chat._id) {
-        if (!notifications.includes(newMessage)) {
-          addNotifications([newMessage]);
-        }
-      } else {
-        setCurrentMessages(prev => [...prev, newMessage]);
-      }
-    });
-  }, []);
-
-  useEffect(() => {
-    if (!messages || !selectedChat) return;
-    selectedChat && socket.emit('joinChat', selectedChat._id);
-  }, [messages, selectedChat]);
+  const { otherTyping, sendMessage, toggleTyping } = useChatSocket({
+    chatId,
+    setCurrentMessages
+  });
 
   useEffect(() => {
     messages && setCurrentMessages(messages);
@@ -78,46 +39,12 @@ const ChatBox: FC = () => {
 
   useEffect(() => {
     const selectedChat = chats?.find(chat => chat._id === chatId);
-    selectedChatCompare = selectedChat;
     selectedChat && setSelectedChat(selectedChat);
   }, [chats, chatId]);
 
-  const sendMessage = async (event: KeyboardEvent<HTMLDivElement>) => {
-    if (event.key === 'Enter' && !!value.length) {
-      selectedChat && socket.emit('stopTyping', selectedChat._id);
-
-      const content = value;
-      setValue('');
-
-      const newMessage = await sendMessageMutate({ chatId, content });
-
-      setCurrentMessages(prev => [...prev, newMessage]);
-      socket.emit('newMessage', newMessage);
-    }
-  };
-
   const handleTyping = (event: ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
-
-    // TODO toggle typing state in the chat room (socket).
-    if (!socketConnected || !selectedChat) return;
-
-    if (!typing) {
-      setTyping(true);
-      socket.emit('typing', selectedChat._id);
-    }
-
-    // TODO simplify debounce logic.
-    const lastTypingTime = new Date().getTime();
-    const DEFAULT_TYPING_TIMEOUT = 3000;
-    setTimeout(() => {
-      const timeNow = new Date().getTime();
-      const timeDiff = timeNow - lastTypingTime;
-      if (timeDiff >= DEFAULT_TYPING_TIMEOUT && typing) {
-        socket.emit('stopTyping', selectedChat._id);
-        setTyping(false);
-      }
-    }, DEFAULT_TYPING_TIMEOUT);
+    toggleTyping();
   };
 
   return (
@@ -189,8 +116,18 @@ const ChatBox: FC = () => {
               </div>
             )}
 
-            <FormControl id='first-name' isRequired onKeyDown={sendMessage}>
-              {isTyping && (
+            <FormControl
+              id='first-name'
+              isRequired
+              onKeyDown={event => {
+                // TODO add handler function
+                if (event.key === 'Enter' && !!value.length) {
+                  sendMessage(value);
+                  setValue('');
+                }
+              }}
+            >
+              {otherTyping && (
                 <div>
                   <Lottie
                     options={{
