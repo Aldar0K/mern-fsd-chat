@@ -35,17 +35,18 @@ const ChatBox: FC = () => {
   const viewer = viewerModel.useViewer();
   const { selectedChat, setSelectedChat } = chatModel.useChatStore(selector, shallow);
   const { data: chats } = chatModel.useChats();
-  const { notifications, addNotifications } = messageModel.useNotificationStore(
-    notificationSelector,
-    shallow
-  );
   const { chatId } = useParams<keyof Params>() as Params;
   const [currentMessages, setCurrentMessages] = useState<messageModel.Message[]>([]);
   const { data: messages, isLoading: messagesLoading } = messageModel.useGetMessagesQuery(chatId);
   const { mutateAsync: sendMessageMutate } = messageModel.useSendMessage();
   const [socketConnected, setSocketConnected] = useState<boolean>(false);
+  const [value, setValue] = useState<string>('');
   const [typing, setTyping] = useState<boolean>(false);
   const [isTyping, setIsTyping] = useState<boolean>(false);
+  const { notifications, addNotifications } = messageModel.useNotificationStore(
+    notificationSelector,
+    shallow
+  );
 
   useEffect(() => {
     socket = io(ENDPONINT);
@@ -68,7 +69,6 @@ const ChatBox: FC = () => {
 
   useEffect(() => {
     if (!messages || !selectedChat) return;
-
     selectedChat && socket.emit('joinChat', selectedChat._id);
   }, [messages, selectedChat]);
 
@@ -96,7 +96,6 @@ const ChatBox: FC = () => {
     }
   };
 
-  const [value, setValue] = useState<string>('');
   const handleTyping = (event: ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
 
@@ -208,6 +207,8 @@ const ChatBox: FC = () => {
                 </div>
               )}
               <Input
+                key={chatId}
+                autoFocus
                 variant='filled'
                 bg='#E0E0E0'
                 placeholder='Enter a message...'
