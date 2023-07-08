@@ -39,13 +39,12 @@ export const useChatSocket = ({ chatId, setCurrentMessages }: Params) => {
     socket.on('stopTyping', () => setOtherTyping(false));
 
     socket.on('messageRecieved', newMessage => {
-      // TODO invert logic
-      if (!selectedChatCompare || selectedChatCompare._id !== newMessage.chat._id) {
+      if (selectedChatCompare && selectedChatCompare._id === newMessage.chat._id) {
+        setCurrentMessages(prev => [...prev, newMessage]);
+      } else {
         if (!notifications.includes(newMessage)) {
           addNotifications([newMessage]);
         }
-      } else {
-        setCurrentMessages(prev => [...prev, newMessage]);
       }
     });
   }, []);
