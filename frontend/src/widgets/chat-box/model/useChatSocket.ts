@@ -4,7 +4,7 @@ import { Socket, io } from 'socket.io-client';
 import { chatModel } from 'entities/chat';
 import { messageModel } from 'entities/message';
 import { viewerModel } from 'entities/viewer';
-import { ClientToServerEvents, ServerToClientEvents } from '../types';
+import { ClientToServerEvents, ServerToClientEvents } from './types';
 
 const ENDPONINT = 'http://localhost:8080';
 let socket: Socket<ServerToClientEvents, ClientToServerEvents>,
@@ -30,29 +30,56 @@ export const useChatSocket = ({ chatId, setCurrentMessages }: Params) => {
     selectedChatCompare = selectedChat;
   }, [selectedChat]);
 
+  const onConnected = () => {
+    setSocketConnected(true);
+  };
+
+  const onTyping = () => {
+    setOtherTyping(true);
+  };
+
+  const onStopTyping = () => {
+    setOtherTyping(false);
+  };
+
+  const onMessageRecieved = (newMessage: messageModel.Message) => {
+    if (selectedChatCompare && selectedChatCompare._id === newMessage.chat._id) {
+      setCurrentMessages(prev => [...prev, newMessage]);
+    } else {
+      if (!notifications.includes(newMessage)) {
+        addNotifications([newMessage]);
+      }
+    }
+  };
+
   useEffect(() => {
     socket = io(ENDPONINT);
+
+    socket.connect();
     viewer && socket.emit('setup', viewer);
-    socket.on('connected', () => setSocketConnected(true));
+    socket.on('connected', onConnected);
+    socket.on('typing', onTyping);
+    socket.on('stopTyping', onStopTyping);
+    socket.on('messageRecieved', onMessageRecieved);
 
-    socket.on('typing', () => setOtherTyping(true));
-    socket.on('stopTyping', () => setOtherTyping(false));
-
-    socket.on('messageRecieved', newMessage => {
-      if (selectedChatCompare && selectedChatCompare._id === newMessage.chat._id) {
-        setCurrentMessages(prev => [...prev, newMessage]);
-      } else {
-        if (!notifications.includes(newMessage)) {
-          addNotifications([newMessage]);
-        }
-      }
-    });
+    return () => {
+      selectedChat && socket.emit('leaveChat', selectedChat._id);
+      socket.off('connected', onConnected);
+      socket.off('typing', onTyping);
+      socket.off('stopTyping', onStopTyping);
+      socket.off('messageRecieved', onMessageRecieved);
+      socket.disconnect();
+    };
   }, []);
 
   useEffect(() => {
     if (!selectedChat) return;
 
     socket.emit('joinChat', selectedChat._id);
+
+    return () => {
+      socket.emit('leaveChat', selectedChat._id);
+    };
   }, [selectedChat]);
 
   const sendMessage = async (message: string) => {
@@ -88,5 +115,5 @@ export const useChatSocket = ({ chatId, setCurrentMessages }: Params) => {
     }, DEFAULT_TYPING_TIMEOUT);
   };
 
-  return { viewerTyping, otherTyping, sendMessage, toggleTyping };
+  return { socketConnected, viewerTyping, otherTyping, sendMessage, toggleTyping };
 };

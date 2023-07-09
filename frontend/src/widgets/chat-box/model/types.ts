@@ -11,6 +11,7 @@ export interface ServerToClientEvents {
 export interface ClientToServerEvents {
   setup: (user: userModel.User) => void;
   joinChat: (chatId: string) => void;
+  leaveChat: (chatId: string) => void;
   newMessage: (newMessage: messageModel.Message) => void;
   typing: (chatId: string) => void;
   stopTyping: (chatId: string) => void;

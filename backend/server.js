@@ -71,6 +71,11 @@ io.on("connection", (socket) => {
     console.log("User joined room: " + room);
   });
 
+  socket.on("leaveChat", (room) => {
+    socket.leave(room);
+    console.log("User left room: " + room);
+  });
+
   socket.on("typing", (room) => socket.in(room).emit("typing"));
   socket.on("stopTyping", (room) => socket.in(room).emit("stopTyping"));
 
