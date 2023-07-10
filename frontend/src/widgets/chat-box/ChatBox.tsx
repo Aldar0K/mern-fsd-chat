@@ -1,6 +1,6 @@
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import { Box, FormControl, IconButton, Input, Spinner, Text } from '@chakra-ui/react';
-import { ChangeEvent, FC, useEffect, useState } from 'react';
+import { ChangeEvent, FC, KeyboardEvent, useEffect, useState } from 'react';
 import Lottie from 'react-lottie';
 import { useParams } from 'react-router-dom';
 import { shallow } from 'zustand/shallow';
@@ -41,6 +41,13 @@ const ChatBox: FC = () => {
     const selectedChat = chats?.find(chat => chat._id === chatId);
     selectedChat && setSelectedChat(selectedChat);
   }, [chats, chatId]);
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === 'Enter' && !!value.length) {
+      sendMessage(value);
+      setValue('');
+    }
+  };
 
   const handleTyping = (event: ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
@@ -116,17 +123,7 @@ const ChatBox: FC = () => {
               </div>
             )}
 
-            <FormControl
-              id='first-name'
-              isRequired
-              onKeyDown={event => {
-                // TODO add handler function
-                if (event.key === 'Enter' && !!value.length) {
-                  sendMessage(value);
-                  setValue('');
-                }
-              }}
-            >
+            <FormControl id='first-name' isRequired onKeyDown={handleKeyDown}>
               {otherTyping && (
                 <div>
                   <Lottie
@@ -156,7 +153,6 @@ const ChatBox: FC = () => {
           </Box>
         </>
       ) : (
-        // to get socket.io on same page
         <Box display='flex' h='100%' alignItems='center' justifyContent='center'>
           <Text pb={3} fontSize='3xl'>
             Click on a chat to start chatting
