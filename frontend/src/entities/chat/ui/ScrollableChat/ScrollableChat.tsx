@@ -17,10 +17,6 @@ const ScrollableChat: FC<ScrollableChatProps> = ({ messages }) => {
   const [showButton, setShowButton] = useState<boolean>(false);
   const [atBottom, setAtBottom] = useState<boolean>(false);
 
-  useEffect(() => {
-    setShowButton(!atBottom);
-  }, [atBottom, setShowButton]);
-
   const scrollToBottom = () => {
     virtuosoRef.current?.scrollToIndex({
       index: messages.length,
@@ -28,6 +24,16 @@ const ScrollableChat: FC<ScrollableChatProps> = ({ messages }) => {
       behavior: 'smooth'
     });
   };
+
+  useEffect(() => {
+    if (atBottom) {
+      setTimeout(scrollToBottom);
+    }
+  }, [messages]);
+
+  useEffect(() => {
+    setShowButton(!atBottom);
+  }, [atBottom, setShowButton]);
 
   if (!viewer) return null;
   return (
