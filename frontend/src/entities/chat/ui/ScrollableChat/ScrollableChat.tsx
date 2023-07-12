@@ -5,7 +5,6 @@ import { Virtuoso, VirtuosoHandle } from 'react-virtuoso';
 
 import { messageLib, messageModel } from 'entities/message';
 import { viewerModel } from 'entities/viewer';
-import styles from './ScrollableChat.module.scss';
 
 interface ScrollableChatProps {
   messages: messageModel.Message[];
@@ -28,6 +27,8 @@ const ScrollableChat: FC<ScrollableChatProps> = ({ messages }) => {
   useEffect(() => {
     if (atBottom) {
       setTimeout(scrollToBottom);
+    } else {
+      // TODO add the number of messages at the bottom
     }
   }, [messages]);
 
@@ -37,7 +38,7 @@ const ScrollableChat: FC<ScrollableChatProps> = ({ messages }) => {
 
   if (!viewer) return null;
   return (
-    <div className={styles.container}>
+    <div className='relative h-full w-full'>
       <Virtuoso
         ref={virtuosoRef}
         data={messages}
@@ -82,9 +83,9 @@ const ScrollableChat: FC<ScrollableChatProps> = ({ messages }) => {
 
       <button
         className={
-          showButton
-            ? `${styles['button-bottom']} ${styles['button-bottom_active']}`
-            : styles['button-bottom']
+          'absolute z-[-1] h-[56px] w-[56px] right-8 bottom-8 bg-[var(--chakra-colors-gray-100)] ' +
+          'rounded-[50%] opacity-0 transition-all [&>svg]:h-[40px] [&>svg]:w-[40px] ' +
+          `${showButton ? 'z-[1] opacity-100' : ''}`
         }
         onClick={scrollToBottom}
       >
