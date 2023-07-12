@@ -15,6 +15,7 @@ const ScrollableChat: FC<ScrollableChatProps> = ({ messages }) => {
   const virtuosoRef = useRef<VirtuosoHandle>(null);
   const [showButton, setShowButton] = useState<boolean>(false);
   const [atBottom, setAtBottom] = useState<boolean>(false);
+  const [newMessages, setNewMessages] = useState<number>(0);
 
   const scrollToBottom = () => {
     virtuosoRef.current?.scrollToIndex({
@@ -22,18 +23,20 @@ const ScrollableChat: FC<ScrollableChatProps> = ({ messages }) => {
       align: 'end',
       behavior: 'smooth'
     });
+    setNewMessages(0);
   };
 
   useEffect(() => {
     if (atBottom) {
       setTimeout(scrollToBottom);
     } else {
-      // TODO add the number of messages at the bottom
+      setNewMessages(prev => ++prev);
     }
   }, [messages]);
 
   useEffect(() => {
     setShowButton(!atBottom);
+    setNewMessages(0);
   }, [atBottom, setShowButton]);
 
   if (!viewer) return null;
@@ -90,6 +93,11 @@ const ScrollableChat: FC<ScrollableChatProps> = ({ messages }) => {
         onClick={scrollToBottom}
       >
         <ChevronDownIcon />
+        {!!newMessages && (
+          <div className='absolute bg-[var(--color-green)] top-[-2px] right-[-4px] rounded-[50%] px-2'>
+            <span className='text-white'>{newMessages}</span>
+          </div>
+        )}
       </button>
     </div>
   );
