@@ -1,23 +1,14 @@
 import { AddIcon } from '@chakra-ui/icons';
-import { Box, Button, Spinner, Stack, Text } from '@chakra-ui/react';
+import { Box, Button, Spinner, Stack } from '@chakra-ui/react';
 import { FC } from 'react';
-import { NavLink } from 'react-router-dom';
-import { shallow } from 'zustand/shallow';
 
-import { chatModel } from 'entities/chat';
-import { userLib } from 'entities/user';
+import { ChatCard, chatModel } from 'entities/chat';
 import { viewerModel } from 'entities/viewer';
 import { AddGroupModal } from 'features/group';
-import { ROUTES } from 'shared/const';
-
-const selector = (state: chatModel.ChatState) => ({
-  selectedChat: state.selectedChat,
-  setSelectedChat: state.setSelectedChat
-});
 
 const ChatList: FC = () => {
   const viewer = viewerModel.useViewer();
-  const { selectedChat, setSelectedChat } = chatModel.useChatStore(selector, shallow);
+  const selectedChat = chatModel.useChatStore(state => state.selectedChat);
   const { data: chats, isLoading: chatsLoading } = chatModel.useChats();
 
   if (!viewer) return null;
@@ -71,29 +62,7 @@ const ChatList: FC = () => {
             {chats ? (
               <Stack overflowY='auto'>
                 {chats.map(chat => (
-                  <NavLink key={chat._id} to={`${ROUTES.CHATS}/${chat._id}`}>
-                    {({ isActive }) => (
-                      <Box
-                        px='2'
-                        py='2'
-                        borderRadius='lg'
-                        bg={isActive ? '#38B2AC' : '#E8E8E8'}
-                        color={isActive ? 'white' : 'black'}
-                        cursor='pointer'
-                        onClick={() => setSelectedChat(chat)}
-                      >
-                        <Text>
-                          {chat.isGroupChat ? chat.chatName : userLib.getSender(viewer, chat.users)}
-                        </Text>
-
-                        {chat.latestMessage && (
-                          <Text fontSize='small'>
-                            {chat.latestMessage.sender.name}: {chat.latestMessage.content}
-                          </Text>
-                        )}
-                      </Box>
-                    )}
-                  </NavLink>
+                  <ChatCard key={chat._id} chat={chat} />
                 ))}
               </Stack>
             ) : (
