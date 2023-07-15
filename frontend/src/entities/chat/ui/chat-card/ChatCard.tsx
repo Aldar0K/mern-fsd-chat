@@ -1,6 +1,6 @@
-import { Box, Text } from '@chakra-ui/react';
-import { FC } from 'react';
-import { NavLink } from 'react-router-dom';
+import { Box, Menu, MenuButton, MenuItem, MenuList, Text, useDisclosure } from '@chakra-ui/react';
+import { FC, MouseEvent } from 'react';
+import { NavLink, useMatch } from 'react-router-dom';
 
 import { chatModel } from 'entities/chat';
 import { userLib } from 'entities/user';
@@ -12,20 +12,33 @@ interface ChatCardProps {
 }
 
 const ChatCard: FC<ChatCardProps> = ({ chat }) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const viewer = viewerModel.useViewer();
   const setSelectedChat = chatModel.useChatStore(state => state.setSelectedChat);
+  const match = useMatch(`${ROUTES.CHATS}/${chat._id}`);
+
+  const handleContextMenu = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    onOpen();
+  };
 
   if (!viewer) return null;
 
   return (
-    <NavLink key={chat._id} to={`${ROUTES.CHATS}/${chat._id}`}>
-      {({ isActive }) => (
+    <Menu isOpen={isOpen} onClose={onClose}>
+      <MenuButton
+        key={chat._id}
+        as={NavLink}
+        to={`${ROUTES.CHATS}/${chat._id}`}
+        onContextMenu={handleContextMenu}
+      >
         <Box
           px='2'
           py='2'
           borderRadius='lg'
-          bg={isActive ? '#38B2AC' : '#E8E8E8'}
-          color={isActive ? 'white' : 'black'}
+          bg={match ? '#38B2AC' : '#E8E8E8'}
+          color={match ? 'white' : 'black'}
+          userSelect='none'
           cursor='pointer'
           onClick={() => setSelectedChat(chat)}
         >
@@ -37,8 +50,14 @@ const ChatCard: FC<ChatCardProps> = ({ chat }) => {
             </Text>
           )}
         </Box>
-      )}
-    </NavLink>
+      </MenuButton>
+
+      <MenuList px={2}>
+        <MenuItem>Option 1</MenuItem>
+        <MenuItem>Option 2</MenuItem>
+        <MenuItem>Option 3</MenuItem>
+      </MenuList>
+    </Menu>
   );
 };
 
