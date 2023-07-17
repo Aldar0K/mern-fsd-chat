@@ -1,10 +1,20 @@
-import { Box, Menu, MenuButton, MenuItem, MenuList, Text, useDisclosure } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Text,
+  useDisclosure
+} from '@chakra-ui/react';
 import { FC, MouseEvent } from 'react';
 import { NavLink, useMatch } from 'react-router-dom';
 
 import { chatModel } from 'entities/chat';
 import { userLib } from 'entities/user';
 import { viewerModel } from 'entities/viewer';
+import { useLeaveGroup } from 'features/group';
 import { ROUTES } from 'shared/const';
 
 interface ChatCardProps {
@@ -15,11 +25,22 @@ const ChatCard: FC<ChatCardProps> = ({ chat }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const viewer = viewerModel.useViewer();
   const setSelectedChat = chatModel.useChatStore(state => state.setSelectedChat);
+  const { mutateAsync: leaveGroupMutate, isLoading: leaveGroupLoading } = useLeaveGroup();
   const match = useMatch(`${ROUTES.CHATS}/${chat._id}`);
 
   const handleContextMenu = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     onOpen();
+  };
+
+  const handleLeaveGroup = () => {
+    if (!viewer) return;
+    leaveGroupMutate({ chatId: chat._id, userId: viewer._id });
+  };
+
+  const handleDeleteChat = () => {
+    // TODO add delete chat logic
+    console.log('delete chat');
   };
 
   if (!viewer) return null;
@@ -55,7 +76,16 @@ const ChatCard: FC<ChatCardProps> = ({ chat }) => {
       <MenuList px={2}>
         <MenuItem>Option 1</MenuItem>
         <MenuItem>Option 2</MenuItem>
-        <MenuItem>Option 3</MenuItem>
+        <MenuItem
+          as={Button}
+          variant='solid'
+          colorScheme='red'
+          width='100%'
+          onClick={chat.isGroupChat ? handleLeaveGroup : handleDeleteChat}
+          isLoading={leaveGroupLoading}
+        >
+          {chat.isGroupChat ? 'Leave Group' : 'Delete'}
+        </MenuItem>
       </MenuList>
     </Menu>
   );
