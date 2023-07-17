@@ -1,2 +1,2 @@
-export * from './useAccessChat';
+export * from './useAccessChatMutation';
 export * from './useChats';

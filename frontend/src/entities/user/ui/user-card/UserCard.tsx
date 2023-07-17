@@ -10,11 +10,11 @@ interface UserCardProps {
 }
 
 const UserCard: FC<UserCardProps> = ({ user, onClose }) => {
-  const [accessChat, chatLoading] = chatModel.useAccessChat();
+  const { mutate: accessChatMutate, isLoading: accessChatLoading } =
+    chatModel.useAccessChatMutation();
 
   const handleClick = async () => {
-    await accessChat(user._id);
-    onClose();
+    accessChatMutate(user._id, { onSuccess: onClose });
   };
 
   return (
@@ -44,7 +44,7 @@ const UserCard: FC<UserCardProps> = ({ user, onClose }) => {
           {user.email}
         </Text>
       </Box>
-      {chatLoading && <Spinner display='flex' />}
+      {accessChatLoading && <Spinner display='flex' />}
     </Box>
   );
 };
