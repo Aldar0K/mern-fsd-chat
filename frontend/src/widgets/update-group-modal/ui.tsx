@@ -42,7 +42,7 @@ const UpdateGroupModal: FC = () => {
           </ModalBody>
 
           <ModalFooter>
-            <LeaveGroupButton />
+            <LeaveGroupButton chatId={selectedChat._id} />
           </ModalFooter>
         </ModalContent>
       </Modal>
